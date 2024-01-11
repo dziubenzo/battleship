@@ -1,7 +1,13 @@
 export class Ship {
   constructor(length, name) {
-    if (isNaN(Number(length))) {
-      throw new Error('Length argument must be a number');
+    if (isNaN(length) || length === null) {
+      throw new Error('Length must be a number');
+    }
+    if (!Number.isInteger(Number(length))) {
+      throw new Error('Length must be an integer');
+    }
+    if (length < 1 || length > 10) {
+      throw new Error('Invalid length');
     }
     this.length = Number(length);
     this.name = name;
