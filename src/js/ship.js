@@ -6,6 +6,19 @@ export class Ship {
     this.length = Number(length);
     this.name = name;
     this.hits = 0;
-    this.isSunk = false;
+  }
+
+  isSunk() {
+    if (this.hits === this.length) {
+      return true;
+    }
+    return false;
+  }
+
+  hit() {
+    if (this.isSunk()) {
+      throw new Error('The ship has already sunk!');
+    }
+    this.hits++;
   }
 }

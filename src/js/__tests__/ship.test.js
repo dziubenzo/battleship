@@ -9,13 +9,11 @@ describe('Ship', () => {
       length: 5,
       name: 'Carrier',
       hits: 0,
-      isSunk: false,
     });
     expect(new Ship(2, 'Patrol Boat')).toEqual({
       length: 2,
       name: 'Patrol Boat',
       hits: 0,
-      isSunk: false,
     });
   });
   test('Converts numbers as strings to numbers', () => {
@@ -23,7 +21,6 @@ describe('Ship', () => {
       length: 2,
       name: 'Patrol Boat',
       hits: 0,
-      isSunk: false,
     });
   });
   test('Throws error when length is not a number', () => {
@@ -31,8 +28,8 @@ describe('Ship', () => {
       new Ship('PatrolBoat', 'Patrol Boat');
     }).toThrow();
   });
-  test('isSunk evaluates to false when ship is instantiated', () => {
-    expect(new Ship(5, 'Carrier').isSunk).toBe(false);
+  test('isSunk() evaluates to false when ship is instantiated', () => {
+    expect(new Ship(5, 'Carrier').isSunk()).toBe(false);
   });
   test('hit() increases hits', () => {
     const ship = new Ship(3, 'Cruiser');
@@ -46,12 +43,12 @@ describe('Ship', () => {
       ship.hit();
       ship.hit();
       ship.hit();
-    }).toThrow("The ship has already sunk!");
+    }).toThrow('The ship has already sunk!');
   });
-  test('isSunk evaluates to true is hits === length', () => {
+  test('isSunk() evaluates to true is hits === length', () => {
     const ship = new Ship(2, 'Cruiser');
     ship.hit();
     ship.hit();
-    expect(ship.isSunk).toBe(true);
+    expect(ship.isSunk()).toBe(true);
   });
 });
