@@ -4,47 +4,35 @@ import { Ship } from '../ship';
 
 // Ship class tests
 describe('Ship', () => {
-  test('Creates proper ship objects', () => {
+  test('Creates proper Ship objects', () => {
     expect(new Ship(5, 'Carrier')).toEqual({
       length: 5,
       name: 'Carrier',
       hits: 0,
     });
-    expect(new Ship(2, 'Patrol Boat')).toEqual({
-      length: 2,
-      name: 'Patrol Boat',
-      hits: 0,
-    });
   });
 
   test('Converts string numbers to numbers', () => {
-    expect(new Ship('2', 'Patrol Boat')).toEqual({
-      length: 2,
-      name: 'Patrol Boat',
-      hits: 0,
-    });
+    expect(new Ship('2', 'Patrol Boat').length).toBe(2);
   });
 
-  test('Throws error when length is not a number', () => {
-    expect(() => {
-      new Ship('PatrolBoat', 'Patrol Boat');
-    }).toThrow('Length must be a number');
-    expect(() => {
-      new Ship(undefined, 'Patrol Boat');
-    }).toThrow('Length must be a number');
-    expect(() => {
-      new Ship(null, 'Patrol Boat');
-    }).toThrow('Length must be a number');
-  });
+  test.each([['PatrolBoat'], [null], [undefined]])(
+    'Throws error when length is %s',
+    (value) => {
+      expect(() => {
+        new Ship(value, 'Patrol Boat');
+      }).toThrow('Length must be a number');
+    },
+  );
 
-  test('Throws error when length is not in the range of 1-10', () => {
-    expect(() => {
-      new Ship(0, 'Fun Ship');
-    }).toThrow('Invalid length');
-    expect(() => {
-      new Ship(11, 'Even Funnier Ship');
-    }).toThrow('Invalid length');
-  });
+  test.each([[0], [11], [-6], [23]])(
+    'Throws error when length is not in the range of 1-10 (%i)',
+    (length) => {
+      expect(() => {
+        new Ship(length, 'Fun Ship');
+      }).toThrow('Invalid length');
+    },
+  );
 
   test('Throws error when length is not an integer', () => {
     expect(() => {
