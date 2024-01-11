@@ -22,7 +22,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'SET_TITLE',
+      title: 'Battleship',
       template: './src/template.html',
       favicon: './src/assets/favicon.ico',
     }),

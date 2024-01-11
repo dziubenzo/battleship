@@ -1,0 +1,21 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "ignorePatterns": [
+    "webpack.common.js",
+    "webpack.dev.js",
+    "webpack.prod.js",
+    "babel.config.js",
+    "jest.config.js",
+    "fileMock.js",
+    "styleMock.js"
+  ],
+  "extends": ["eslint:recommended", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {}
+}
