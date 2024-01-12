@@ -78,7 +78,7 @@ describe('Gameboard', () => {
     [5, -5],
     [12, 3],
     [-1, -5],
-  ])('throws error when coordinates are illegal [%i][%i]', (row, column) => {
+  ])('throws error when coordinates are illegal for 10x10 board [%i][%i]', (row, column) => {
     expect(() => {
       gameboard.placeShip(patrolBoat, row, column, 'horizontal');
     }).toThrow('Board square does not exist');
@@ -118,7 +118,7 @@ describe('Gameboard', () => {
     }).toThrow('Invalid ship placement: Ships cannot overlap');
     expect(() => {
       gameboard.placeShip(carrier, 5, 5, 'vertical');
-      gameboard.placeShip(patrolBoat, 9, 4, 'horizontal');
+      gameboard.placeShip(patrolBoat, 9, 5, 'horizontal');
     }).toThrow('Invalid ship placement: Ships cannot overlap');
   });
 

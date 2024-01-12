@@ -40,8 +40,41 @@ export class Gameboard {
     }
   }
 
-  // Return the value of the board square
+  // Make all legal squares adjacent to a ship unavailable
+  #makeUnavailable(shipArray) {
+    // Define all adjacent squares, starting from top one and going clockwise
+    const adjacentSquares = [
+      [-1, 0],
+      [-1, 1],
+      [0, 1],
+      [1, 1],
+      [1, 0],
+      [1, -1],
+      [0, -1],
+      [-1, -1],
+    ];
+    for (const shipSquare of shipArray) {
+      for (const adjacentSquare of adjacentSquares) {
+        let row = shipSquare[0] + adjacentSquare[0];
+        let column = shipSquare[1] + adjacentSquare[1];
+        // Omit any illegal squares
+        if (
+          row < 0 ||
+          row > this.#boardSize - 1 ||
+          column < 0 ||
+          column > this.#boardSize - 1
+        ) {
+          continue;
+        }
+        // Make legal square unavailable as long as they are not the ship itself
+        if (this.#board[row][column] === null) {
+          this.#board[row][column] = 'unavailable';
+        }
+      }
+    }
+  }
   // Check the board square if it exists
+  // Return the value of the legal board square
   getSquare(row, column) {
     if (
       row < 0 ||
@@ -70,15 +103,19 @@ export class Gameboard {
         this.#checkAdjacencyAndOverlapping(this.#board[row + i][column]);
       }
     }
-    // Place ship
+    let shipCoordinates = [];
+    // Place ship and push its coordinates
     if (direction === 'horizontal') {
       for (let i = 0; i < ship.length; i++) {
         this.#board[row][column + i] = ship.name;
+        shipCoordinates.push([row, column + i]);
       }
     } else if (direction === 'vertical') {
       for (let i = 0; i < ship.length; i++) {
         this.#board[row + i][column] = ship.name;
+        shipCoordinates.push([row + i, column]);
       }
     }
+    this.#makeUnavailable(shipCoordinates);
   }
 }
