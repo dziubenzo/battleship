@@ -5,10 +5,15 @@ import { Ship } from '../ship';
 
 // Gameboard class tests
 describe('Gameboard', () => {
-  const gameboard = new Gameboard();
+  let gameboard;
   const carrier = new Ship(5, 'Carrier');
   const battleship = new Ship(4, 'Battleship');
   const patrolBoat = new Ship(2, 'Patrol Boat');
+
+  // Make sure the gameboard instance is cleared before tests
+  beforeEach(() => {
+    gameboard = new Gameboard();
+  });
 
   // Board tests
   test.each([
@@ -47,7 +52,7 @@ describe('Gameboard', () => {
     },
   );
 
-  test.each([[battleship.name, 9, 0, battleship]])(
+  test.each([[battleship.name, 0, 9, battleship]])(
     'places %s on [%i][%i] square vertically',
     (shipName, row, column, ship) => {
       gameboard.placeShip(ship, row, column, 'vertical');
