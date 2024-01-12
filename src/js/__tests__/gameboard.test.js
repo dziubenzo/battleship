@@ -3,19 +3,9 @@
 import { Gameboard } from '../gameboard';
 import { Ship } from '../ship';
 
-// Gameboard class tests
-describe('Gameboard', () => {
-  let gameboard;
-  const carrier = new Ship(5, 'Carrier');
-  const battleship = new Ship(4, 'Battleship');
-  const patrolBoat = new Ship(2, 'Patrol Boat');
+describe('Gameboard: board and getSquare()', () => {
+  const gameboard = new Gameboard();
 
-  // Make sure the gameboard instance is cleared before tests
-  beforeEach(() => {
-    gameboard = new Gameboard();
-  });
-
-  // Board tests
   test.each([
     [0, 0, null],
     [0, 9, null],
@@ -40,8 +30,18 @@ describe('Gameboard', () => {
       }).toThrow('Board square does not exist');
     },
   );
+});
 
-  // Ship placing tests
+describe('Gameboard: placeShip()', () => {
+  let gameboard;
+  const carrier = new Ship(5, 'Carrier');
+  const battleship = new Ship(4, 'Battleship');
+  const patrolBoat = new Ship(2, 'Patrol Boat');
+
+  beforeEach(() => {
+    gameboard = new Gameboard();
+  });
+
   test.each([[carrier.name, 3, 5, carrier]])(
     'places %s on [%i][%i] square horizontally',
     (shipName, row, column, ship) => {
@@ -78,11 +78,14 @@ describe('Gameboard', () => {
     [5, -5],
     [12, 3],
     [-1, -5],
-  ])('throws error when coordinates are illegal for 10x10 board [%i][%i]', (row, column) => {
-    expect(() => {
-      gameboard.placeShip(patrolBoat, row, column, 'horizontal');
-    }).toThrow('Board square does not exist');
-  });
+  ])(
+    'throws error when coordinates are illegal for 10x10 board [%i][%i]',
+    (row, column) => {
+      expect(() => {
+        gameboard.placeShip(patrolBoat, row, column, 'horizontal');
+      }).toThrow('Board square does not exist');
+    },
+  );
 
   test.each([
     [carrier.name, 0, 6, carrier],
@@ -131,5 +134,19 @@ describe('Gameboard', () => {
       gameboard.placeShip(battleship, 5, 9, 'vertical');
       gameboard.placeShip(patrolBoat, 3, 8, 'vertical');
     }).toThrow('Invalid ship placement: Ships cannot be adjacent');
+  });
+});
+
+describe('Gameboard: receiveAttack()', () => {
+  let gameboard;
+  const carrier = new Ship(5, 'Carrier');
+  const battleship = new Ship(4, 'Battleship');
+  const destroyer = new Ship(3, 'Destroyer');
+  const submarine = new Ship(3, 'Submarine');
+  const patrolBoat = new Ship(2, 'Patrol Boat');
+
+  // Make sure the gameboard instance is cleared before tests
+  beforeEach(() => {
+    gameboard = new Gameboard();
   });
 });
