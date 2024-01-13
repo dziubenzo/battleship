@@ -1,6 +1,7 @@
 export class Gameboard {
   #boardSize = 10;
   #board = this.#createBoard();
+  ships = [];
 
   // Create a 2D array of size boardSize x boardSize
   #createBoard() {
@@ -65,7 +66,7 @@ export class Gameboard {
         ) {
           continue;
         }
-        // Make legal square unavailable as long as it is not the ship itself
+        // Make legal square unavailable if it is not the ship itself
         if (this.#board[row][column] === null) {
           this.#board[row][column] = 'unavailable';
         }
@@ -111,6 +112,14 @@ export class Gameboard {
         shipCoordinates.push([row + i, column]);
       }
     }
+    // Store ship in array
+    this.ships.push(ship);
     this.#makeUnavailable(shipCoordinates);
+  }
+
+  // Process attack accordingly
+  receiveAttack(row, column) {
+    // Check if the starting square is legal
+    this.getSquare(row, column);
   }
 }
