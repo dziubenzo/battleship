@@ -31,8 +31,7 @@ export class Gameboard {
       if (sumHorizontal >= this.#boardSize) {
         throw new Error('Invalid ship placement: Ship does not fit');
       }
-    }
-    if (direction === 'vertical') {
+    } else if (direction === 'vertical') {
       const sumVertical = row - 1 + ship.length;
       if (sumVertical >= this.#boardSize) {
         throw new Error('Invalid ship placement: Ship does not fit');
@@ -42,7 +41,7 @@ export class Gameboard {
 
   // Make all legal squares adjacent to a ship unavailable
   #makeUnavailable(shipArray) {
-    // Define all adjacent squares, starting from top one and going clockwise
+    // Define all adjacent square combinations, starting from the top one and going clockwise
     const adjacentSquares = [
       [-1, 0],
       [-1, 1],
@@ -66,7 +65,7 @@ export class Gameboard {
         ) {
           continue;
         }
-        // Make legal square unavailable as long as they are not the ship itself
+        // Make legal square unavailable as long as it is not the ship itself
         if (this.#board[row][column] === null) {
           this.#board[row][column] = 'unavailable';
         }
@@ -94,24 +93,20 @@ export class Gameboard {
     // Check if the ship would fit
     this.#checkSpace(ship, row, column, direction);
     // Check all squares for adjacency and overlapping
-    if (direction === 'horizontal') {
-      for (let i = 0; i < ship.length; i++) {
+    for (let i = 0; i < ship.length; i++) {
+      if (direction === 'horizontal') {
         this.#checkAdjacencyAndOverlapping(this.#board[row][column + i]);
-      }
-    } else if (direction === 'vertical') {
-      for (let i = 0; i < ship.length; i++) {
+      } else if (direction === 'vertical') {
         this.#checkAdjacencyAndOverlapping(this.#board[row + i][column]);
       }
     }
     let shipCoordinates = [];
     // Place ship and push its coordinates
-    if (direction === 'horizontal') {
-      for (let i = 0; i < ship.length; i++) {
+    for (let i = 0; i < ship.length; i++) {
+      if (direction === 'horizontal') {
         this.#board[row][column + i] = ship.name;
         shipCoordinates.push([row, column + i]);
-      }
-    } else if (direction === 'vertical') {
-      for (let i = 0; i < ship.length; i++) {
+      } else if (direction === 'vertical') {
         this.#board[row + i][column] = ship.name;
         shipCoordinates.push([row + i, column]);
       }

@@ -138,15 +138,112 @@ describe('Gameboard: placeShip()', () => {
 });
 
 describe('Gameboard: receiveAttack()', () => {
-  let gameboard;
-  const carrier = new Ship(5, 'Carrier');
-  const battleship = new Ship(4, 'Battleship');
-  const destroyer = new Ship(3, 'Destroyer');
-  const submarine = new Ship(3, 'Submarine');
-  const patrolBoat = new Ship(2, 'Patrol Boat');
+  let gameboard = new Gameboard();
+  let carrier = new Ship(5, 'Carrier');
+  let battleship = new Ship(4, 'Battleship');
+  let destroyer = new Ship(3, 'Destroyer');
+  let submarine = new Ship(3, 'Submarine');
+  let patrolBoat = new Ship(2, 'Patrol Boat');
+  const shipsCoordinates = [
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [0, 4],
+    [0, 5],
+    [2, 5],
+    [2, 6],
+    [2, 7],
+    [2, 8],
+    [4, 0],
+    [4, 1],
+    [4, 2],
+    [6, 7],
+    [6, 8],
+    [6, 9],
+    [9, 2],
+    [9, 3],
+  ];
 
-  // Make sure the gameboard instance is cleared before tests
   beforeEach(() => {
     gameboard = new Gameboard();
+    carrier = new Ship(5, 'Carrier');
+    battleship = new Ship(4, 'Battleship');
+    destroyer = new Ship(3, 'Destroyer');
+    submarine = new Ship(3, 'Submarine');
+    patrolBoat = new Ship(2, 'Patrol Boat');
+    gameboard.placeShip(carrier, 0, 1, 'horizontal');
+    gameboard.placeShip(battleship, 2, 5, 'horizontal');
+    gameboard.placeShip(destroyer, 4, 0, 'horizontal');
+    gameboard.placeShip(submarine, 6, 7, 'horizontal');
+    gameboard.placeShip(patrolBoat, 9, 2, 'horizontal');
+  });
+
+  test.each([
+    [carrier.name, carrier, 0, 1],
+    [battleship.name, battleship, 2, 8],
+    [destroyer.name, destroyer, 4, 1],
+    [submarine.name, submarine, 6, 9],
+    [patrolBoat.name, patrolBoat, 9, 3],
+  ])('calls ship.hit() for %s', (shipName, ship, row, column) => {
+    gameboard.receiveAttack(row, column);
+    expect(ship.hits).toBe(1);
+  });
+
+  test('records hits', () => {
+    gameboard.receiveAttack(0, 1);
+    gameboard.receiveAttack(2, 5);
+    gameboard.receiveAttack(4, 0);
+    gameboard.receiveAttack(6, 7);
+    gameboard.receiveAttack(9, 2);
+    expect(gameboard.hits).toEqual([0, 1], [2, 5], [4, 0], [6, 7], [9, 2]);
+  });
+
+  test('records misses', () => {
+    gameboard.receiveAttack(0, 8);
+    gameboard.receiveAttack(2, 2);
+    gameboard.receiveAttack(4, 6);
+    gameboard.receiveAttack(6, 3);
+    gameboard.receiveAttack(8, 8);
+    expect(gameboard.misses).toEqual([0, 8], [2, 2], [4, 6], [6, 3], [8, 8]);
+  });
+
+  test.each([
+    [-1, 5],
+    [0, 10],
+  ])('throws error if square does not exist [%i][%i]', (row, column) => {
+    expect(() => {
+      gameboard.receiveAttack(row, column);
+    }).toThrow('Board square does not exist');
+  });
+
+  test.each([
+    ['hits', 4, 0],
+    ['misses', 0, 9],
+  ])(
+    'throws error if the same square is attacked twice (%s)',
+    (scenario, row, column) => {
+      expect(() => {
+        gameboard.receiveAttack(row, column);
+        gameboard.receiveAttack(row, column);
+      }).toThrow('Invalid attack');
+    },
+  );
+
+  test('sinks ships', () => {
+    for (let i = 0; i < carrier.length; i++) {
+      const row = shipsCoordinates[i][0];
+      const column = shipsCoordinates[i][1];
+      gameboard.receiveAttack(row, column);
+    }
+    expect(carrier.isSunk()).toBe(true);
+  });
+
+  test('calls allShipsSunk() if all ships are sunk', () => {
+    for (const coordinates of shipsCoordinates) {
+      const row = coordinates[0];
+      const column = coordinates[1];
+      gameboard.receiveAttack(row, column);
+    }
+    expect(gameboard.allShipsSunk()).toHaveBeenCalled();
   });
 });
