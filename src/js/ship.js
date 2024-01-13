@@ -9,8 +9,8 @@ export class Ship {
     if (length < 1 || length > 10) {
       throw new Error('Invalid length');
     }
-    this.length = Number(length);
     this.name = name;
+    this.length = Number(length);
     this.hits = 0;
   }
 

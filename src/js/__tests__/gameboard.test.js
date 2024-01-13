@@ -147,12 +147,17 @@ describe('Gameboard: placeShip()', () => {
 });
 
 describe('Gameboard: receiveAttack()', () => {
-  let gameboard = new Gameboard();
+  const gameboard = new Gameboard();
   const carrier = new Ship(5, 'Carrier');
   const battleship = new Ship(4, 'Battleship');
   const destroyer = new Ship(3, 'Destroyer');
   const submarine = new Ship(3, 'Submarine');
   const patrolBoat = new Ship(2, 'Patrol Boat');
+  gameboard.placeShip(carrier, 0, 1, 'horizontal');
+  gameboard.placeShip(battleship, 2, 5, 'horizontal');
+  gameboard.placeShip(destroyer, 4, 0, 'horizontal');
+  gameboard.placeShip(submarine, 6, 7, 'horizontal');
+  gameboard.placeShip(patrolBoat, 9, 2, 'horizontal');
   const shipsCoordinates = [
     [0, 1],
     [0, 2],
@@ -174,23 +179,24 @@ describe('Gameboard: receiveAttack()', () => {
   ];
 
   beforeEach(() => {
-    gameboard = new Gameboard();
-    gameboard.placeShip(carrier, 0, 1, 'horizontal');
-    gameboard.placeShip(battleship, 2, 5, 'horizontal');
-    gameboard.placeShip(destroyer, 4, 0, 'horizontal');
-    gameboard.placeShip(submarine, 6, 7, 'horizontal');
-    gameboard.placeShip(patrolBoat, 9, 2, 'horizontal');
+    gameboard.hits = [];
+    gameboard.misses = [];
+    gameboard.ships[0] = new Ship(5, 'Carrier');
+    gameboard.ships[1] = new Ship(4, 'Battleship');
+    gameboard.ships[2] = new Ship(3, 'Destroyer');
+    gameboard.ships[3] = new Ship(3, 'Submarine');
+    gameboard.ships[4] = new Ship(2, 'Patrol Boat');
   });
 
   test.each([
-    [carrier.name, gameboard.ships[0], 0, 1],
-    [battleship.name, gameboard.ships[1], 2, 8],
-    [destroyer.name, gameboard.ships[2], 4, 1],
-    [submarine.name, gameboard.ships[3], 6, 9],
-    [patrolBoat.name, gameboard.ships[4], 9, 3],
+    [gameboard.ships[0].name, gameboard.ships[0], 0, 1],
+    [gameboard.ships[1].name, gameboard.ships[1], 2, 8],
+    [gameboard.ships[2].name, gameboard.ships[2], 4, 1],
+    [gameboard.ships[3].name, gameboard.ships[3], 6, 9],
+    [gameboard.ships[4].name, gameboard.ships[4], 9, 3],
   ])('calls ship.hit() for %s', (shipName, ship, row, column) => {
     gameboard.receiveAttack(row, column);
-    expect(ship.hits).toBe(1);
+    expect(ship.hits).toBe(1); // ship.hits gives 0, but when ship.hits is replaced with gameboard.ships[0-4].hits, it gives 1, so code works, but tests fail
   });
 
   test('records hits', () => {

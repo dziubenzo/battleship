@@ -2,6 +2,8 @@ export class Gameboard {
   #boardSize = 10;
   #board = this.#createBoard();
   ships = [];
+  hits = [];
+  misses = [];
 
   // Create a 2D array of size boardSize x boardSize
   #createBoard() {
@@ -73,6 +75,22 @@ export class Gameboard {
       }
     }
   }
+
+  // Check for attacks targeting squares that have already been attacked
+  #checkDuplicates(row, column) {
+    if (
+      this.hits.find((hit) => row === hit[0] && column === hit[1]) ||
+      this.misses.find((miss) => row === miss[0] && column === miss[1])
+    ) {
+      throw new Error('Invalid attack');
+    }
+  }
+
+  // Find ship that has been hit
+  #findShip(shipName) {
+    return this.ships.find((targetShip) => targetShip.name === shipName);
+  }
+
   // Check the board square if it exists
   // Return the value of the legal board square
   getSquare(row, column) {
@@ -119,7 +137,16 @@ export class Gameboard {
 
   // Process attack accordingly
   receiveAttack(row, column) {
-    // Check if the starting square is legal
-    this.getSquare(row, column);
+    const square = this.getSquare(row, column);
+    this.#checkDuplicates(row, column);
+    // Handle misses
+    if (square === null || square === 'unavailable') {
+      this.misses.push([row, column]);
+      return;
+    }
+    // Handle hits
+    const targetShip = this.#findShip(square);
+    targetShip.hit();
+    this.hits.push([row, column]);
   }
 }
