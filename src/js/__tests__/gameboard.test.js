@@ -146,7 +146,7 @@ describe('Gameboard: placeShip()', () => {
   });
 });
 
-describe('Gameboard: receiveAttack()', () => {
+describe('Gameboard: receiveAttack() and areAllShipsSunk()', () => {
   let gameboard = new Gameboard();
   let carrier = new Ship(5, 'Carrier');
   let battleship = new Ship(4, 'Battleship');
@@ -179,18 +179,18 @@ describe('Gameboard: receiveAttack()', () => {
   ];
 
   beforeEach(() => {
-    // Resets ship hits for test.each to work properly (test.each does not like ship reassignment)
-    carrier.hits = 0;
-    battleship.hits = 0;
-    destroyer.hits = 0;
-    submarine.hits = 0;
-    patrolBoat.hits = 0;
     gameboard = new Gameboard();
     gameboard.placeShip(carrier, 0, 1, 'horizontal');
     gameboard.placeShip(battleship, 2, 5, 'horizontal');
     gameboard.placeShip(destroyer, 4, 0, 'horizontal');
     gameboard.placeShip(submarine, 6, 7, 'horizontal');
     gameboard.placeShip(patrolBoat, 9, 2, 'horizontal');
+    // Resets ship hits for test.each to work properly (test.each references test objects created not here, but in code right below the describe() block)
+    carrier.hits = 0;
+    battleship.hits = 0;
+    destroyer.hits = 0;
+    submarine.hits = 0;
+    patrolBoat.hits = 0;
   });
 
   test.each([
@@ -265,12 +265,26 @@ describe('Gameboard: receiveAttack()', () => {
     expect(gameboard.ships[0].isSunk()).toBe(true);
   });
 
-  test('calls allShipsSunk() if all ships are sunk', () => {
+  test('areAllShipsDown() returns false if there are ships on the board', () => {
+    for (let i = 0; i < gameboard.ships[0].length; i++) {
+      const row = shipsCoordinates[i][0];
+      const column = shipsCoordinates[i][1];
+      gameboard.receiveAttack(row, column);
+    }
+    gameboard.receiveAttack(4, 1);
+    gameboard.receiveAttack(0, 0);
+    gameboard.receiveAttack(4, 2);
+    gameboard.receiveAttack(9, 9);
+    gameboard.receiveAttack(9, 3);
+    expect(gameboard.areAllShipsDown()).toBe(false);
+  });
+
+  test('areAllShipsDown() returns true if all ships have been sunk', () => {
     for (const coordinates of shipsCoordinates) {
       const row = coordinates[0];
       const column = coordinates[1];
       gameboard.receiveAttack(row, column);
     }
-    expect(gameboard.allShipsSunk()).toHaveBeenCalled();
+    expect(gameboard.areAllShipsDown()).toBe(true);
   });
 });

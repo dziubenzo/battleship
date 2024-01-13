@@ -148,5 +148,14 @@ export class Gameboard {
     const targetShip = this.#findShip(square);
     targetShip.hit();
     this.hits.push([row, column]);
+    this.areAllShipsDown();
+  }
+
+  // Check if all ships have been sunk
+  areAllShipsDown() {
+    if (this.ships.every((ship) => ship.isSunk())) {
+      return true;
+    }
+    return false;
   }
 }
