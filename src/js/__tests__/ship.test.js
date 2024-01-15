@@ -16,6 +16,15 @@ describe('Ship', () => {
     expect(new Ship('2', 'Patrol Boat').length).toBe(2);
   });
 
+  test('throws error if called with less than 2 arguments', () => {
+    expect(() => {
+      new Ship(5);
+    }).toThrow('Invalid arguments');
+    expect(() => {
+      new Ship();
+    }).toThrow('Invalid arguments');
+  });
+
   test.each([['PatrolBoat'], [null], [undefined]])(
     'Throws error when length is %s',
     (value) => {
@@ -38,6 +47,12 @@ describe('Ship', () => {
     expect(() => {
       new Ship(2.4, 'Patrol Boat+');
     }).toThrow('Length must be an integer');
+  });
+
+  test('Throws error when name is not a string', () => {
+    expect(() => {
+      new Ship(5, 5);
+    }).toThrow('Name must be a string');
   });
 
   test('isSunk() evaluates to false when ship is instantiated', () => {

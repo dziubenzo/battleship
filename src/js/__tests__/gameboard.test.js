@@ -3,7 +3,7 @@
 import { Gameboard } from '../gameboard';
 import { Ship } from '../ship';
 
-describe('Gameboard: board and getSquare()', () => {
+describe('Gameboard: instance and getSquare()', () => {
   const gameboard = new Gameboard();
 
   test.each([
@@ -14,6 +14,39 @@ describe('Gameboard: board and getSquare()', () => {
     [4, 5, null],
   ])('board square [%i][%i] is %s', (row, column, expected) => {
     expect(gameboard.getSquare(row, column)).toBe(expected);
+  });
+
+  test('throws error if instantiated with any arguments', () => {
+    expect(() => {
+      new Gameboard('Fun Gameboard');
+    }).toThrow('Gameboard is instantiated without any arguments');
+  });
+
+  test('getSquare() converts string numbers to numbers', () => {
+    expect(() => {
+      gameboard.getSquare('2', '7');
+    }).not.toThrow();
+  });
+
+  test('throws error if getSquare() is called with less than 2 arguments', () => {
+    expect(() => {
+      gameboard.getSquare(5);
+    }).toThrow('Invalid arguments');
+    expect(() => {
+      gameboard.getSquare();
+    }).toThrow('Invalid arguments');
+  });
+
+  test('throws error if getSquare() arguments are not string numbers or numbers', () => {
+    expect(() => {
+      gameboard.getSquare('Test', 5);
+    }).toThrow('Arguments must be string numbers or numbers');
+    expect(() => {
+      gameboard.getSquare(7, null);
+    }).toThrow('Arguments must be string numbers or numbers');
+    expect(() => {
+      gameboard.getSquare(Infinity, 'Test2');
+    }).toThrow('Arguments must be string numbers or numbers');
   });
 
   test.each([
@@ -79,6 +112,46 @@ describe('Gameboard: placeShip()', () => {
     gameboard.placeShip(carrier, 5, 9, 'vertical');
     gameboard.placeShip(battleship, 6, 7, 'vertical');
     expect(gameboard.ships).toHaveLength(5);
+  });
+
+  test('throws error if called with less than 4 arguments', () => {
+    expect(() => {
+      gameboard.placeShip(patrolBoat, 2, 5);
+    }).toThrow('Invalid arguments');
+
+    expect(() => {
+      gameboard.placeShip(2, 5);
+    }).toThrow('Invalid arguments');
+
+    expect(() => {
+      gameboard.placeShip(carrier);
+    }).toThrow('Invalid arguments');
+
+    expect(() => {
+      gameboard.placeShip();
+    }).toThrow('Invalid arguments');
+  });
+
+  test('throws error if the first argument is not Ship instance', () => {
+    expect(() => {
+      gameboard.placeShip('Patrol Boat', 2, 5, 'vertical');
+    }).toThrow('The first argument must be an instance of Ship class');
+  });
+
+  test('throws error if row or column is not a string number or a number', () => {
+    expect(() => {
+      gameboard.placeShip(patrolBoat, 'Test', 5, 'vertical');
+    }).toThrow('The first argument must be an instance of Ship class');
+
+    expect(() => {
+      gameboard.placeShip(patrolBoat, 2, 'Test2', 'vertical');
+    }).toThrow('The first argument must be an instance of Ship class');
+  });
+
+  test('throws error if the last argument is not one of the two directions ', () => {
+    expect(() => {
+      gameboard.placeShip('Patrol Boat', 2, 5, 55);
+    }).toThrow("Direction argument must be 'horizontal' or 'vertical'");
   });
 
   test.each([
@@ -193,6 +266,12 @@ describe('Gameboard: receiveAttack() and areAllShipsSunk()', () => {
     patrolBoat.hits = 0;
   });
 
+  test('converts string numbers to numbers', () => {
+    expect(() => {
+      gameboard.receiveAttack('2', '7');
+    }).not.toThrow();
+  });
+
   test.each([
     [gameboard.ships[0].name, gameboard.ships[0], 0, 1],
     [gameboard.ships[1].name, gameboard.ships[1], 2, 8],
@@ -232,6 +311,28 @@ describe('Gameboard: receiveAttack() and areAllShipsSunk()', () => {
       [6, 3],
       [8, 8],
     ]);
+  });
+
+  test('throws error if called with less than 2 arguments', () => {
+    expect(() => {
+      gameboard.receiveAttack(1);
+    }).toThrow('Invalid arguments');
+
+    expect(() => {
+      gameboard.receiveAttack();
+    }).toThrow('Invalid arguments');
+  });
+
+  test('throws error if arguments are not string numbers or numbers', () => {
+    expect(() => {
+      gameboard.receiveAttack('Test', 5);
+    }).toThrow('Arguments must be string numbers or numbers');
+    expect(() => {
+      gameboard.receiveAttack(7, null);
+    }).toThrow('Arguments must be string numbers or numbers');
+    expect(() => {
+      gameboard.receiveAttack(Infinity, 'Test2');
+    }).toThrow('Arguments must be string numbers or numbers');
   });
 
   test.each([
