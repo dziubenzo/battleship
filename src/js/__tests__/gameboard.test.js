@@ -141,16 +141,20 @@ describe('Gameboard: placeShip()', () => {
   test('throws error if row or column is not a string number or a number', () => {
     expect(() => {
       gameboard.placeShip(patrolBoat, 'Test', 5, 'vertical');
-    }).toThrow('The first argument must be an instance of Ship class');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
 
     expect(() => {
       gameboard.placeShip(patrolBoat, 2, 'Test2', 'vertical');
-    }).toThrow('The first argument must be an instance of Ship class');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
+
+    expect(() => {
+      gameboard.placeShip(patrolBoat, Infinity, 'Test2', 'vertical');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
   });
 
   test('throws error if the last argument is not one of the two directions ', () => {
     expect(() => {
-      gameboard.placeShip('Patrol Boat', 2, 5, 55);
+      gameboard.placeShip(carrier, 2, 5, 55);
     }).toThrow("Direction argument must be 'horizontal' or 'vertical'");
   });
 

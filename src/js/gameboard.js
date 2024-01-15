@@ -1,9 +1,17 @@
+import { Ship } from './ship';
+
 export class Gameboard {
   #boardSize = 10;
   #board = this.#createBoard();
   ships = [];
   hits = [];
   misses = [];
+
+  constructor() {
+    if (arguments.length > 0) {
+      throw new Error('Gameboard is instantiated without any arguments');
+    }
+  }
 
   // Create a 2D array of size boardSize x boardSize
   #createBoard() {
@@ -94,40 +102,66 @@ export class Gameboard {
   // Check the board square if it exists
   // Return the value of the legal board square
   getSquare(row, column) {
+    if (arguments.length !== 2) {
+      throw new Error('Invalid arguments');
+    }
+    if (isNaN(row) || row === null || isNaN(column) || column === null) {
+      throw new Error('Arguments must be string numbers or numbers');
+    }
+    const convertedRow = Number(row);
+    const convertedColumn = Number(column);
     if (
-      row < 0 ||
-      row > this.#boardSize - 1 ||
-      column < 0 ||
-      column > this.#boardSize - 1
+      convertedRow < 0 ||
+      convertedRow > this.#boardSize - 1 ||
+      convertedColumn < 0 ||
+      convertedColumn > this.#boardSize - 1
     ) {
       throw new Error('Board square does not exist');
     }
-    return this.#board[row][column];
+    return this.#board[convertedRow][convertedColumn];
   }
 
   // Place ship on the board
   placeShip(ship, row, column, direction) {
+    if (arguments.length !== 4) {
+      throw new Error('Invalid arguments');
+    }
+    if (!(ship instanceof Ship)) {
+      throw new Error('The first argument must be an instance of Ship class');
+    }
+    if (isNaN(row) || row === null || isNaN(column) || column === null) {
+      throw new Error('Row and column arguments must be string numbers or numbers');
+    }
+    if (direction !== 'horizontal' && direction !== 'vertical') {
+      throw new Error("Direction argument must be 'horizontal' or 'vertical'");
+    }
+    const convertedRow = Number(row);
+    const convertedColumn = Number(column);
     // Check if the starting square is legal
-    this.getSquare(row, column);
+    this.getSquare(convertedRow, convertedColumn);
     // Check if the ship would fit
-    this.#checkSpace(ship, row, column, direction);
+    this.#checkSpace(ship, convertedRow, convertedColumn, direction);
     // Check all squares for adjacency and overlapping
     for (let i = 0; i < ship.length; i++) {
       if (direction === 'horizontal') {
-        this.#checkAdjacencyAndOverlapping(this.#board[row][column + i]);
+        this.#checkAdjacencyAndOverlapping(
+          this.#board[convertedRow][convertedColumn + i],
+        );
       } else if (direction === 'vertical') {
-        this.#checkAdjacencyAndOverlapping(this.#board[row + i][column]);
+        this.#checkAdjacencyAndOverlapping(
+          this.#board[convertedRow + i][convertedColumn],
+        );
       }
     }
     let shipCoordinates = [];
     // Place ship and push its coordinates
     for (let i = 0; i < ship.length; i++) {
       if (direction === 'horizontal') {
-        this.#board[row][column + i] = ship.name;
-        shipCoordinates.push([row, column + i]);
+        this.#board[convertedRow][convertedColumn + i] = ship.name;
+        shipCoordinates.push([convertedRow, convertedColumn + i]);
       } else if (direction === 'vertical') {
-        this.#board[row + i][column] = ship.name;
-        shipCoordinates.push([row + i, column]);
+        this.#board[convertedRow + i][convertedColumn] = ship.name;
+        shipCoordinates.push([convertedRow + i, convertedColumn]);
       }
     }
     // Store ship in array
@@ -137,17 +171,25 @@ export class Gameboard {
 
   // Process attack accordingly
   receiveAttack(row, column) {
-    const square = this.getSquare(row, column);
-    this.#checkDuplicates(row, column);
+    if (arguments.length !== 2) {
+      throw new Error('Invalid arguments');
+    }
+    if (isNaN(row) || row === null || isNaN(column) || column === null) {
+      throw new Error('Arguments must be string numbers or numbers');
+    }
+    const convertedRow = Number(row);
+    const convertedColumn = Number(column);
+    const square = this.getSquare(convertedRow, convertedColumn);
+    this.#checkDuplicates(convertedRow, convertedColumn);
     // Handle misses
     if (square === null || square === 'unavailable') {
-      this.misses.push([row, column]);
+      this.misses.push([convertedRow, convertedColumn]);
       return;
     }
     // Handle hits
     const targetShip = this.#findShip(square);
     targetShip.hit();
-    this.hits.push([row, column]);
+    this.hits.push([convertedRow, convertedColumn]);
     this.areAllShipsDown();
   }
 

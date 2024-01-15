@@ -4,7 +4,7 @@ import { Ship } from '../ship';
 
 // Ship class tests
 describe('Ship', () => {
-  test('Creates proper Ship objects', () => {
+  test('creates proper Ship objects', () => {
     expect(new Ship(5, 'Carrier')).toEqual({
       length: 5,
       name: 'Carrier',
@@ -12,7 +12,7 @@ describe('Ship', () => {
     });
   });
 
-  test('Converts string numbers to numbers', () => {
+  test('converts string numbers to numbers', () => {
     expect(new Ship('2', 'Patrol Boat').length).toBe(2);
   });
 
@@ -26,7 +26,7 @@ describe('Ship', () => {
   });
 
   test.each([['PatrolBoat'], [null], [undefined]])(
-    'Throws error when length is %s',
+    'throws error when length is %s',
     (value) => {
       expect(() => {
         new Ship(value, 'Patrol Boat');
@@ -35,7 +35,7 @@ describe('Ship', () => {
   );
 
   test.each([[0], [11], [-6], [23]])(
-    'Throws error when length is not in the range of 1-10 (%i)',
+    'throws error when length is not in the range of 1-10 (%i)',
     (length) => {
       expect(() => {
         new Ship(length, 'Fun Ship');
@@ -43,13 +43,13 @@ describe('Ship', () => {
     },
   );
 
-  test('Throws error when length is not an integer', () => {
+  test('throws error when length is not an integer', () => {
     expect(() => {
       new Ship(2.4, 'Patrol Boat+');
     }).toThrow('Length must be an integer');
   });
 
-  test('Throws error when name is not a string', () => {
+  test('throws error when name is not a string', () => {
     expect(() => {
       new Ship(5, 5);
     }).toThrow('Name must be a string');
