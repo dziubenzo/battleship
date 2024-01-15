@@ -40,13 +40,13 @@ describe('Gameboard: instance and getSquare()', () => {
   test('throws error if getSquare() arguments are not string numbers or numbers', () => {
     expect(() => {
       gameboard.getSquare('Test', 5);
-    }).toThrow('Arguments must be string numbers or numbers');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
     expect(() => {
       gameboard.getSquare(7, null);
-    }).toThrow('Arguments must be string numbers or numbers');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
     expect(() => {
       gameboard.getSquare(Infinity, 'Test2');
-    }).toThrow('Arguments must be string numbers or numbers');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
   });
 
   test.each([
@@ -270,12 +270,6 @@ describe('Gameboard: receiveAttack() and areAllShipsSunk()', () => {
     patrolBoat.hits = 0;
   });
 
-  test('converts string numbers to numbers', () => {
-    expect(() => {
-      gameboard.receiveAttack('2', '7');
-    }).not.toThrow();
-  });
-
   test.each([
     [gameboard.ships[0].name, gameboard.ships[0], 0, 1],
     [gameboard.ships[1].name, gameboard.ships[1], 2, 8],
@@ -330,13 +324,15 @@ describe('Gameboard: receiveAttack() and areAllShipsSunk()', () => {
   test('throws error if arguments are not string numbers or numbers', () => {
     expect(() => {
       gameboard.receiveAttack('Test', 5);
-    }).toThrow('Arguments must be string numbers or numbers');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
+
     expect(() => {
       gameboard.receiveAttack(7, null);
-    }).toThrow('Arguments must be string numbers or numbers');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
+
     expect(() => {
       gameboard.receiveAttack(Infinity, 'Test2');
-    }).toThrow('Arguments must be string numbers or numbers');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
   });
 
   test.each([

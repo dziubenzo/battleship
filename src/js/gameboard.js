@@ -106,7 +106,7 @@ export class Gameboard {
       throw new Error('Invalid arguments');
     }
     if (isNaN(row) || row === null || isNaN(column) || column === null) {
-      throw new Error('Arguments must be string numbers or numbers');
+      throw new Error('Row and column arguments must be string numbers or numbers');
     }
     const convertedRow = Number(row);
     const convertedColumn = Number(column);
@@ -129,27 +129,22 @@ export class Gameboard {
     if (!(ship instanceof Ship)) {
       throw new Error('The first argument must be an instance of Ship class');
     }
-    if (isNaN(row) || row === null || isNaN(column) || column === null) {
-      throw new Error('Row and column arguments must be string numbers or numbers');
-    }
     if (direction !== 'horizontal' && direction !== 'vertical') {
       throw new Error("Direction argument must be 'horizontal' or 'vertical'");
     }
-    const convertedRow = Number(row);
-    const convertedColumn = Number(column);
     // Check if the starting square is legal
-    this.getSquare(convertedRow, convertedColumn);
+    this.getSquare(row, column);
     // Check if the ship would fit
-    this.#checkSpace(ship, convertedRow, convertedColumn, direction);
+    this.#checkSpace(ship, row, column, direction);
     // Check all squares for adjacency and overlapping
     for (let i = 0; i < ship.length; i++) {
       if (direction === 'horizontal') {
         this.#checkAdjacencyAndOverlapping(
-          this.#board[convertedRow][convertedColumn + i],
+          this.#board[row][column + i],
         );
       } else if (direction === 'vertical') {
         this.#checkAdjacencyAndOverlapping(
-          this.#board[convertedRow + i][convertedColumn],
+          this.#board[row + i][column],
         );
       }
     }
@@ -157,11 +152,11 @@ export class Gameboard {
     // Place ship and push its coordinates
     for (let i = 0; i < ship.length; i++) {
       if (direction === 'horizontal') {
-        this.#board[convertedRow][convertedColumn + i] = ship.name;
-        shipCoordinates.push([convertedRow, convertedColumn + i]);
+        this.#board[row][column + i] = ship.name;
+        shipCoordinates.push([row, column + i]);
       } else if (direction === 'vertical') {
-        this.#board[convertedRow + i][convertedColumn] = ship.name;
-        shipCoordinates.push([convertedRow + i, convertedColumn]);
+        this.#board[row + i][column] = ship.name;
+        shipCoordinates.push([row + i, column]);
       }
     }
     // Store ship in array
@@ -174,22 +169,17 @@ export class Gameboard {
     if (arguments.length !== 2) {
       throw new Error('Invalid arguments');
     }
-    if (isNaN(row) || row === null || isNaN(column) || column === null) {
-      throw new Error('Arguments must be string numbers or numbers');
-    }
-    const convertedRow = Number(row);
-    const convertedColumn = Number(column);
-    const square = this.getSquare(convertedRow, convertedColumn);
-    this.#checkDuplicates(convertedRow, convertedColumn);
+    const square = this.getSquare(row, column);
+    this.#checkDuplicates(row, column);
     // Handle misses
     if (square === null || square === 'unavailable') {
-      this.misses.push([convertedRow, convertedColumn]);
+      this.misses.push([row, column]);
       return;
     }
     // Handle hits
     const targetShip = this.#findShip(square);
     targetShip.hit();
-    this.hits.push([convertedRow, convertedColumn]);
+    this.hits.push([row, column]);
     this.areAllShipsDown();
   }
 
