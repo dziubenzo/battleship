@@ -83,7 +83,9 @@ describe('Player: attack()', () => {
   test('throws error if the first argument is not Player/ComputerPlayer instance', () => {
     expect(() => {
       player1.attack('Attack With All Force!', 0, 0);
-    }).toThrow('The first argument must be an instance of Player/ComputerPlayer class');
+    }).toThrow(
+      'The first argument must be an instance of Player/ComputerPlayer class',
+    );
   });
 
   test('throws error if row or column is not a string number or a number', () => {
@@ -105,7 +107,7 @@ describe('Player: attack()', () => {
   });
 });
 
-describe('Computer', () => {
+describe('ComputerPlayer', () => {
   test('creates normal computer player if no argument given', () => {
     expect(new ComputerPlayer().isSmart).toBe(false);
   });
@@ -121,7 +123,7 @@ describe('Computer', () => {
   });
 });
 
-describe('Computer: attack()', () => {
+describe('ComputerPlayer: attack()', () => {
   const player = new Player('Player 1');
   const computerPlayer = new ComputerPlayer();
   const carrier = new Ship(5, 'Carrier');
@@ -140,14 +142,12 @@ describe('Computer: attack()', () => {
   computerPlayer.board.placeShip(submarine, 5, 7, 'horizontal');
   computerPlayer.board.placeShip(patrolBoat, 7, 8, 'horizontal');
 
-  test('works as expected', () => {
-    computerPlayer.attack(player);
-    computerPlayer.attack(player);
-    computerPlayer.attack(player);
-    computerPlayer.attack(player);
-    computerPlayer.attack(player);
+  test('works as expected (50 moves)', () => {
+    for (let i = 0; i < 50; i++) {
+      computerPlayer.attack(player);
+    }
     const attacks = player.board.hits.length + player.board.misses.length;
-    expect(attacks).toBe(5);
+    expect(attacks).toBe(50);
   });
 
   test('throws error if called with no arguments', () => {
@@ -166,7 +166,7 @@ describe('Computer: attack()', () => {
 
   test('throws error if targets the attacker', () => {
     expect(() => {
-      computerPlayer.attack(player);
+      computerPlayer.attack(computerPlayer);
     }).toThrow('Computer cannot attack itself');
   });
 });

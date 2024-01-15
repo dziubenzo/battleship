@@ -12,7 +12,9 @@ export class Player {
       throw new Error('Invalid arguments');
     }
     if (!(enemy instanceof Player) && !(enemy instanceof ComputerPlayer)) {
-      throw new Error('The first argument must be an instance of Player/ComputerPlayer class');
+      throw new Error(
+        'The first argument must be an instance of Player/ComputerPlayer class',
+      );
     }
     if (this === enemy) {
       throw new Error('You cannot attack yourself');
@@ -29,5 +31,43 @@ export class ComputerPlayer extends Player {
     }
     this.name = 'Computer';
     this.isSmart = isSmart;
+  }
+
+  // Check for attacks targeting squares that have already been attacked
+  #isDuplicate(enemy, row, column) {
+    if (
+      enemy.board.hits.find((hit) => row === hit[0] && column === hit[1]) ||
+      enemy.board.misses.find((miss) => row === miss[0] && column === miss[1])
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  // Get random integer between 0 and 9, both inclusive (10x10 board)
+  #getRandomInt() {
+    return Math.floor(Math.random() * (0 - 10) + 10);
+  }
+
+  // Attack the enemy's board randomly
+  attack(enemy) {
+    if (arguments.length !== 1) {
+      throw new Error('Invalid arguments');
+    }
+    if (!(enemy instanceof Player) && !(enemy instanceof ComputerPlayer)) {
+      throw new Error(
+        'The argument must be an instance of Player/ComputerPlayer class',
+      );
+    }
+    if (this === enemy) {
+      throw new Error('Computer cannot attack itself');
+    }
+    let row = 0;
+    let column = 0;
+    do {
+      row = this.#getRandomInt();
+      column = this.#getRandomInt();
+    } while (this.#isDuplicate(enemy, row, column));
+    enemy.board.receiveAttack(row, column);
   }
 }
