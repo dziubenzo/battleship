@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 
-import { Player } from '../player';
+import { Player, Computer } from '../player';
 import { Ship } from '../ship';
 
 // extend Player to Computer
@@ -60,11 +60,14 @@ describe('Player: attack()', () => {
   test.each([
     ['hit', player1.board.hits, player1, 0, 1],
     ['miss', player1.board.misses, player1, 4, 8],
-  ])('works the other way around (%s)', (scenario, array, opponent, row, column) => {
-    player2.attack(opponent, row, column);
-    expect(array).toHaveLength(1);
-    expect(array).toEqual([[row, column]]);
-  });
+  ])(
+    'works the other way around (%s)',
+    (scenario, array, opponent, row, column) => {
+      player2.attack(opponent, row, column);
+      expect(array).toHaveLength(1);
+      expect(array).toEqual([[row, column]]);
+    },
+  );
 
   test('throws error if called with less than 3 arguments', () => {
     expect(() => {
@@ -102,5 +105,21 @@ describe('Player: attack()', () => {
     expect(() => {
       player1.attack(player1, 5, 4);
     }).toThrow('You cannot attack yourself');
+  });
+});
+
+describe('Computer', () => {
+  test('creates normal computer player if no argument given', () => {
+    expect(new Computer().smart).toBe(false);
+  });
+
+  test('creates smarter computer player if true passed as an argument', () => {
+    expect(new Computer(true).smart).toBe(true);
+  });
+
+  test('throws error if something else is passed as an argument', () => {
+    expect(() => {
+      new Computer('Even Smarter AI');
+    }).toThrow('Invalid argument');
   });
 });

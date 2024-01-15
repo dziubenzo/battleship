@@ -20,3 +20,5 @@ export class Player {
     enemy.board.receiveAttack(row, column);
   }
 }
+
+export class Computer extends Player {}
