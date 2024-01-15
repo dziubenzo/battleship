@@ -11,8 +11,8 @@ export class Player {
     if (arguments.length !== 3) {
       throw new Error('Invalid arguments');
     }
-    if (!(enemy instanceof Player)) {
-      throw new Error('The first argument must be an instance of Player class');
+    if (!(enemy instanceof Player) && !(enemy instanceof ComputerPlayer)) {
+      throw new Error('The first argument must be an instance of Player/ComputerPlayer class');
     }
     if (this === enemy) {
       throw new Error('You cannot attack yourself');
@@ -21,4 +21,13 @@ export class Player {
   }
 }
 
-export class Computer extends Player {}
+export class ComputerPlayer extends Player {
+  constructor(isSmart = false) {
+    super();
+    if (isSmart !== false && isSmart !== true) {
+      throw new Error('Invalid argument');
+    }
+    this.name = 'Computer';
+    this.isSmart = isSmart;
+  }
+}

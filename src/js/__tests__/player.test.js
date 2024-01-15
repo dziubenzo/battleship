@@ -1,10 +1,7 @@
 /* eslint no-undef: 0 */
 
-import { Player, Computer } from '../player';
+import { Player, ComputerPlayer } from '../player';
 import { Ship } from '../ship';
-
-// extend Player to Computer
-// two Computer levels
 
 describe('Player', () => {
   test('creates default human player if no name given', () => {
@@ -27,13 +24,13 @@ describe('Player', () => {
 });
 
 describe('Player: attack()', () => {
-  let player1 = new Player('Player 1');
-  let player2 = new Player('Player 2');
-  let carrier = new Ship(5, 'Carrier');
-  let battleship = new Ship(4, 'Battleship');
-  let destroyer = new Ship(3, 'Destroyer');
-  let submarine = new Ship(3, 'Submarine');
-  let patrolBoat = new Ship(2, 'Patrol Boat');
+  const player1 = new Player('Player 1');
+  const player2 = new Player('Player 2');
+  const carrier = new Ship(5, 'Carrier');
+  const battleship = new Ship(4, 'Battleship');
+  const destroyer = new Ship(3, 'Destroyer');
+  const submarine = new Ship(3, 'Submarine');
+  const patrolBoat = new Ship(2, 'Patrol Boat');
   player1.board.placeShip(carrier, 0, 1, 'horizontal');
   player1.board.placeShip(battleship, 2, 5, 'horizontal');
   player1.board.placeShip(destroyer, 4, 0, 'horizontal');
@@ -83,10 +80,10 @@ describe('Player: attack()', () => {
     }).toThrow('Invalid arguments');
   });
 
-  test('throws error if the first argument is not Player instance', () => {
+  test('throws error if the first argument is not Player/ComputerPlayer instance', () => {
     expect(() => {
       player1.attack('Attack With All Force!', 0, 0);
-    }).toThrow('The first argument must be an instance of Player class');
+    }).toThrow('The first argument must be an instance of Player/ComputerPlayer class');
   });
 
   test('throws error if row or column is not a string number or a number', () => {
@@ -101,7 +98,7 @@ describe('Player: attack()', () => {
     }).toThrow('Row and column arguments must be string numbers or numbers');
   });
 
-  test('throws error if attack() targets the attacker', () => {
+  test('throws error if targets the attacker', () => {
     expect(() => {
       player1.attack(player1, 5, 4);
     }).toThrow('You cannot attack yourself');
@@ -110,16 +107,66 @@ describe('Player: attack()', () => {
 
 describe('Computer', () => {
   test('creates normal computer player if no argument given', () => {
-    expect(new Computer().smart).toBe(false);
+    expect(new ComputerPlayer().isSmart).toBe(false);
   });
 
   test('creates smarter computer player if true passed as an argument', () => {
-    expect(new Computer(true).smart).toBe(true);
+    expect(new ComputerPlayer(true).isSmart).toBe(true);
   });
 
   test('throws error if something else is passed as an argument', () => {
     expect(() => {
-      new Computer('Even Smarter AI');
+      new ComputerPlayer('Even Smarter AI');
     }).toThrow('Invalid argument');
+  });
+});
+
+describe('Computer: attack()', () => {
+  const player = new Player('Player 1');
+  const computerPlayer = new ComputerPlayer();
+  const carrier = new Ship(5, 'Carrier');
+  const battleship = new Ship(4, 'Battleship');
+  const destroyer = new Ship(3, 'Destroyer');
+  const submarine = new Ship(3, 'Submarine');
+  const patrolBoat = new Ship(2, 'Patrol Boat');
+  player.board.placeShip(carrier, 0, 1, 'horizontal');
+  player.board.placeShip(battleship, 2, 5, 'horizontal');
+  player.board.placeShip(destroyer, 4, 0, 'horizontal');
+  player.board.placeShip(submarine, 6, 7, 'horizontal');
+  player.board.placeShip(patrolBoat, 9, 2, 'horizontal');
+  computerPlayer.board.placeShip(carrier, 0, 5, 'horizontal');
+  computerPlayer.board.placeShip(battleship, 2, 0, 'horizontal');
+  computerPlayer.board.placeShip(destroyer, 4, 0, 'horizontal');
+  computerPlayer.board.placeShip(submarine, 5, 7, 'horizontal');
+  computerPlayer.board.placeShip(patrolBoat, 7, 8, 'horizontal');
+
+  test('works as expected', () => {
+    computerPlayer.attack(player);
+    computerPlayer.attack(player);
+    computerPlayer.attack(player);
+    computerPlayer.attack(player);
+    computerPlayer.attack(player);
+    const attacks = player.board.hits.length + player.board.misses.length;
+    expect(attacks).toBe(5);
+  });
+
+  test('throws error if called with no arguments', () => {
+    expect(() => {
+      computerPlayer.attack();
+    }).toThrow('Invalid arguments');
+  });
+
+  test('throws error if the argument is not Player/ComputerPlayer instance', () => {
+    expect(() => {
+      computerPlayer.attack(Infinity);
+    }).toThrow(
+      'The argument must be an instance of Player/ComputerPlayer class',
+    );
+  });
+
+  test('throws error if targets the attacker', () => {
+    expect(() => {
+      computerPlayer.attack(player);
+    }).toThrow('Computer cannot attack itself');
   });
 });
