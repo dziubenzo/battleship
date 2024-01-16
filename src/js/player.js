@@ -52,6 +52,7 @@ export class ComputerPlayer extends Player {
   }
 
   // Attack the enemy's board randomly
+  // If the computer player is a smarter one, attack a horizontally or vertically adjacent square after getting a hit
   attack(enemy) {
     if (arguments.length !== 1) {
       throw new Error('Invalid arguments');

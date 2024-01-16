@@ -5,6 +5,57 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: $main-font;
+  background-color: $bg-colour;
+  color: $main-colour;
+}
+
+body {
+  height: 100svh;
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  padding: 16px;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+
+  .title {
+    font-family: $font-header;
+    font-size: 5rem;
+  }
+}
+
+main {
+  display: flex;
+
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+
+    .player-board,
+    .enemy-board {
+      aspect-ratio: 1 / 1;
+      width: 33%;
+      border: 2px solid $main-colour;
+    }
+  }
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  img {
+    height: 24px;
+    width: 24px;
+  }
 }
 
 // Load media queries

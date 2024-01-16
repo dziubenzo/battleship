@@ -218,7 +218,6 @@ describe('ComputerPlayer: smarter attack()', () => {
     ) {
       columnCheckPassed = true;
     }
-    console.log(row, column, nextRow, nextColumn);
     expect(rowCheckPassed).toBe(true);
     expect(columnCheckPassed).toBe(true);
   });
