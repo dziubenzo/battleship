@@ -49,11 +49,15 @@ main {
         aspect-ratio: 1 / 1;
         height: calc(100% / 11);
         width: calc(100% / 11);
-        outline: 2px solid $main-colour;
+        outline: 1px solid $main-colour;
       }
 
       .square.header {
-        outline: 2px solid red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4rem;
+        outline: none;
       }
     }
   }
