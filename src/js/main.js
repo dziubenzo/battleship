@@ -1,4 +1,5 @@
 import '../css/main.scss';
-import { loadImages } from './DOM';
+import { loadImages, generateSquares } from './DOM';
 
 loadImages();
+generateSquares();

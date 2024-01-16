@@ -15,6 +15,7 @@ body {
   display: grid;
   grid-template-rows: min-content 1fr min-content;
   padding: 16px;
+  gap: 16px;
 }
 
 header {
@@ -35,13 +36,25 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 48px;
+    gap: 72px;
 
     .player-board,
     .enemy-board {
       aspect-ratio: 1 / 1;
-      width: 33%;
-      border: 2px solid $main-colour;
+      width: 40%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .square {
+        aspect-ratio: 1 / 1;
+        height: calc(100% / 11);
+        width: calc(100% / 11);
+        outline: 2px solid $main-colour;
+      }
+
+      .square.header {
+        outline: 2px solid red;
+      }
     }
   }
 }
