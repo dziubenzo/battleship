@@ -170,3 +170,50 @@ describe('ComputerPlayer: attack()', () => {
     }).toThrow('Computer cannot attack itself');
   });
 });
+
+describe('ComputerPlayer: smarter attack()', () => {
+  const player = new Player('Player 1');
+  const computerPlayer = new ComputerPlayer(true);
+  const carrier = new Ship(5, 'Carrier');
+  const battleship = new Ship(4, 'Battleship');
+  const destroyer = new Ship(3, 'Destroyer');
+  const submarine = new Ship(3, 'Submarine');
+  const patrolBoat = new Ship(2, 'Patrol Boat');
+  player.board.placeShip(carrier, 0, 1, 'horizontal');
+  player.board.placeShip(battleship, 2, 5, 'horizontal');
+  player.board.placeShip(destroyer, 4, 0, 'horizontal');
+  player.board.placeShip(submarine, 6, 7, 'horizontal');
+  player.board.placeShip(patrolBoat, 9, 2, 'horizontal');
+  computerPlayer.board.placeShip(carrier, 0, 5, 'horizontal');
+  computerPlayer.board.placeShip(battleship, 2, 0, 'horizontal');
+  computerPlayer.board.placeShip(destroyer, 4, 0, 'horizontal');
+  computerPlayer.board.placeShip(submarine, 5, 7, 'horizontal');
+  computerPlayer.board.placeShip(patrolBoat, 7, 8, 'horizontal');
+
+  test('attacks vertically or horizontally adjacent square if previous attack was a hit', () => {
+    do {
+      computerPlayer.attack(player);
+    } while (player.board.hits.length !== 1);
+    const row = player.board.hits[0][0];
+    const column = player.board.hits[0][1];
+    do {
+      computerPlayer.attack(player);
+    } while (player.board.hits.length !== 2);
+    const nextRow = player.board.hits[1][0];
+    const nextColumn = player.board.hits[1][1];
+    let rowCheck = false;
+    let columnCheck = false;
+    if (nextRow === row - 1 || nextRow === row || nextRow === row + 1) {
+      rowCheck = true;
+    }
+    if (
+      nextColumn === column - 1 ||
+      nextColumn === column ||
+      nextColumn === column + 1
+    ) {
+      columnCheck = true;
+    }
+    expect(rowCheck).toBe(true);
+    expect(columnCheck).toBe(true);
+  });
+});
