@@ -24,6 +24,8 @@ export class Player {
 }
 
 export class ComputerPlayer extends Player {
+  #previousAttackHit = false;
+
   constructor(isSmart = false) {
     super();
     if (isSmart !== false && isSmart !== true) {
@@ -44,9 +46,9 @@ export class ComputerPlayer extends Player {
     return false;
   }
 
-  // Get random integer between 0 and 9, both inclusive (10x10 board)
-  #getRandomInt() {
-    return Math.floor(Math.random() * (0 - 10) + 10);
+  // Get random integer between min and max, max is exclusive (10x10 board)
+  #getRandomInt(min, max) {
+    return Math.floor(Math.random() * (min - max) + max);
   }
 
   // Attack the enemy's board randomly
@@ -62,12 +64,67 @@ export class ComputerPlayer extends Player {
     if (this === enemy) {
       throw new Error('Computer cannot attack itself');
     }
+    const oldHitsCount = enemy.board.hits.length;
     let row = 0;
     let column = 0;
-    do {
-      row = this.#getRandomInt();
-      column = this.#getRandomInt();
-    } while (this.#isDuplicate(enemy, row, column));
+    if (!this.#previousAttackHit) {
+      do {
+        row = this.#getRandomInt(0, 10);
+        column = this.#getRandomInt(0, 10);
+      } while (this.#isDuplicate(enemy, row, column));
+    } else {
+      const fourAdjacentSquares = [
+        [-1, 0],
+        [0, 1],
+        [1, 0],
+        [0, -1],
+      ];
+      // Make sure at least one legal move can be made to prevent an infinite loop
+      let checkPassed = false;
+      for (const square of fourAdjacentSquares) {
+        row = enemy.board.hits[enemy.board.hits.length - 1][0] + square[0];
+        column = enemy.board.hits[enemy.board.hits.length - 1][1] + square[1];
+        if (
+          !this.#isDuplicate(enemy, row, column) &&
+          row >= 0 &&
+          row <= 9 &&
+          column >= 0 &&
+          column <= 9
+        ) {
+          checkPassed = true;
+          break;
+        }
+      }
+      // Choose one of the four adjacent moves if check passed
+      // Otherwise make a random move
+      if (checkPassed) {
+        do {
+          const combination = fourAdjacentSquares[this.#getRandomInt(0, 4)];
+          row =
+            enemy.board.hits[enemy.board.hits.length - 1][0] + combination[0];
+          column =
+            enemy.board.hits[enemy.board.hits.length - 1][1] + combination[1];
+        } while (
+          this.#isDuplicate(enemy, row, column) ||
+          row < 0 ||
+          row > 9 ||
+          column < 0 ||
+          column > 9
+        );
+      } else {
+        do {
+          row = this.#getRandomInt(0, 10);
+          column = this.#getRandomInt(0, 10);
+        } while (this.#isDuplicate(enemy, row, column));
+      }
+    }
     enemy.board.receiveAttack(row, column);
+    const newHitsCount = enemy.board.hits.length;
+    // Remember a hit
+    if (newHitsCount > oldHitsCount) {
+      this.#previousAttackHit = true;
+      return;
+    }
+    this.#previousAttackHit = false;
   }
 }

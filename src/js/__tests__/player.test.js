@@ -196,24 +196,30 @@ describe('ComputerPlayer: smarter attack()', () => {
     } while (player.board.hits.length !== 1);
     const row = player.board.hits[0][0];
     const column = player.board.hits[0][1];
-    do {
-      computerPlayer.attack(player);
-    } while (player.board.hits.length !== 2);
-    const nextRow = player.board.hits[1][0];
-    const nextColumn = player.board.hits[1][1];
-    let rowCheck = false;
-    let columnCheck = false;
+    computerPlayer.attack(player);
+    let nextRow = 0;
+    let nextColumn = 0;
+    if (player.board.hits.length === 2) {
+      nextRow = player.board.hits[1][0];
+      nextColumn = player.board.hits[1][1];
+    } else {
+      nextRow = player.board.misses[player.board.misses.length - 1][0];
+      nextColumn = player.board.misses[player.board.misses.length - 1][1];
+    }
+    let rowCheckPassed = false;
+    let columnCheckPassed = false;
     if (nextRow === row - 1 || nextRow === row || nextRow === row + 1) {
-      rowCheck = true;
+      rowCheckPassed = true;
     }
     if (
       nextColumn === column - 1 ||
       nextColumn === column ||
       nextColumn === column + 1
     ) {
-      columnCheck = true;
+      columnCheckPassed = true;
     }
-    expect(rowCheck).toBe(true);
-    expect(columnCheck).toBe(true);
+    console.log(row, column, nextRow, nextColumn);
+    expect(rowCheckPassed).toBe(true);
+    expect(columnCheckPassed).toBe(true);
   });
 });
