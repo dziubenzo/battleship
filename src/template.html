@@ -6,6 +6,85 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
+    <dialog>
+      <div class="starting-dialog">
+        <p class="dialog-title">Set Up Your Game</p>
+        <form id="player-selection">
+          <div class="player-1">
+            <p>Player 1:</p>
+            <input
+              type="radio"
+              id="human-player-1"
+              name="player-1"
+              value="human"
+              hidden
+            />
+            <label for="human-player-1">Human</label>
+            <input
+              type="radio"
+              id="computer-player-1"
+              name="player-1"
+              value="computer"
+              hidden
+            />
+            <label for="computer-player-1">Computer</label>
+            <input
+              type="radio"
+              id="smarter-computer-player-1"
+              name="player-1"
+              value="smarter-computer"
+              hidden
+            />
+            <label for="smarter-computer-player-1">Smarter Computer</label>
+          </div>
+          <div class="player-1-name" style="visibility: hidden">
+            <input
+              type="text"
+              name="player-1-name"
+              placeholder="Name?"
+              maxlength="20"
+            />
+          </div>
+          <div class="player-2">
+            <p>Player 2:</p>
+            <input
+              type="radio"
+              id="human-player-2"
+              name="player-2"
+              value="human"
+              hidden
+            />
+            <label for="human-player-2">Human</label>
+            <input
+              type="radio"
+              id="computer-player-2"
+              name="player-2"
+              value="computer"
+              hidden
+            />
+            <label for="computer-player-2">Computer</label>
+            <input
+              type="radio"
+              id="smarter-computer-player-2"
+              name="player-2"
+              value="smarter-computer"
+              hidden
+            />
+            <label for="smarter-computer-player-2">Smarter Computer</label>
+          </div>
+          <div class="player-2-name" style="visibility: hidden">
+            <input
+              type="text"
+              name="player-2-name"
+              placeholder="Name?"
+              maxlength="20"
+            />
+          </div>
+        </form>
+        <button form="player-selection" type="submit">Next</button>
+        <img src="" alt="Settings Icon" />
+      </div>
+    </dialog>
     <header>
       <div class="title">Battleship</div>
     </header>
@@ -22,8 +101,8 @@
         target="_blank"
         rel="noopener noreferrer"
         class=""
-        ><img src="" alt="GitHub Logo"></i
-      ></a>
+        ><img src="" alt="GitHub Logo"
+      /></a>
     </footer>
   </body>
 </html>
