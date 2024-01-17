@@ -1,7 +1,10 @@
 import { Gameboard } from './gameboard';
 
 export class Player {
-  constructor(name = 'Player') {
+  constructor(name) {
+    if (!name) {
+      name = 'Player';
+    }
     this.name = String(name);
     this.board = new Gameboard();
   }

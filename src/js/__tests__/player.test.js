@@ -8,6 +8,10 @@ describe('Player', () => {
     expect(new Player().name).toBe('Player');
   });
 
+  test('creates default human player if empty string given', () => {
+    expect(new Player('').name).toBe('Player');
+  });
+
   test.each([['Ron'], ['Harry'], ['Hermione']])(
     'creates human player with name if name given (%s)',
     (name) => {
@@ -16,7 +20,7 @@ describe('Player', () => {
   );
 
   test.each([[null], [undefined], [Infinity], [NaN], [1992]])(
-    'converts name argument to string if argument given (%s)',
+    'converts name argument to string (%s)',
     (name) => {
       expect(typeof new Player(name).name).toBe('string');
     },
