@@ -1,16 +1,50 @@
-import gitHubLogoWhite from '../assets/github-logo-white.svg';
-import gitHubLogoBlack from '../assets/github-logo-black.svg';
+import gitHubLogoWhiteSrc from '../assets/github-logo-white.svg';
+import gitHubLogoBlackSrc from '../assets/github-logo-black.svg';
+import settingsSrc from '../assets/settings.svg';
 
 const NO_OF_SQUARES = 121;
 
 // Load images
 export function loadImages() {
   const gitHubLogo = document.querySelector('img[alt="GitHub Logo"]');
-  gitHubLogo.src = gitHubLogoWhite;
+  gitHubLogo.src = gitHubLogoWhiteSrc;
+  const settingsIcon = document.querySelector('img[alt="Settings Icon"]');
+  settingsIcon.src = settingsSrc;
 }
 
 // Generate board squares
 export function generateSquares() {
+  // Add header descriptions to board headers
+  function addHeaders() {
+    const headerDescriptions = {
+      0: '',
+      1: '1',
+      2: '2',
+      3: '3',
+      4: '4',
+      5: '5',
+      6: '6',
+      7: '7',
+      8: '8',
+      9: '9',
+      10: '10',
+      11: 'A',
+      22: 'B',
+      33: 'C',
+      44: 'D',
+      55: 'E',
+      66: 'F',
+      77: 'G',
+      88: 'H',
+      99: 'I',
+      110: 'J',
+    };
+    const headers = document.querySelectorAll('.square.header');
+    headers.forEach((header) => {
+      header.textContent = headerDescriptions[header.dataset.id];
+    });
+  }
+
   const playerBoard = document.querySelector('div[class="player-board"]');
   const enemyBoard = document.querySelector('div[class="enemy-board"]');
   const boards = [playerBoard, enemyBoard];
@@ -42,35 +76,4 @@ export function generateSquares() {
     }
   }
   addHeaders();
-}
-
-// Add header descriptions to board headers
-function addHeaders() {
-  const headerDescriptions = {
-    0: '',
-    1: '1',
-    2: '2',
-    3: '3',
-    4: '4',
-    5: '5',
-    6: '6',
-    7: '7',
-    8: '8',
-    9: '9',
-    10: '10',
-    11: 'A',
-    22: 'B',
-    33: 'C',
-    44: 'D',
-    55: 'E',
-    66: 'F',
-    77: 'G',
-    88: 'H',
-    99: 'I',
-    110: 'J',
-  };
-  const headers = document.querySelectorAll('.square.header');
-  headers.forEach((header) => {
-    header.textContent = headerDescriptions[header.dataset.id];
-  });
 }
