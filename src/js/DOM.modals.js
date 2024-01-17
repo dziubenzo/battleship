@@ -1,7 +1,13 @@
+import { createPlayers } from './gameFlow';
+
 // Show starting modal
 export function showStartingModal() {
-  const dialog = document.querySelector('dialog');
+  const dialog = document.querySelector('#starting-dialog');
   dialog.showModal();
+  // Prevent it from being closed on clicking Esc
+  dialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+  });
 }
 
 // Add event listeners to starting modal player labels
@@ -61,6 +67,12 @@ export function listenForLabelClick() {
 
 // Get player selections once the starting modal form is submitted
 export function getPlayerSelections() {
+  // Close starting modal
+  function hideStartingModal() {
+    const dialog = document.querySelector('#starting-dialog');
+    dialog.close();
+  }
+
   const form = document.querySelector('form[id="player-selection"]');
 
   form.addEventListener('submit', (event) => {
@@ -70,6 +82,7 @@ export function getPlayerSelections() {
     if (!selections['player-1'] || !selections['player-2']) {
       return;
     }
-    console.log('TO BE CONTINUED!');
+    hideStartingModal();
+    createPlayers(selections);
   });
 }

@@ -15,7 +15,7 @@ img {
   background-color: transparent;
 }
 
-dialog {
+dialog[open] {
   position: fixed;
   left: 50%;
   top: 50%;
