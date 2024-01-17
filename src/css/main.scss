@@ -10,6 +10,114 @@
   color: $main-colour;
 }
 
+// This ensures that changing icon colour works
+img {
+  background-color: transparent;
+}
+
+dialog {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: 1 / 1;
+  width: 500px;
+  display: grid;
+  border-radius: 16px;
+  outline: none;
+
+  &::backdrop {
+    backdrop-filter: blur(4px);
+  }
+
+  .starting-dialog {
+    display: grid;
+    align-content: space-evenly;
+
+    img[alt='Settings Icon'] {
+      height: 32px;
+      width: 32px;
+      position: absolute;
+      right: 2%;
+      top: 2%;
+      cursor: pointer;
+      filter: $icon-main-colour;
+    }
+
+    .dialog-title {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .dialog-title,
+    .player-1,
+    .player-2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .player-1,
+    .player-2 {
+      font-size: 1.2rem;
+
+      label {
+        padding: 8px;
+        cursor: pointer;
+
+        &:hover,
+        &.selected {
+          outline: 2px solid $main-colour;
+          border-radius: 8px;
+        }
+      }
+    }
+
+    .player-1-name,
+    .player-2-name {
+      justify-self: center;
+
+      input {
+        outline: none;
+        border: none;
+        width: 22ch;
+        padding: 8px;
+        text-align: center;
+        font-size: 1.2rem;
+        border-radius: 8px;
+
+        &::placeholder {
+          color: $main-colour;
+        }
+      }
+    }
+
+    form {
+      display: grid;
+      gap: 24px;
+    }
+
+    button[type='submit'] {
+      outline: 2px solid $main-colour;
+      border: none;
+      height: 50px;
+      width: 100px;
+      font-size: 2rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      place-self: center;
+
+      &:hover {
+        outline: none;
+        background-color: $main-colour;
+        color: $bg-colour;
+      }
+    }
+  }
+}
+
 body {
   height: 100svh;
   display: grid;
