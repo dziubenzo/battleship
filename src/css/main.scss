@@ -30,7 +30,8 @@ dialog[open] {
     backdrop-filter: blur(4px);
   }
 
-  .starting-dialog {
+  .starting-dialog,
+  .ship-placement-dialog {
     display: grid;
     align-content: space-evenly;
 
@@ -93,12 +94,36 @@ dialog[open] {
       }
     }
 
+    .ship-placement-board {
+      aspect-ratio: 1 / 1;
+      width: 60%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .square {
+        aspect-ratio: 1 / 1;
+        height: calc(100% / 11);
+        width: calc(100% / 11);
+        outline: 1px solid $main-colour;
+        cursor: pointer;
+      }
+
+      .square.header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.4rem;
+        outline: none;
+      }
+    }
+
     form {
       display: grid;
       gap: 24px;
     }
 
-    button[type='submit'] {
+    button[type='submit'],
+    button[type='button'] {
       outline: 2px solid $main-colour;
       border: none;
       height: 50px;
@@ -113,6 +138,26 @@ dialog[open] {
         outline: none;
         background-color: $main-colour;
         color: $bg-colour;
+      }
+    }
+  }
+
+  .ship-placement-dialog {
+    justify-items: center;
+
+    button[type='button'] {
+      width: 200px;
+    }
+
+    button[disabled] {
+      outline: 2px solid grey;
+      color: grey;
+      cursor: not-allowed;
+
+      &:hover {
+        outline: 2px solid grey;
+        background-color: $bg-colour;
+        color: grey;
       }
     }
   }
