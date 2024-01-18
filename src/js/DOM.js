@@ -1,6 +1,7 @@
 import gitHubLogoWhiteSrc from '../assets/github-logo-white.svg';
 import gitHubLogoBlackSrc from '../assets/github-logo-black.svg';
 import settingsSrc from '../assets/settings.svg';
+import rotateShipSrc from '../assets/rotate.svg';
 
 const NO_OF_SQUARES = 121;
 
@@ -10,6 +11,8 @@ export function loadImages() {
   gitHubLogo.src = gitHubLogoWhiteSrc;
   const settingsIcon = document.querySelector('img[alt="Settings Icon"]');
   settingsIcon.src = settingsSrc;
+  const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
+  rotateShipIcon.src = rotateShipSrc;
 }
 
 // Generate board squares

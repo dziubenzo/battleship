@@ -10,9 +10,10 @@
   color: $main-colour;
 }
 
-// This ensures that changing icon colour works
+// Setting background-color this way ensures that changing icon colour works
 img {
   background-color: transparent;
+  filter: $icon-main-colour;
 }
 
 dialog[open] {
@@ -42,7 +43,15 @@ dialog[open] {
       right: 2%;
       top: 2%;
       cursor: pointer;
-      filter: $icon-main-colour;
+    }
+
+    img[alt='Rotate Ship Icon'] {
+      height: 36px;
+      width: 36px;
+      position: absolute;
+      right: 6%;
+      top: 50%;
+      cursor: pointer;
     }
 
     .dialog-title {
@@ -114,6 +123,7 @@ dialog[open] {
         align-items: center;
         font-size: 1.4rem;
         outline: none;
+        cursor: default;
       }
 
       .square.preview {

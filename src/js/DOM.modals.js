@@ -107,11 +107,8 @@ export function showShipPlacementModal() {
 
 // Show ship preview for the current ship
 export function shopShipPreview(ship) {
-  let orientation = 'horizontal';
-  const board = document.querySelector('div[class="ship-placement-board"]');
-  const shipLength = ship[0]['length'];
-
-  board.addEventListener('mouseover', (event) => {
+  // Show ship preview when the cursor points at a board square
+  function showShip(event) {
     if (event.target.className === 'square') {
       event.target.classList.add('preview');
       const row = Number(event.target.dataset.row);
@@ -133,12 +130,39 @@ export function shopShipPreview(ship) {
         }
       }
     }
-  });
-
-  board.addEventListener('mouseout', () => {
+  }
+  // Hide ship if the square pointed at by the cursor changes
+  function hideShip() {
     const previewSquares = board.querySelectorAll('.square.preview');
     for (const square of previewSquares) {
       square.classList.remove('preview');
     }
-  });
+  }
+  // Change ship preview orientation on icon click or middle mouse button press
+  function listenForChangeOrientation() {
+    function rotateShip() {
+      if (orientation === 'horizontal') {
+        orientation = 'vertical';
+      } else {
+        orientation = 'horizontal';
+      }
+    }
+    const rotateShipIcon = document.querySelector(
+      'img[alt="Rotate Ship Icon"]',
+    );
+    rotateShipIcon.addEventListener('click', rotateShip);
+    addEventListener('auxclick', () => {
+      rotateShip();
+      hideShip();
+      showShip(event);
+    });
+  }
+
+  let orientation = 'horizontal';
+  const board = document.querySelector('div[class="ship-placement-board"]');
+  const shipLength = ship[0]['length'];
+
+  board.addEventListener('mouseover', showShip);
+  board.addEventListener('mouseout', hideShip);
+  listenForChangeOrientation();
 }

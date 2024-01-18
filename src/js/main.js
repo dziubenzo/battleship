@@ -2,6 +2,7 @@ import '../css/main.scss';
 import { loadImages, generateSquares } from './DOM';
 import {
   showStartingModal,
+  showShipPlacementModal,
   listenForLabelClick,
   getPlayerSelections,
 } from './DOM.modals';
@@ -9,5 +10,6 @@ import {
 loadImages();
 generateSquares();
 showStartingModal();
+// showShipPlacementModal();
 listenForLabelClick();
 getPlayerSelections();
