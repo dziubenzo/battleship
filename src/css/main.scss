@@ -129,6 +129,10 @@ dialog[open] {
       .square.preview {
         background-color: $ship-preview-colour;
       }
+
+      .square.placed {
+        background-color: $ship-placed-colour;
+      }
     }
 
     form {

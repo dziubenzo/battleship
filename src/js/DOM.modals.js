@@ -1,7 +1,9 @@
 import { createPlayers } from './gameFlow';
 
 /* 
+
 Starting modal
+
 */
 
 // Show starting modal
@@ -92,7 +94,9 @@ export function getPlayerSelections() {
 }
 
 /* 
+
 Ship placement modal
+
 */
 
 // Show ship placement modal
@@ -105,26 +109,32 @@ export function showShipPlacementModal() {
   });
 }
 
-// Show ship preview for the current ship
-export function shopShipPreview(ship) {
+// Show ship preview on board square hover and place it on board square click
+export function placeShips(player, ships, ship, placeTheNextShip) {
   // Show ship preview when the cursor points at a board square
   function showShip(event) {
     if (event.target.className === 'square') {
-      event.target.classList.add('preview');
       const row = Number(event.target.dataset.row);
       const column = Number(event.target.dataset.column);
-      for (let shift = 1; shift < shipLength; shift++) {
-        const nextSquareColumn = column + shift;
-        const nextSquareRow = row + shift;
-        if (orientation === 'horizontal' && nextSquareColumn < 10) {
+      for (let shift = 0; shift < shipLength; shift++) {
+        const squareColumn = column + shift;
+        const squareRow = row + shift;
+        // Do not show ship preview if the ship does not fit
+        if (
+          (column + shipLength > 10 && orientation === 'horizontal') ||
+          (row + shipLength > 10 && orientation === 'vertical')
+        ) {
+          return;
+        }
+        if (orientation === 'horizontal' && squareColumn < 10) {
           const nextSquare = board.querySelector(
-            `div[data-row="${row}"][data-column="${nextSquareColumn}"]`,
+            `div[data-row="${row}"][data-column="${squareColumn}"]`,
           );
           nextSquare.classList.add('preview');
         }
-        if (orientation === 'vertical' && nextSquareRow < 10) {
+        if (orientation === 'vertical' && squareRow < 10) {
           const nextSquare = board.querySelector(
-            `div[data-row="${nextSquareRow}"][data-column="${column}"]`,
+            `div[data-row="${squareRow}"][data-column="${column}"]`,
           );
           nextSquare.classList.add('preview');
         }
@@ -157,12 +167,70 @@ export function shopShipPreview(ship) {
       showShip(event);
     });
   }
+  // Add ship to the player's board array if no errors thrown
+  // Call itself again using the next ship stored in the ships array
+  function addShip(event) {
+    if (event.target.className !== 'square preview') {
+      return;
+    }
+    const row = Number(event.target.dataset.row);
+    const column = Number(event.target.dataset.column);
+    try {
+      player.board.placeShip(ship, row, column, orientation);
+      showPlacedShip(ship, row, column, orientation);
+      board.removeEventListener('click', addShip);
+      board.removeEventListener('mouseover', showShip);
+      board.removeEventListener('mouseout', hideShip);
+      if (player.board.ships.length === ships.length) {
+        currentShipInfo.textContent = "All ships placed, you're ready to go!";
+        return;
+      }
+      placeTheNextShip(
+        player,
+        ships,
+        ships[player.board.ships.length],
+        placeShips,
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   let orientation = 'horizontal';
+  const currentShipInfo = document.querySelector('p[class="current-ship"]');
+  const shipName = ship.name;
+  const shipLength = ship.length;
+  const shipsCount = ships.length;
+  currentShipInfo.textContent = `${
+    player.board.ships.length + 1
+  }/${shipsCount}: ${shipName}`;
   const board = document.querySelector('div[class="ship-placement-board"]');
-  const shipLength = ship[0]['length'];
+
+  listenForChangeOrientation();
 
   board.addEventListener('mouseover', showShip);
   board.addEventListener('mouseout', hideShip);
-  listenForChangeOrientation();
+  board.addEventListener('click', addShip);
+  return;
+}
+
+// Show placed ship on the ship placement board
+export function showPlacedShip(ship, row, column, orientation) {
+  const board = document.querySelector('div[class="ship-placement-board"]');
+  for (let shift = 0; shift < ship.length; shift++) {
+    if (orientation === 'horizontal') {
+      const squareColumn = column + shift;
+      const square = board.querySelector(
+        `div[data-row="${row}"][data-column="${squareColumn}"]`,
+      );
+      square.className = 'square placed';
+    }
+    if (orientation === 'vertical') {
+      const squareRow = row + shift;
+      const square = board.querySelector(
+        `div[data-row="${squareRow}"][data-column="${column}"]`,
+      );
+      square.className = 'square placed';
+    }
+  }
 }
