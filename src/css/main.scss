@@ -115,6 +115,10 @@ dialog[open] {
         font-size: 1.4rem;
         outline: none;
       }
+
+      .square.preview {
+        background-color: $ship-preview-colour;
+      }
     }
 
     form {
@@ -150,14 +154,14 @@ dialog[open] {
     }
 
     button[disabled] {
-      outline: 2px solid grey;
+      outline: 2px solid $button-disabled-colour;
       color: grey;
       cursor: not-allowed;
 
       &:hover {
-        outline: 2px solid grey;
+        outline: 2px solid $button-disabled-colour;
         background-color: $bg-colour;
-        color: grey;
+        color: $button-disabled-colour;
       }
     }
   }

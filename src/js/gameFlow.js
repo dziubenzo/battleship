@@ -1,7 +1,9 @@
 import { Player, ComputerPlayer } from './player';
+import { showShipPlacementModal, shopShipPreview } from './DOM.modals';
 
 let player1;
 let player2;
+const ship = [{ name: 'TestShip', length: '5' }];
 
 // Create appropriate players based on player selections
 export function createPlayers(formData) {
@@ -19,5 +21,13 @@ export function createPlayers(formData) {
     player2 = new ComputerPlayer();
   } else {
     player2 = new ComputerPlayer(true);
+  }
+
+  if (
+    !(player1 instanceof ComputerPlayer) ||
+    !(player2 instanceof ComputerPlayer)
+  ) {
+    showShipPlacementModal();
+    shopShipPreview(ship);
   }
 }

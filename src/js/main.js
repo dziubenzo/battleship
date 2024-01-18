@@ -1,6 +1,5 @@
 import '../css/main.scss';
 import { loadImages, generateSquares } from './DOM';
-
 import {
   showStartingModal,
   listenForLabelClick,

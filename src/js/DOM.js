@@ -47,7 +47,10 @@ export function generateSquares() {
 
   const playerBoard = document.querySelector('div[class="player-board"]');
   const enemyBoard = document.querySelector('div[class="enemy-board"]');
-  const boards = [playerBoard, enemyBoard];
+  const shipPlacementBoard = document.querySelector(
+    'div[class="ship-placement-board"]',
+  );
+  const boards = [playerBoard, enemyBoard, shipPlacementBoard];
   const headers = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110,
   ];

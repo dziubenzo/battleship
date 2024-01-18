@@ -1,5 +1,9 @@
 import { createPlayers } from './gameFlow';
 
+/* 
+Starting modal
+*/
+
 // Show starting modal
 export function showStartingModal() {
   const dialog = document.querySelector('#starting-dialog');
@@ -84,5 +88,57 @@ export function getPlayerSelections() {
     }
     hideStartingModal();
     createPlayers(selections);
+  });
+}
+
+/* 
+Ship placement modal
+*/
+
+// Show ship placement modal
+export function showShipPlacementModal() {
+  const dialog = document.querySelector('#ship-placement-dialog');
+  dialog.showModal();
+  // Prevent it from being closed on clicking Esc
+  dialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+  });
+}
+
+// Show ship preview for the current ship
+export function shopShipPreview(ship) {
+  let orientation = 'horizontal';
+  const board = document.querySelector('div[class="ship-placement-board"]');
+  const shipLength = ship[0]['length'];
+
+  board.addEventListener('mouseover', (event) => {
+    if (event.target.className === 'square') {
+      event.target.classList.add('preview');
+      const row = Number(event.target.dataset.row);
+      const column = Number(event.target.dataset.column);
+      for (let shift = 1; shift < shipLength; shift++) {
+        const nextSquareColumn = column + shift;
+        const nextSquareRow = row + shift;
+        if (orientation === 'horizontal' && nextSquareColumn < 10) {
+          const nextSquare = board.querySelector(
+            `div[data-row="${row}"][data-column="${nextSquareColumn}"]`,
+          );
+          nextSquare.classList.add('preview');
+        }
+        if (orientation === 'vertical' && nextSquareRow < 10) {
+          const nextSquare = board.querySelector(
+            `div[data-row="${nextSquareRow}"][data-column="${column}"]`,
+          );
+          nextSquare.classList.add('preview');
+        }
+      }
+    }
+  });
+
+  board.addEventListener('mouseout', () => {
+    const previewSquares = board.querySelectorAll('.square.preview');
+    for (const square of previewSquares) {
+      square.classList.remove('preview');
+    }
   });
 }
