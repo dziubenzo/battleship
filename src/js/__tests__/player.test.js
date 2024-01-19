@@ -136,23 +136,33 @@ describe('ComputerPlayer', () => {
 });
 
 describe('ComputerPlayer: attack()', () => {
-  const player = new Player('Player 1');
-  const computerPlayer = new ComputerPlayer();
-  const carrier = new Ship(5, 'Carrier');
-  const battleship = new Ship(4, 'Battleship');
-  const destroyer = new Ship(3, 'Destroyer');
-  const submarine = new Ship(3, 'Submarine');
-  const patrolBoat = new Ship(2, 'Patrol Boat');
-  player.board.placeShip(carrier, 0, 1, 'horizontal');
-  player.board.placeShip(battleship, 2, 5, 'horizontal');
-  player.board.placeShip(destroyer, 4, 0, 'horizontal');
-  player.board.placeShip(submarine, 6, 7, 'horizontal');
-  player.board.placeShip(patrolBoat, 9, 2, 'horizontal');
-  computerPlayer.board.placeShip(carrier, 0, 5, 'horizontal');
-  computerPlayer.board.placeShip(battleship, 2, 0, 'horizontal');
-  computerPlayer.board.placeShip(destroyer, 4, 0, 'horizontal');
-  computerPlayer.board.placeShip(submarine, 5, 7, 'horizontal');
-  computerPlayer.board.placeShip(patrolBoat, 7, 8, 'horizontal');
+  let player;
+  let computerPlayer;
+  let carrier;
+  let battleship;
+  let destroyer;
+  let submarine;
+  let patrolBoat;
+
+  beforeEach(() => {
+    player = new Player('Player 1');
+    computerPlayer = new ComputerPlayer();
+    carrier = new Ship(5, 'Carrier');
+    battleship = new Ship(4, 'Battleship');
+    destroyer = new Ship(3, 'Destroyer');
+    submarine = new Ship(3, 'Submarine');
+    patrolBoat = new Ship(2, 'Patrol Boat');
+    player.board.placeShip(carrier, 0, 1, 'horizontal');
+    player.board.placeShip(battleship, 2, 5, 'horizontal');
+    player.board.placeShip(destroyer, 4, 0, 'horizontal');
+    player.board.placeShip(submarine, 6, 7, 'horizontal');
+    player.board.placeShip(patrolBoat, 9, 2, 'horizontal');
+    computerPlayer.board.placeShip(carrier, 0, 5, 'horizontal');
+    computerPlayer.board.placeShip(battleship, 2, 0, 'horizontal');
+    computerPlayer.board.placeShip(destroyer, 4, 0, 'horizontal');
+    computerPlayer.board.placeShip(submarine, 5, 7, 'horizontal');
+    computerPlayer.board.placeShip(patrolBoat, 7, 8, 'horizontal');
+  });
 
   test('works as expected (50 moves)', () => {
     for (let i = 0; i < 50; i++) {
@@ -160,6 +170,20 @@ describe('ComputerPlayer: attack()', () => {
     }
     const attacks = player.board.hits.length + player.board.misses.length;
     expect(attacks).toBe(50);
+  });
+
+  test('returns attacked square (row and column)', () => {
+    const result = computerPlayer.attack(player);
+    let row = 0;
+    let column = 0;
+    if (player.board.hits.length === 1) {
+      row = player.board.hits[0][0];
+      column = player.board.hits[0][1];
+    } else {
+      row = player.board.misses[0][0];
+      column = player.board.misses[0][1];
+    }
+    expect(result).toEqual([row, column]);
   });
 
   test('throws error if called with no arguments', () => {

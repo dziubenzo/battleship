@@ -132,5 +132,7 @@ export class ComputerPlayer extends Player {
       return;
     }
     this.#previousAttackHit = false;
+    // Return attacked square coordinates
+    return [row, column];
   }
 }
