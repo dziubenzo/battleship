@@ -129,7 +129,7 @@ export class ComputerPlayer extends Player {
     // Remember a hit if computer is a smarter one
     if (newHitsCount > oldHitsCount && this.isSmart) {
       this.#previousAttackHit = true;
-      return;
+      return [row, column];
     }
     this.#previousAttackHit = false;
     // Return attacked square coordinates
