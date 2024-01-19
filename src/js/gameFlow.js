@@ -1,6 +1,6 @@
 import { Player, ComputerPlayer } from './player';
 import { Ship } from './ship';
-import { showShipPlacementModal, placeShips, placeShip } from './DOM.modals';
+import { showShipPlacementModal, placeShips } from './DOM.modals';
 
 let player1;
 let player2;

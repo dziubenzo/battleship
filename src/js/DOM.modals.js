@@ -170,7 +170,8 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   // Add ship to the player's board array if no errors thrown
   // Call itself again using the next ship stored in the ships array
   function addShip(event) {
-    if (event.target.className !== 'square preview') {
+    // Do nothing if headers clicked
+    if (event.target.className === 'square header') {
       return;
     }
     const row = Number(event.target.dataset.row);
@@ -192,7 +193,15 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
         placeShips,
       );
     } catch (error) {
-      console.log(error.message);
+      // Show error message for 1 second
+      // Prevent board clicks to avoid current ship info being overwritten
+      board.removeEventListener('click', addShip);
+      const infoCopy = currentShipInfo.textContent;
+      currentShipInfo.textContent = `${error.message}`;
+      setTimeout(() => {
+        currentShipInfo.textContent = infoCopy;
+        board.addEventListener('click', addShip);
+      }, 1000);
     }
   }
 
