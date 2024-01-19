@@ -133,6 +133,10 @@ dialog[open] {
       .square.placed {
         background-color: $ship-placed-colour;
       }
+
+      .square.error {
+        background-color: $ship-preview-error-colour;
+      }
     }
 
     form {

@@ -1,4 +1,5 @@
 import { createPlayers } from './gameFlow';
+import { ERROR_MESSAGE_DISPLAY_DURATION } from './main';
 
 /* 
 
@@ -113,7 +114,10 @@ export function showShipPlacementModal() {
 export function placeShips(player, ships, ship, placeTheNextShip) {
   // Show ship preview when the cursor points at a board square
   function showShip(event) {
-    if (event.target.className === 'square') {
+    if (
+      event.target.className === 'square' ||
+      event.target.className === 'square placed'
+    ) {
       const row = Number(event.target.dataset.row);
       const column = Number(event.target.dataset.column);
       for (let shift = 0; shift < shipLength; shift++) {
@@ -127,16 +131,22 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
           return;
         }
         if (orientation === 'horizontal' && squareColumn < 10) {
-          const nextSquare = board.querySelector(
+          const square = board.querySelector(
             `div[data-row="${row}"][data-column="${squareColumn}"]`,
           );
-          nextSquare.classList.add('preview');
+          // Make sure that placed ships are not affected
+          if (!square.classList.contains('placed')) {
+            square.classList.add('preview');
+          }
         }
         if (orientation === 'vertical' && squareRow < 10) {
-          const nextSquare = board.querySelector(
+          const square = board.querySelector(
             `div[data-row="${squareRow}"][data-column="${column}"]`,
           );
-          nextSquare.classList.add('preview');
+          // Make sure that placed ships are not affected
+          if (!square.classList.contains('placed')) {
+            square.classList.add('preview');
+          }
         }
       }
     }
@@ -148,20 +158,22 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
       square.classList.remove('preview');
     }
   }
-  // Change ship preview orientation on icon click or middle mouse button press
-  function listenForChangeOrientation() {
-    function rotateShip() {
-      if (orientation === 'horizontal') {
-        orientation = 'vertical';
-      } else {
-        orientation = 'horizontal';
-      }
+  // Change ship preview direction
+  function rotateShip() {
+    if (orientation === 'horizontal') {
+      orientation = 'vertical';
+    } else {
+      orientation = 'horizontal';
     }
-    const rotateShipIcon = document.querySelector(
-      'img[alt="Rotate Ship Icon"]',
-    );
-    rotateShipIcon.addEventListener('click', rotateShip);
-    addEventListener('auxclick', () => {
+  }
+
+  // Remove all event listeners
+  function removeEventListeners() {
+    board.removeEventListener('click', addShip);
+    board.removeEventListener('mouseover', showShip);
+    board.removeEventListener('mouseout', hideShip);
+    rotateShipIcon.removeEventListener('click', rotateShip);
+    removeEventListener('auxclick', () => {
       rotateShip();
       hideShip();
       showShip(event);
@@ -179,9 +191,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     try {
       player.board.placeShip(ship, row, column, orientation);
       showPlacedShip(ship, row, column, orientation);
-      board.removeEventListener('click', addShip);
-      board.removeEventListener('mouseover', showShip);
-      board.removeEventListener('mouseout', hideShip);
+      removeEventListeners();
       if (player.board.ships.length === ships.length) {
         currentShipInfo.textContent = "All ships placed, you're ready to go!";
         return;
@@ -193,15 +203,18 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
         placeShips,
       );
     } catch (error) {
-      // Show error message for 1 second
+      // Show error message for ERROR_MESSAGE_DISPLAY_DURATION seconds
       // Prevent board clicks to avoid current ship info being overwritten
+      // Change ship preview squares to a different colour
       board.removeEventListener('click', addShip);
+      showErrorSquares();
       const infoCopy = currentShipInfo.textContent;
       currentShipInfo.textContent = `${error.message}`;
       setTimeout(() => {
+        hideErrorSquares();
         currentShipInfo.textContent = infoCopy;
         board.addEventListener('click', addShip);
-      }, 1000);
+      }, ERROR_MESSAGE_DISPLAY_DURATION);
     }
   }
 
@@ -214,17 +227,22 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     player.board.ships.length + 1
   }/${shipsCount}: ${shipName}`;
   const board = document.querySelector('div[class="ship-placement-board"]');
-
-  listenForChangeOrientation();
+  const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
 
   board.addEventListener('mouseover', showShip);
   board.addEventListener('mouseout', hideShip);
   board.addEventListener('click', addShip);
+  rotateShipIcon.addEventListener('click', rotateShip);
+  addEventListener('auxclick', () => {
+    rotateShip();
+    hideShip();
+    showShip(event);
+  });
   return;
 }
 
 // Show placed ship on the ship placement board
-export function showPlacedShip(ship, row, column, orientation) {
+function showPlacedShip(ship, row, column, orientation) {
   const board = document.querySelector('div[class="ship-placement-board"]');
   for (let shift = 0; shift < ship.length; shift++) {
     if (orientation === 'horizontal') {
@@ -241,5 +259,21 @@ export function showPlacedShip(ship, row, column, orientation) {
       );
       square.className = 'square placed';
     }
+  }
+}
+
+// Indicate invalid ship placement attempt by changing ship preview squares to a different colour
+function showErrorSquares() {
+  const shipPreviewSquares = document.querySelectorAll('.square.preview');
+  for (const square of shipPreviewSquares) {
+    square.className = 'square error';
+  }
+}
+
+// Change ship preview squares back to normal squares
+function hideErrorSquares() {
+  const shipPreviewErrorSquares = document.querySelectorAll('.square.error');
+  for (const square of shipPreviewErrorSquares) {
+    square.className = 'square';
   }
 }

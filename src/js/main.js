@@ -6,6 +6,8 @@ import {
   getPlayerSelections,
 } from './DOM.modals';
 
+export const ERROR_MESSAGE_DISPLAY_DURATION = 700;
+
 loadImages();
 generateSquares();
 showStartingModal();
