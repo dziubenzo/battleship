@@ -25,6 +25,10 @@ describe('Player', () => {
       expect(typeof new Player(name).name).toBe('string');
     },
   );
+
+  test('contains isHuman property, whose value is true', () => {
+    expect(new Player()).toHaveProperty('isHuman', true);
+  });
 });
 
 describe('Player: attack()', () => {
@@ -124,6 +128,10 @@ describe('ComputerPlayer', () => {
     expect(() => {
       new ComputerPlayer('Even Smarter AI');
     }).toThrow('Invalid argument');
+  });
+
+  test('contains isHuman property, whose value is false', () => {
+    expect(new ComputerPlayer()).toHaveProperty('isHuman', false);
   });
 });
 

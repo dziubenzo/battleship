@@ -7,6 +7,7 @@ export class Player {
     }
     this.name = String(name);
     this.board = new Gameboard();
+    this.isHuman = true;
   }
 
   // Attack the enemy's board
@@ -36,6 +37,7 @@ export class ComputerPlayer extends Player {
     }
     this.name = 'Computer';
     this.isSmart = isSmart;
+    this.isHuman = false;
   }
 
   // Check for attacks targeting squares that have already been attacked
