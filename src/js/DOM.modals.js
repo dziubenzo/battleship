@@ -1,4 +1,6 @@
-import { createPlayers } from './gameFlow';
+import { createPlayers, playGame } from './gameFlow';
+import { Ship } from './ship';
+import { getPlayerBoard } from './DOM';
 import { ERROR_MESSAGE_DISPLAY_DURATION } from './main';
 
 /* 
@@ -169,7 +171,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
 
   // Remove all event listeners
   function removeEventListeners() {
-    board.removeEventListener('click', addShip);
+    board.removeEventListener('mousedown', addShip);
     board.removeEventListener('mouseover', showShip);
     board.removeEventListener('mouseout', hideShip);
     rotateShipIcon.removeEventListener('click', rotateShip);
@@ -182,18 +184,24 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   // Add ship to the player's board array if no errors thrown
   // Call itself again using the next ship stored in the ships array
   function addShip(event) {
-    // Do nothing if headers clicked
-    if (event.target.className === 'square header') {
+    // Do nothing if headers or mouse button other than left mouse button clicked
+    if (
+      event.target.className === 'square header' ||
+      event.button === 1 ||
+      event.button === 2
+    ) {
       return;
     }
     const row = Number(event.target.dataset.row);
     const column = Number(event.target.dataset.column);
     try {
-      player.board.placeShip(ship, row, column, orientation);
-      showPlacedShip(ship, row, column, orientation);
+      const newShip = new Ship(ship.length, ship.name);
+      player.board.placeShip(newShip, row, column, orientation);
       removeEventListeners();
+      showPlacedShip(ship, row, column, orientation, getPlayerBoard(player));
       if (player.board.ships.length === ships.length) {
         currentShipInfo.textContent = "All ships placed, you're ready to go!";
+        enableStartGame();
         return;
       }
       placeTheNextShip(
@@ -206,14 +214,14 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
       // Show error message for ERROR_MESSAGE_DISPLAY_DURATION seconds
       // Prevent board clicks to avoid current ship info being overwritten
       // Change ship preview squares to a different colour
-      board.removeEventListener('click', addShip);
+      board.removeEventListener('mousedown', addShip);
       showErrorSquares();
       const infoCopy = currentShipInfo.textContent;
       currentShipInfo.textContent = `${error.message}`;
       setTimeout(() => {
         hideErrorSquares();
         currentShipInfo.textContent = infoCopy;
-        board.addEventListener('click', addShip);
+        board.addEventListener('mousedown', addShip);
       }, ERROR_MESSAGE_DISPLAY_DURATION);
     }
   }
@@ -231,7 +239,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
 
   board.addEventListener('mouseover', showShip);
   board.addEventListener('mouseout', hideShip);
-  board.addEventListener('click', addShip);
+  board.addEventListener('mousedown', addShip);
   rotateShipIcon.addEventListener('click', rotateShip);
   addEventListener('auxclick', () => {
     rotateShip();
@@ -241,8 +249,8 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   return;
 }
 
-// Show placed ship on the ship placement board
-function showPlacedShip(ship, row, column, orientation) {
+// Show placed ship on the ship placement board and player board
+function showPlacedShip(ship, row, column, orientation, playerBoard) {
   const board = document.querySelector('div[class="ship-placement-board"]');
   for (let shift = 0; shift < ship.length; shift++) {
     if (orientation === 'horizontal') {
@@ -250,14 +258,22 @@ function showPlacedShip(ship, row, column, orientation) {
       const square = board.querySelector(
         `div[data-row="${row}"][data-column="${squareColumn}"]`,
       );
+      const playerBoardSquare = playerBoard.querySelector(
+        `div[data-row="${row}"][data-column="${squareColumn}"]`,
+      );
       square.className = 'square placed';
+      playerBoardSquare.className = 'square placed';
     }
     if (orientation === 'vertical') {
       const squareRow = row + shift;
       const square = board.querySelector(
         `div[data-row="${squareRow}"][data-column="${column}"]`,
       );
+      const playerBoardSquare = playerBoard.querySelector(
+        `div[data-row="${squareRow}"][data-column="${column}"]`,
+      );
       square.className = 'square placed';
+      playerBoardSquare.className = 'square placed';
     }
   }
 }
@@ -276,4 +292,18 @@ function hideErrorSquares() {
   for (const square of shipPreviewErrorSquares) {
     square.className = 'square';
   }
+}
+
+// Enable Start Game button
+function enableStartGame() {
+  // Close ship placement modal and start the game
+  function hideShipPlacementModal() {
+    const dialog = document.querySelector('#ship-placement-dialog');
+    dialog.close();
+    startGameButton.removeEventListener('click', hideShipPlacementModal);
+    playGame();
+  }
+  const startGameButton = document.querySelector('.start-game-button');
+  startGameButton.removeAttribute('disabled');
+  startGameButton.addEventListener('click', hideShipPlacementModal);
 }

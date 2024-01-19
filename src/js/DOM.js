@@ -2,6 +2,7 @@ import gitHubLogoWhiteSrc from '../assets/github-logo-white.svg';
 import gitHubLogoBlackSrc from '../assets/github-logo-black.svg';
 import settingsSrc from '../assets/settings.svg';
 import rotateShipSrc from '../assets/rotate.svg';
+import { player1, player2 } from './gameFlow';
 
 const NO_OF_SQUARES = 121;
 
@@ -48,12 +49,12 @@ export function generateSquares() {
     });
   }
 
-  const playerBoard = document.querySelector('div[class="player-board"]');
-  const enemyBoard = document.querySelector('div[class="enemy-board"]');
+  const player1Board = document.querySelector('div[class="player-1-board"]');
+  const player2Board = document.querySelector('div[class="player-2-board"]');
   const shipPlacementBoard = document.querySelector(
     'div[class="ship-placement-board"]',
   );
-  const boards = [playerBoard, enemyBoard, shipPlacementBoard];
+  const boards = [player1Board, player2Board, shipPlacementBoard];
   const headers = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110,
   ];
@@ -82,4 +83,12 @@ export function generateSquares() {
     }
   }
   addHeaders();
+}
+
+// Return the right DOM board based on player passed as argument
+export function getPlayerBoard(player) {
+  if (player === player1) {
+    return document.querySelector('div[class="player-1-board"');
+  }
+  return document.querySelector('div[class="player-2-board"');
 }

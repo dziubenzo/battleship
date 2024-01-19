@@ -1,14 +1,29 @@
 import { Player, ComputerPlayer } from './player';
 import { Ship } from './ship';
 import { showShipPlacementModal, placeShips } from './DOM.modals';
+import { getPlayerBoard } from './DOM';
+import { COMPUTER_MOVE_DURATION } from './main';
 
-let player1;
-let player2;
+export let player1;
+export let player2;
+
 const ships = [
-  new Ship(4, 'Test1'),
-  new Ship(3, 'Test2'),
-  new Ship(2, 'Test3'),
-  new Ship(1, 'Test4'),
+  {
+    length: 4,
+    name: 'Test1',
+  },
+  {
+    length: 3,
+    name: 'Test2',
+  },
+  {
+    length: 2,
+    name: 'Test3',
+  },
+  {
+    length: 1,
+    name: 'Test4',
+  },
 ];
 
 // Create appropriate players based on player selections
@@ -29,11 +44,239 @@ export function createPlayers(formData) {
     player2 = new ComputerPlayer(true);
   }
 
-  if (
-    !(player1 instanceof ComputerPlayer) ||
-    !(player2 instanceof ComputerPlayer)
-  ) {
+  if (player1.isHuman && player2.isHuman) {
+    // TO BE IMPLEMENTED
+    return;
+  }
+  if (!player1.isHuman && !player2.isHuman) {
+    playGame();
+  }
+  if (player1.isHuman) {
     showShipPlacementModal();
     placeShips(player1, ships, ships[0], placeShips);
+  } else if (player2.isHuman) {
+    showShipPlacementModal();
+    placeShips(player2, ships, ships[0], placeShips);
   }
+}
+
+// Play the game until either player's ships are all sunk
+export function playGame() {
+  // Determine if the attack is a hit or miss
+  function isAHit(enemy, row, column) {
+    const targetSquare = enemy.board.getSquare(row, column);
+    if (targetSquare === null || targetSquare === 'unavailable') {
+      return false;
+    }
+    return true;
+  }
+
+  // End game is all ships have been sunk
+  function isGameOver() {
+    if (player1.board.areAllShipsDown() || player2.board.areAllShipsDown()) {
+      return true;
+    }
+    return false;
+  }
+
+  // Play computer turn
+  function playComputerTurn(attacker, enemy, enemyBoard) {
+    setTimeout(() => {
+      const coordinates = attacker.attack(enemy);
+      const row = coordinates[0];
+      const column = coordinates[1];
+      const boardSquare = enemyBoard.querySelector(
+        `div[data-row="${row}"][data-column="${column}"]`,
+      );
+      if (isAHit(enemy, row, column)) {
+        boardSquare.classList.add('hit');
+      } else {
+        boardSquare.classList.add('miss');
+      }
+      turn++;
+      if (attacker === player1) {
+        player1Turn = false;
+        player2Turn = true;
+      } else {
+        player1Turn = true;
+        player2Turn = false;
+      }
+      playTurn();
+    }, COMPUTER_MOVE_DURATION);
+  }
+
+  // Play human turn
+  function playHumanTurn(event, attacker, enemy, enemyBoard) {
+    // Do nothing if headers, already attacked squares or mouse button other than left mouse button clicked
+    if (
+      event.target.classList.contains('header') ||
+      event.target.classList.contains('hit') ||
+      event.target.classList.contains('miss') ||
+      event.button === 1 ||
+      event.button === 2
+    ) {
+      return;
+    }
+    const row = event.target.dataset.row;
+    const column = event.target.dataset.column;
+    const boardSquare = enemyBoard.querySelector(
+      `div[data-row="${row}"][data-column="${column}"]`,
+    );
+    attacker.attack(enemy, row, column);
+    if (isAHit(enemy, row, column)) {
+      boardSquare.classList.add('hit');
+    } else {
+      boardSquare.classList.add('miss');
+    }
+  }
+
+  // Event handler for playHumanTurn function attacking Player 2
+  function attackPlayer2() {
+    playHumanTurn(event, player1, player2, player2Board);
+    turn++;
+    player1Turn = false;
+    player2Turn = true;
+    player2Board.removeEventListener('mousedown', attackPlayer2);
+    playTurn();
+  }
+
+  // Event handler for playHumanTurn function attacking Player 1
+  function attackPlayer1() {
+    playHumanTurn(event, player2, player1, player1Board);
+    turn++;
+    player1Turn = true;
+    player2Turn = false;
+    player1Board.removeEventListener('mousedown', attackPlayer1);
+    playTurn();
+  }
+
+  // Play a turn
+  function playTurn() {
+    if (isGameOver()) {
+      console.log('GG');
+      return;
+    }
+    if (player1Turn && !player1.isHuman) {
+      playComputerTurn(player1, player2, player2Board);
+    } else if (player1Turn && player1.isHuman) {
+      player2Board.addEventListener('mousedown', attackPlayer2);
+    } else if (player2Turn && !player2.isHuman) {
+      playComputerTurn(player2, player1, player1Board);
+    } else if (player2Turn && player2.isHuman) {
+      player1Board.addEventListener('mousedown', attackPlayer1);
+    }
+  }
+
+  const player1Board = getPlayerBoard(player1);
+  const player2Board = getPlayerBoard(player2);
+  let player1Turn = true;
+  let player2Turn = false;
+  let turn = 1;
+
+  // Place all computer ships manually for now
+  if (player1.isHuman) {
+    player2.board.placeShip(
+      new Ship(ships[0].length, ships[0].name),
+      0,
+      1,
+      'horizontal',
+    );
+    player2.board.placeShip(
+      new Ship(ships[1].length, ships[1].name),
+      2,
+      5,
+      'horizontal',
+    );
+    player2.board.placeShip(
+      new Ship(ships[2].length, ships[2].name),
+      4,
+      0,
+      'horizontal',
+    );
+    player2.board.placeShip(
+      new Ship(ships[3].length, ships[3].name),
+      6,
+      7,
+      'horizontal',
+    );
+  }
+  if (player2.isHuman) {
+    player1.board.placeShip(
+      new Ship(ships[0].length, ships[0].name),
+      0,
+      1,
+      'horizontal',
+    );
+    player1.board.placeShip(
+      new Ship(ships[1].length, ships[1].name),
+      2,
+      5,
+      'horizontal',
+    );
+    player1.board.placeShip(
+      new Ship(ships[2].length, ships[2].name),
+      4,
+      0,
+      'horizontal',
+    );
+    player1.board.placeShip(
+      new Ship(ships[3].length, ships[3].name),
+      6,
+      7,
+      'horizontal',
+    );
+  }
+
+  if (!player1.isHuman && !player2.isHuman) {
+    player1.board.placeShip(
+      new Ship(ships[0].length, ships[0].name),
+      0,
+      1,
+      'horizontal',
+    );
+    player1.board.placeShip(
+      new Ship(ships[1].length, ships[1].name),
+      2,
+      5,
+      'horizontal',
+    );
+    player1.board.placeShip(
+      new Ship(ships[2].length, ships[2].name),
+      4,
+      0,
+      'horizontal',
+    );
+    player1.board.placeShip(
+      new Ship(ships[3].length, ships[3].name),
+      6,
+      7,
+      'horizontal',
+    );
+    player2.board.placeShip(
+      new Ship(ships[0].length, ships[0].name),
+      0,
+      1,
+      'horizontal',
+    );
+    player2.board.placeShip(
+      new Ship(ships[1].length, ships[1].name),
+      2,
+      5,
+      'horizontal',
+    );
+    player2.board.placeShip(
+      new Ship(ships[2].length, ships[2].name),
+      4,
+      0,
+      'horizontal',
+    );
+    player2.board.placeShip(
+      new Ship(ships[3].length, ships[3].name),
+      6,
+      7,
+      'horizontal',
+    );
+  }
+
+  playTurn();
 }

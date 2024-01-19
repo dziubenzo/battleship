@@ -213,8 +213,8 @@ main {
     align-items: center;
     gap: 72px;
 
-    .player-board,
-    .enemy-board {
+    .player-1-board,
+    .player-2-board {
       aspect-ratio: 1 / 1;
       width: 40%;
       display: flex;
@@ -225,6 +225,7 @@ main {
         height: calc(100% / 11);
         width: calc(100% / 11);
         outline: 1px solid $main-colour;
+        cursor: pointer;
       }
 
       .square.header {
@@ -233,6 +234,19 @@ main {
         align-items: center;
         font-size: 1.4rem;
         outline: none;
+        cursor: default;
+      }
+
+      .square.placed {
+        background-color: $ship-placed-player-board-colour;
+      }
+
+      .square.hit {
+        background-color: $ship-hit-colour;
+      }
+
+      .square.miss {
+        background-color: $ship-missed-colour;
       }
     }
   }
