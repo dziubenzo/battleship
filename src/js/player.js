@@ -126,8 +126,8 @@ export class ComputerPlayer extends Player {
     }
     enemy.board.receiveAttack(row, column);
     const newHitsCount = enemy.board.hits.length;
-    // Remember a hit
-    if (newHitsCount > oldHitsCount) {
+    // Remember a hit if computer is a smarter one
+    if (newHitsCount > oldHitsCount && this.isSmart) {
       this.#previousAttackHit = true;
       return;
     }
