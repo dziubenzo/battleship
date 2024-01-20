@@ -8,6 +8,8 @@ export class Player {
     this.name = String(name);
     this.board = new Gameboard();
     this.isHuman = true;
+    this.turn = false;
+    this.attacks = 0;
   }
 
   // Attack the enemy's board
