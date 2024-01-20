@@ -491,18 +491,18 @@ describe('Gameboard: isAHit()', () => {
 
   test('returns true if the previous attack is a hit', () => {
     gameboard.receiveAttack(0, 4);
-    expect(gameboard.isAHit(0, 4).toBe(true));
+    expect(gameboard.isAHit(0, 4)).toBe(true);
   });
 
   test('returns false if the previous attack is a miss', () => {
     gameboard.receiveAttack(5, 5);
-    expect(gameboard.isAHit(5, 5).toBe(false));
+    expect(gameboard.isAHit(5, 5)).toBe(false);
   });
 
   test('works for previous hits only', () => {
     gameboard.receiveAttack(0, 2);
     gameboard.receiveAttack(0, 4);
-    expect(gameboard.isAHit(0, 2).toBe(false));
+    expect(gameboard.isAHit(0, 2)).toBe(false);
   });
 
   test('throws error if called with less than 2 arguments', () => {

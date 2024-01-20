@@ -241,6 +241,24 @@ export class Gameboard {
     this.areAllShipsDown();
   }
 
+  // Return true if the previous attack was a hit
+  // Return false otherwise
+  isAHit(row, column) {
+    if (arguments.length !== 2) {
+      throw new Error('Invalid arguments');
+    }
+    const square = this.getSquare(row, column);
+    if (square === null || square === 'unavailable') {
+      return false;
+    }
+    const previousHitRow = this.hits[this.hits.length - 1][0];
+    const previousHitColumn = this.hits[this.hits.length - 1][1];
+    if (previousHitRow === row && previousHitColumn === column) {
+      return true;
+    }
+    return false;
+  }
+
   // Check if all ships have been sunk
   areAllShipsDown() {
     if (this.ships.every((ship) => ship.isSunk())) {
