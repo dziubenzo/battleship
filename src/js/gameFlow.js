@@ -105,9 +105,8 @@ export function playGame() {
     }, COMPUTER_MOVE_DURATION);
   }
 
-  // Play human turn
-  function playHumanTurn(event, attacker, enemy, enemyBoard) {
-    // Do nothing if headers, already attacked squares or mouse button other than left mouse button clicked
+  // Check if the clicked square is a valid one for attack
+  function isValidSquare(event) {
     if (
       event.target.classList.contains('header') ||
       event.target.classList.contains('hit') ||
@@ -115,8 +114,13 @@ export function playGame() {
       event.button === 1 ||
       event.button === 2
     ) {
-      return;
+      return false;
     }
+    return true;
+  }
+
+  // Play human turn
+  function playHumanTurn(event, attacker, enemy, enemyBoard) {
     const row = event.target.dataset.row;
     const column = event.target.dataset.column;
     const boardSquare = enemyBoard.querySelector(
@@ -132,6 +136,9 @@ export function playGame() {
 
   // Event handler for playHumanTurn function attacking Player 2
   function attackPlayer2() {
+    if (!isValidSquare(event)) {
+      return;
+    }
     playHumanTurn(event, player1, player2, player2Board);
     turn++;
     player1Turn = false;
@@ -142,6 +149,9 @@ export function playGame() {
 
   // Event handler for playHumanTurn function attacking Player 1
   function attackPlayer1() {
+    if (!isValidSquare(event)) {
+      return;
+    }
     playHumanTurn(event, player2, player1, player1Board);
     turn++;
     player1Turn = true;
