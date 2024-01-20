@@ -56,8 +56,31 @@ export function listenForLabelClick() {
     }
   }
 
+  // Enable Next/Start Game button if both players are selected
+  // Change button description to Start Game if both players are computer players
+  function enableButton() {
+    const labelsSelected = document.querySelectorAll('label[class="selected"]');
+    const button = document.querySelector('button[form="player-selection"]');
+    let labelDescription1;
+    let labelDescription2;
+    if (labelsSelected.length === 2) {
+      button.removeAttribute('disabled');
+      labelDescription1 = labelsSelected[0].outerText;
+      labelDescription2 = labelsSelected[1].outerText;
+      if (
+        labelDescription1.includes('Computer') &&
+        labelDescription2.includes('Computer')
+      ) {
+        button.textContent = 'Start Game';
+      } else {
+        button.textContent = 'Next';
+      }
+    }
+  }
+
   const player1Labels = document.querySelectorAll('.player-1 label');
   const player2Labels = document.querySelectorAll('.player-2 label');
+  const allLabels = document.querySelectorAll('.starting-dialog label');
 
   player1Labels.forEach((label) => {
     label.addEventListener('click', (event) => {
@@ -71,6 +94,10 @@ export function listenForLabelClick() {
       makeSelected(event);
       showOrHideNameFields(event);
     });
+  });
+
+  allLabels.forEach((label) => {
+    label.addEventListener('click', enableButton);
   });
 }
 
@@ -87,10 +114,6 @@ export function getPlayerSelections() {
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const selections = Object.fromEntries(new FormData(form));
-    // Make sure that both players are selected before moving forward
-    if (!selections['player-1'] || !selections['player-2']) {
-      return;
-    }
     hideStartingModal();
     createPlayers(selections);
   });

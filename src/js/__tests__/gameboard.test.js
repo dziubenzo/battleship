@@ -293,7 +293,7 @@ describe('Gameboard: placeShipsRandomly()', () => {
   });
 
   test('throws error if the ships array does not contain items with length property', () => {
-    const badArray = [{ name: 'This Is A Bad Ship', armor: 9000 }];
+    const badArray = [{ name: 'This Is A Bad Ship', armour: 9000 }];
     expect(() => {
       gameboard.placeShipsRandomly(badArray);
     }).toThrow('Invalid array');

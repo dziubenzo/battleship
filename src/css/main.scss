@@ -157,7 +157,7 @@ dialog[open] {
       outline: 2px solid $main-colour;
       border: none;
       height: 50px;
-      width: 100px;
+      width: 200px;
       font-size: 2rem;
       font-weight: bold;
       border-radius: 8px;
@@ -168,6 +168,18 @@ dialog[open] {
         outline: none;
         background-color: $main-colour;
         color: $bg-colour;
+      }
+    }
+
+    button[disabled] {
+      outline: 2px solid $button-disabled-colour;
+      color: grey;
+      cursor: not-allowed;
+
+      &:hover {
+        outline: 2px solid $button-disabled-colour;
+        background-color: $bg-colour;
+        color: $button-disabled-colour;
       }
     }
   }
