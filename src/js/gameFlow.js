@@ -84,6 +84,11 @@ export function playGame() {
       );
       if (enemy.board.isAHit(row, column)) {
         boardSquare.classList.add('hit');
+        // const shipName = enemy.board.getSquare(row, column);
+        // const ship = enemy.board.findShip(shipName);
+        // if (ship.isSunk()) {
+        //   console.log(ship.name);
+        // }
       } else {
         boardSquare.classList.add('miss');
       }
