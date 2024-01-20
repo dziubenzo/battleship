@@ -161,12 +161,15 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     }
   }
   // Change ship preview direction
+  // Show ship preview in the changed direction
   function rotateShip() {
     if (orientation === 'horizontal') {
       orientation = 'vertical';
     } else {
       orientation = 'horizontal';
     }
+    hideShip();
+    showShip(event);
   }
 
   // Remove all event listeners
@@ -175,11 +178,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     board.removeEventListener('mouseover', showShip);
     board.removeEventListener('mouseout', hideShip);
     rotateShipIcon.removeEventListener('click', rotateShip);
-    removeEventListener('auxclick', () => {
-      rotateShip();
-      hideShip();
-      showShip(event);
-    });
+    removeEventListener('auxclick', rotateShip);
   }
   // Add ship to the player's board array if no errors thrown
   // Call itself again using the next ship stored in the ships array
@@ -241,11 +240,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   board.addEventListener('mouseout', hideShip);
   board.addEventListener('mousedown', addShip);
   rotateShipIcon.addEventListener('click', rotateShip);
-  addEventListener('auxclick', () => {
-    rotateShip();
-    hideShip();
-    showShip(event);
-  });
+  addEventListener('auxclick', rotateShip);
   return;
 }
 
