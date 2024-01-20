@@ -187,118 +187,35 @@ export function playGame() {
   let player2Turn = false;
   let turn = 1;
 
-  // Place all computer ships manually for now
-  if (player1.isHuman) {
-    player2.board.placeShip(
-      new Ship(ships[0].length, ships[0].name),
-      0,
-      1,
-      'horizontal',
-    );
-    player2.board.placeShip(
-      new Ship(ships[1].length, ships[1].name),
-      2,
-      5,
-      'horizontal',
-    );
-    player2.board.placeShip(
-      new Ship(ships[2].length, ships[2].name),
-      4,
-      0,
-      'horizontal',
-    );
-    player2.board.placeShip(
-      new Ship(ships[3].length, ships[3].name),
-      6,
-      7,
-      'horizontal',
-    );
+  // Place all computer ships randomly
+  if (player1.isHuman && !player2.isHuman) {
+    player2.board.placeShipsRandomly(ships);
   }
-  if (player2.isHuman) {
-    player1.board.placeShip(
-      new Ship(ships[0].length, ships[0].name),
-      0,
-      1,
-      'horizontal',
-    );
-    player1.board.placeShip(
-      new Ship(ships[1].length, ships[1].name),
-      2,
-      5,
-      'horizontal',
-    );
-    player1.board.placeShip(
-      new Ship(ships[2].length, ships[2].name),
-      4,
-      0,
-      'horizontal',
-    );
-    player1.board.placeShip(
-      new Ship(ships[3].length, ships[3].name),
-      6,
-      7,
-      'horizontal',
-    );
+  if (player2.isHuman && !player1.isHuman) {
+    player1.board.placeShipsRandomly(ships);
   }
-
+  // In the computer vs computer scenario, show their ships on boards
   if (!player1.isHuman && !player2.isHuman) {
-    player1.board.placeShip(
-      new Ship(ships[0].length, ships[0].name),
-      0,
-      1,
-      'horizontal',
-    );
-    showPlacedShip(ships[0], 0, 1, 'horizontal', player1Board);
-    player1.board.placeShip(
-      new Ship(ships[1].length, ships[1].name),
-      2,
-      5,
-      'horizontal',
-    );
-    showPlacedShip(ships[1], 2, 5, 'horizontal', player1Board);
-    player1.board.placeShip(
-      new Ship(ships[2].length, ships[2].name),
-      4,
-      0,
-      'horizontal',
-    );
-    showPlacedShip(ships[2], 4, 0, 'horizontal', player1Board);
-    player1.board.placeShip(
-      new Ship(ships[3].length, ships[3].name),
-      6,
-      7,
-      'horizontal',
-    );
-    showPlacedShip(ships[3], 6, 7, 'horizontal', player1Board);
-    player2.board.placeShip(
-      new Ship(ships[0].length, ships[0].name),
-      0,
-      1,
-      'horizontal',
-    );
-    showPlacedShip(ships[0], 0, 1, 'horizontal', player2Board);
-    player2.board.placeShip(
-      new Ship(ships[1].length, ships[1].name),
-      2,
-      5,
-      'horizontal',
-    );
-    showPlacedShip(ships[1], 2, 5, 'horizontal', player2Board);
-    player2.board.placeShip(
-      new Ship(ships[2].length, ships[2].name),
-      4,
-      0,
-      'horizontal',
-    );
-    showPlacedShip(ships[2], 4, 0, 'horizontal', player2Board);
-    player2.board.placeShip(
-      new Ship(ships[3].length, ships[3].name),
-      6,
-      7,
-      'horizontal',
-    );
-    showPlacedShip(ships[3], 6, 7, 'horizontal', player2Board);
+    const player1Ships = player1.board.placeShipsRandomly(ships);
+    player1Ships.forEach((ship, index) => {
+      showPlacedShip(
+        ships[index],
+        ship.row,
+        ship.column,
+        ship.direction,
+        player1Board,
+      );
+    });
+    const player2Ships = player2.board.placeShipsRandomly(ships);
+    player2Ships.forEach((ship, index) => {
+      showPlacedShip(
+        ships[index],
+        ship.row,
+        ship.column,
+        ship.direction,
+        player2Board,
+      );
+    });
   }
-
   playTurn();
 }
