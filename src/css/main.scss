@@ -45,13 +45,21 @@ dialog[open] {
       cursor: pointer;
     }
 
-    img[alt='Rotate Ship Icon'] {
+    img[alt='Rotate Ship Icon'],
+    img[alt='Place Ships Randomly Icon'] {
       height: 36px;
       width: 36px;
       position: absolute;
-      right: 6%;
       top: 50%;
       cursor: pointer;
+    }
+
+    img[alt='Rotate Ship Icon'] {
+      right: 6%;
+    }
+
+    img[alt='Place Ships Randomly Icon'] {
+      left: 6%;
     }
 
     .dialog-title {

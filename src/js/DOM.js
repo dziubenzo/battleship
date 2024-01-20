@@ -2,6 +2,7 @@ import gitHubLogoWhiteSrc from '../assets/github-logo-white.svg';
 import gitHubLogoBlackSrc from '../assets/github-logo-black.svg';
 import settingsSrc from '../assets/settings.svg';
 import rotateShipSrc from '../assets/rotate.svg';
+import placeShipsRandomlySrc from '../assets/place-ships-randomly.svg';
 import { player1, player2 } from './gameFlow';
 
 const NO_OF_SQUARES = 121;
@@ -14,6 +15,10 @@ export function loadImages() {
   settingsIcon.src = settingsSrc;
   const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
   rotateShipIcon.src = rotateShipSrc;
+  const placeShipsRandomlyIcon = document.querySelector(
+    'img[alt="Place Ships Randomly Icon"]',
+  );
+  placeShipsRandomlyIcon.src = placeShipsRandomlySrc;
 }
 
 // Generate board squares
