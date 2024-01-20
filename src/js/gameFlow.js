@@ -73,9 +73,30 @@ export function playGame() {
     return false;
   }
 
+  // Increase attacks counter for the right computer player
+  function increaseAttacks(attacker) {
+    if (attacker === player1) {
+      player1.attacks++;
+      return;
+    }
+    player2.attacks++;
+  }
+
+  // Change whose turn it is next after computer move
+  function changeTurn(attacker) {
+    if (attacker === player1) {
+      player1.turn = false;
+      player2.turn = true;
+      return;
+    }
+    player1.turn = true;
+    player2.turn = false;
+  }
+
   // Play computer turn
   function playComputerTurn(attacker, enemy, enemyBoard) {
     setTimeout(() => {
+      increaseAttacks(attacker);
       const coordinates = attacker.attack(enemy);
       const row = coordinates[0];
       const column = coordinates[1];
@@ -84,22 +105,15 @@ export function playGame() {
       );
       if (enemy.board.isAHit(row, column)) {
         boardSquare.classList.add('hit');
-        // const shipName = enemy.board.getSquare(row, column);
-        // const ship = enemy.board.findShip(shipName);
-        // if (ship.isSunk()) {
-        //   console.log(ship.name);
-        // }
+        const shipName = enemy.board.getSquare(row, column);
+        const ship = enemy.board.findShip(shipName);
+        if (ship.isSunk()) {
+          console.log(ship.name);
+        }
       } else {
         boardSquare.classList.add('miss');
       }
-      turn++;
-      if (attacker === player1) {
-        player1Turn = false;
-        player2Turn = true;
-      } else {
-        player1Turn = true;
-        player2Turn = false;
-      }
+      changeTurn(attacker);
       playTurn();
     }, COMPUTER_MOVE_DURATION);
   }
@@ -138,10 +152,10 @@ export function playGame() {
     if (!isValidSquare(event)) {
       return;
     }
+    player1.attacks++;
     playHumanTurn(event, player1, player2, player2Board);
-    turn++;
-    player1Turn = false;
-    player2Turn = true;
+    player1.turn = false;
+    player2.turn = true;
     player2Board.removeEventListener('mousedown', attackPlayer2);
     playTurn();
   }
@@ -151,10 +165,10 @@ export function playGame() {
     if (!isValidSquare(event)) {
       return;
     }
+    player2.attacks++;
     playHumanTurn(event, player2, player1, player1Board);
-    turn++;
-    player1Turn = true;
-    player2Turn = false;
+    player1.turn = true;
+    player2.turn = false;
     player1Board.removeEventListener('mousedown', attackPlayer1);
     playTurn();
   }
@@ -165,22 +179,20 @@ export function playGame() {
       console.log('GG');
       return;
     }
-    if (player1Turn && !player1.isHuman) {
+    if (player1.turn && !player1.isHuman) {
       playComputerTurn(player1, player2, player2Board);
-    } else if (player1Turn && player1.isHuman) {
+    } else if (player1.turn && player1.isHuman) {
       player2Board.addEventListener('mousedown', attackPlayer2);
-    } else if (player2Turn && !player2.isHuman) {
+    } else if (player2.turn && !player2.isHuman) {
       playComputerTurn(player2, player1, player1Board);
-    } else if (player2Turn && player2.isHuman) {
+    } else if (player2.turn && player2.isHuman) {
       player1Board.addEventListener('mousedown', attackPlayer1);
     }
   }
 
   const player1Board = getPlayerBoard(player1);
   const player2Board = getPlayerBoard(player2);
-  let player1Turn = true;
-  let player2Turn = false;
-  let turn = 1;
+  player1.turn = true;
 
   // Place all computer ships randomly
   if (player1.isHuman && !player2.isHuman) {
