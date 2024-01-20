@@ -473,3 +473,68 @@ describe('Gameboard: receiveAttack() and areAllShipsSunk()', () => {
     expect(gameboard.areAllShipsDown()).toBe(true);
   });
 });
+
+describe('Gameboard: isAHit()', () => {
+  let gameboard = new Gameboard();
+  let carrier = new Ship(5, 'Carrier');
+  let patrolBoat = new Ship(2, 'Patrol Boat');
+  gameboard.placeShip(carrier, 0, 0, 'horizontal');
+  gameboard.placeShip(patrolBoat, 8, 9, 'vertical');
+
+  beforeEach(() => {
+    gameboard = new Gameboard();
+    gameboard.placeShip(carrier, 0, 0, 'horizontal');
+    gameboard.placeShip(patrolBoat, 8, 9, 'vertical');
+    carrier.hits = 0;
+    patrolBoat.hits = 0;
+  });
+
+  test('returns true if the previous attack is a hit', () => {
+    gameboard.receiveAttack(0, 4);
+    expect(gameboard.isAHit(0, 4).toBe(true));
+  });
+
+  test('returns false if the previous attack is a miss', () => {
+    gameboard.receiveAttack(5, 5);
+    expect(gameboard.isAHit(5, 5).toBe(false));
+  });
+
+  test('works for previous hits only', () => {
+    gameboard.receiveAttack(0, 2);
+    gameboard.receiveAttack(0, 4);
+    expect(gameboard.isAHit(0, 2).toBe(false));
+  });
+
+  test('throws error if called with less than 2 arguments', () => {
+    expect(() => {
+      gameboard.isAHit(1);
+    }).toThrow('Invalid arguments');
+
+    expect(() => {
+      gameboard.isAHit();
+    }).toThrow('Invalid arguments');
+  });
+
+  test('throws error if arguments are not string numbers or numbers', () => {
+    expect(() => {
+      gameboard.isAHit('Test', 5);
+    }).toThrow('Row and column arguments must be string numbers or numbers');
+
+    expect(() => {
+      gameboard.isAHit(7, null);
+    }).toThrow('Row and column arguments must be string numbers or numbers');
+
+    expect(() => {
+      gameboard.isAHit(Infinity, 'Test2');
+    }).toThrow('Row and column arguments must be string numbers or numbers');
+  });
+
+  test.each([
+    [-1, 5],
+    [0, 10],
+  ])('throws error if square does not exist [%i][%i]', (row, column) => {
+    expect(() => {
+      gameboard.isAHit(row, column);
+    }).toThrow('Board square does not exist');
+  });
+});
