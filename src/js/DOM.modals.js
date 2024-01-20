@@ -127,12 +127,12 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
         const squareRow = row + shift;
         // Do not show ship preview if the ship does not fit
         if (
-          (column + shipLength > 10 && orientation === 'horizontal') ||
-          (row + shipLength > 10 && orientation === 'vertical')
+          (column + shipLength > 10 && direction === 'horizontal') ||
+          (row + shipLength > 10 && direction === 'vertical')
         ) {
           return;
         }
-        if (orientation === 'horizontal' && squareColumn < 10) {
+        if (direction === 'horizontal' && squareColumn < 10) {
           const square = board.querySelector(
             `div[data-row="${row}"][data-column="${squareColumn}"]`,
           );
@@ -141,7 +141,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
             square.classList.add('preview');
           }
         }
-        if (orientation === 'vertical' && squareRow < 10) {
+        if (direction === 'vertical' && squareRow < 10) {
           const square = board.querySelector(
             `div[data-row="${squareRow}"][data-column="${column}"]`,
           );
@@ -163,10 +163,10 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   // Change ship preview direction
   // Show ship preview in the changed direction
   function rotateShip() {
-    if (orientation === 'horizontal') {
-      orientation = 'vertical';
+    if (direction === 'horizontal') {
+      direction = 'vertical';
     } else {
-      orientation = 'horizontal';
+      direction = 'horizontal';
     }
     hideShip();
     showShip(event);
@@ -195,9 +195,11 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     const column = Number(event.target.dataset.column);
     try {
       const newShip = new Ship(ship.length, ship.name);
-      player.board.placeShip(newShip, row, column, orientation);
+      player.board.placeShip(newShip, row, column, direction);
       removeEventListeners();
-      showPlacedShip(ship, row, column, orientation, getPlayerBoard(player));
+      // Show placed ship on the ship placement board and the player board
+      showPlacedShip(ship, row, column, direction, board);
+      showPlacedShip(ship, row, column, direction, getPlayerBoard(player));
       if (player.board.ships.length === ships.length) {
         currentShipInfo.textContent = "All ships placed, you're ready to go!";
         enableStartGame();
@@ -225,7 +227,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     }
   }
 
-  let orientation = 'horizontal';
+  let direction = 'horizontal';
   const currentShipInfo = document.querySelector('p[class="current-ship"]');
   const shipName = ship.name;
   const shipLength = ship.length;
@@ -244,31 +246,22 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   return;
 }
 
-// Show placed ship on the ship placement board and player board
-function showPlacedShip(ship, row, column, orientation, playerBoard) {
-  const board = document.querySelector('div[class="ship-placement-board"]');
+// Show placed ship on the board
+export function showPlacedShip(ship, row, column, direction, boardDOM) {
   for (let shift = 0; shift < ship.length; shift++) {
-    if (orientation === 'horizontal') {
+    if (direction === 'horizontal') {
       const squareColumn = column + shift;
-      const square = board.querySelector(
-        `div[data-row="${row}"][data-column="${squareColumn}"]`,
-      );
-      const playerBoardSquare = playerBoard.querySelector(
+      const square = boardDOM.querySelector(
         `div[data-row="${row}"][data-column="${squareColumn}"]`,
       );
       square.className = 'square placed';
-      playerBoardSquare.className = 'square placed';
     }
-    if (orientation === 'vertical') {
+    if (direction === 'vertical') {
       const squareRow = row + shift;
-      const square = board.querySelector(
-        `div[data-row="${squareRow}"][data-column="${column}"]`,
-      );
-      const playerBoardSquare = playerBoard.querySelector(
+      const square = boardDOM.querySelector(
         `div[data-row="${squareRow}"][data-column="${column}"]`,
       );
       square.className = 'square placed';
-      playerBoardSquare.className = 'square placed';
     }
   }
 }

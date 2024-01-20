@@ -1,6 +1,10 @@
 import { Player, ComputerPlayer } from './player';
 import { Ship } from './ship';
-import { showShipPlacementModal, placeShips } from './DOM.modals';
+import {
+  showShipPlacementModal,
+  placeShips,
+  showPlacedShip,
+} from './DOM.modals';
 import { getPlayerBoard } from './DOM';
 import { COMPUTER_MOVE_DURATION } from './main';
 
@@ -244,48 +248,56 @@ export function playGame() {
       1,
       'horizontal',
     );
+    showPlacedShip(ships[0], 0, 1, 'horizontal', player1Board);
     player1.board.placeShip(
       new Ship(ships[1].length, ships[1].name),
       2,
       5,
       'horizontal',
     );
+    showPlacedShip(ships[1], 2, 5, 'horizontal', player1Board);
     player1.board.placeShip(
       new Ship(ships[2].length, ships[2].name),
       4,
       0,
       'horizontal',
     );
+    showPlacedShip(ships[2], 4, 0, 'horizontal', player1Board);
     player1.board.placeShip(
       new Ship(ships[3].length, ships[3].name),
       6,
       7,
       'horizontal',
     );
+    showPlacedShip(ships[3], 6, 7, 'horizontal', player1Board);
     player2.board.placeShip(
       new Ship(ships[0].length, ships[0].name),
       0,
       1,
       'horizontal',
     );
+    showPlacedShip(ships[0], 0, 1, 'horizontal', player2Board);
     player2.board.placeShip(
       new Ship(ships[1].length, ships[1].name),
       2,
       5,
       'horizontal',
     );
+    showPlacedShip(ships[1], 2, 5, 'horizontal', player2Board);
     player2.board.placeShip(
       new Ship(ships[2].length, ships[2].name),
       4,
       0,
       'horizontal',
     );
+    showPlacedShip(ships[2], 4, 0, 'horizontal', player2Board);
     player2.board.placeShip(
       new Ship(ships[3].length, ships[3].name),
       6,
       7,
       'horizontal',
     );
+    showPlacedShip(ships[3], 6, 7, 'horizontal', player2Board);
   }
 
   playTurn();
