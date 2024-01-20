@@ -65,15 +65,6 @@ export function createPlayers(formData) {
 
 // Play the game until either player's ships are all sunk
 export function playGame() {
-  // Determine if the attack is a hit or miss
-  function isAHit(enemy, row, column) {
-    const targetSquare = enemy.board.getSquare(row, column);
-    if (targetSquare === null || targetSquare === 'unavailable') {
-      return false;
-    }
-    return true;
-  }
-
   // End game is all ships have been sunk
   function isGameOver() {
     if (player1.board.areAllShipsDown() || player2.board.areAllShipsDown()) {
@@ -91,7 +82,7 @@ export function playGame() {
       const boardSquare = enemyBoard.querySelector(
         `div[data-row="${row}"][data-column="${column}"]`,
       );
-      if (isAHit(enemy, row, column)) {
+      if (enemy.board.isAHit(row, column)) {
         boardSquare.classList.add('hit');
       } else {
         boardSquare.classList.add('miss');
@@ -130,7 +121,7 @@ export function playGame() {
       `div[data-row="${row}"][data-column="${column}"]`,
     );
     attacker.attack(enemy, row, column);
-    if (isAHit(enemy, row, column)) {
+    if (enemy.board.isAHit(row, column)) {
       boardSquare.classList.add('hit');
     } else {
       boardSquare.classList.add('miss');
