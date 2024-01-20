@@ -51,7 +51,7 @@ export class ComputerPlayer extends Player {
     return false;
   }
 
-  // Get random integer between min and max, max is exclusive (10x10 board)
+  // Get random integer between min and max, max is exclusive
   #getRandomInt(min, max) {
     return Math.floor(Math.random() * (min - max) + max);
   }

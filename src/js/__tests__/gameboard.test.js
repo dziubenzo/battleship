@@ -259,7 +259,7 @@ describe('Gameboard: placeShipsRandomly()', () => {
   test('returns an object whose direction property is "horizontal" or "vertical"', () => {
     const ship = [{ length: 6, name: 'Tester' }];
     const result = gameboard.placeShipsRandomly(ship);
-    expect(typeof result[0].direction).toBe('horizontal' || 'vertical');
+    expect(['horizontal', 'vertical']).toContain(result[0].direction);
   });
 
   test('returns as many objects as there are ships in the array', () => {
@@ -289,7 +289,7 @@ describe('Gameboard: placeShipsRandomly()', () => {
   test('throws error if the array is empty', () => {
     expect(() => {
       gameboard.placeShipsRandomly([]);
-    }).toThrow('Invalid array');
+    }).toThrow('Array is empty');
   });
 
   test('throws error if the ships array does not contain items with length property', () => {

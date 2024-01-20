@@ -94,6 +94,20 @@ export class Gameboard {
     }
   }
 
+  // Get random integer between min and max, max is exclusive
+  #getRandomInt(min, max) {
+    return Math.floor(Math.random() * (min - max) + max);
+  }
+
+  // Get random direction
+  #getRandomDirection() {
+    const randomNumber = Math.random();
+    if (randomNumber < 0.5) {
+      return 'horizontal';
+    }
+    return 'vertical';
+  }
+
   // Find ship that has been hit
   #findShip(shipName) {
     return this.ships.find((targetShip) => targetShip.name === shipName);
@@ -106,7 +120,9 @@ export class Gameboard {
       throw new Error('Invalid arguments');
     }
     if (isNaN(row) || row === null || isNaN(column) || column === null) {
-      throw new Error('Row and column arguments must be string numbers or numbers');
+      throw new Error(
+        'Row and column arguments must be string numbers or numbers',
+      );
     }
     const convertedRow = Number(row);
     const convertedColumn = Number(column);
@@ -139,13 +155,9 @@ export class Gameboard {
     // Check all squares for adjacency and overlapping
     for (let i = 0; i < ship.length; i++) {
       if (direction === 'horizontal') {
-        this.#checkAdjacencyAndOverlapping(
-          this.#board[row][column + i],
-        );
+        this.#checkAdjacencyAndOverlapping(this.#board[row][column + i]);
       } else if (direction === 'vertical') {
-        this.#checkAdjacencyAndOverlapping(
-          this.#board[row + i][column],
-        );
+        this.#checkAdjacencyAndOverlapping(this.#board[row + i][column]);
       }
     }
     let shipCoordinates = [];
@@ -162,6 +174,52 @@ export class Gameboard {
     // Store ship in array
     this.ships.push(ship);
     this.#makeUnavailable(shipCoordinates);
+  }
+
+  // Place all ships randomly
+  // Return their starting coordinates and direction
+  placeShipsRandomly(ships) {
+    if (arguments.length !== 1) {
+      throw new Error('Invalid arguments');
+    }
+    if (!Array.isArray(ships)) {
+      throw new Error('Argument must be an array');
+    }
+    if (ships.length === 0) {
+      throw new Error('Array is empty');
+    }
+    // Make sure the array has length and name properties
+    for (const ship of ships) {
+      if (ship.length === undefined || ship.name === undefined) {
+        throw new Error('Invalid array');
+      }
+    }
+    // Clear the board and ships
+    this.#board = this.#createBoard();
+    this.ships = [];
+
+    const coordinates = [];
+    for (const ship of ships) {
+      // Find valid combination the brute force way
+      while (true) {
+        try {
+          const row = this.#getRandomInt(0, 10);
+          const column = this.#getRandomInt(0, 10);
+          const direction = this.#getRandomDirection();
+          this.placeShip(
+            new Ship(ship.length, ship.name),
+            row,
+            column,
+            direction,
+          );
+          coordinates.push({ row, column, direction });
+          break;
+        } catch {
+          continue;
+        }
+      }
+    }
+    return coordinates;
   }
 
   // Process attack accordingly
