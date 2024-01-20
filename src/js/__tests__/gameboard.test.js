@@ -538,3 +538,43 @@ describe('Gameboard: isAHit()', () => {
     }).toThrow('Board square does not exist');
   });
 });
+
+describe('Gameboard: findShip()', () => {
+  let gameboard = new Gameboard();
+  let carrier = new Ship(5, 'Carrier');
+  let patrolBoat = new Ship(2, 'Patrol Boat');
+  gameboard.placeShip(carrier, 0, 0, 'horizontal');
+  gameboard.placeShip(patrolBoat, 8, 9, 'vertical');
+
+  beforeEach(() => {
+    gameboard = new Gameboard();
+    gameboard.placeShip(carrier, 0, 0, 'horizontal');
+    gameboard.placeShip(patrolBoat, 8, 9, 'vertical');
+    carrier.hits = 0;
+    patrolBoat.hits = 0;
+  });
+
+  test('returns the right ship', () => {
+    expect(gameboard.findShip('Carrier')).toEqual(carrier);
+    expect(gameboard.findShip('Patrol Boat')).toEqual(patrolBoat);
+  });
+
+  test('throws error if ship not found', () => {
+    expect(() => gameboard.findShip('Submarine')).toThrow('No ship found');
+  });
+
+  test('throws error if called with no arguments', () => {
+    expect(() => {
+      gameboard.findShip();
+    }).toThrow('Invalid arguments');
+  });
+
+  test.each([[234], [null], [undefined], [Infinity], [[]], [{}]])(
+    'throws error if argument is not a string (%s)',
+    () => {
+      expect((argument) => {
+        gameboard.findShip(argument);
+      }).toThrow('Argument must be a string');
+    },
+  );
+});
