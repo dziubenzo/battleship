@@ -1,6 +1,13 @@
 import { createPlayers, playGame } from './gameFlow';
 import { Ship } from './ship';
-import { getPlayerBoard } from './DOM';
+import {
+  getPlayerBoard,
+  showErrorSquares,
+  hideErrorSquares,
+  showPlacedShip,
+  hidePlacedShips,
+  changeCursorToDefault,
+} from './DOM';
 import { ERROR_MESSAGE_DISPLAY_DURATION } from './main';
 
 /* 
@@ -226,6 +233,8 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
       showPlacedShip(ship, row, column, direction, getPlayerBoard(player));
       if (player.board.ships.length === ships.length) {
         currentShipInfo.textContent = "All ships placed, you're ready to go!";
+        // Change place ship randomly icon
+        placeShipsRandomlyIcon.classList.add('icon-disabled', 'default-cursor');
         enableStartGame();
         return;
       }
@@ -274,6 +283,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
       );
     });
     currentShipInfo.textContent = "You're ready to go!";
+    changeCursorToDefault(board);
     // Remove all event listeners except for the place ship randomly one to enable rerolls
     removeEventListeners();
     placeShipsRandomlyIcon.addEventListener('click', placeShipsRandomly);
@@ -304,50 +314,6 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   });
 }
 
-// Show placed ship on the board
-export function showPlacedShip(ship, row, column, direction, boardDOM) {
-  for (let shift = 0; shift < ship.length; shift++) {
-    if (direction === 'horizontal') {
-      const squareColumn = column + shift;
-      const square = boardDOM.querySelector(
-        `div[data-row="${row}"][data-column="${squareColumn}"]`,
-      );
-      square.className = 'square placed';
-    }
-    if (direction === 'vertical') {
-      const squareRow = row + shift;
-      const square = boardDOM.querySelector(
-        `div[data-row="${squareRow}"][data-column="${column}"]`,
-      );
-      square.className = 'square placed';
-    }
-  }
-}
-
-// Remove all placed ships from all boards
-function hidePlacedShips() {
-  const placedShips = document.querySelectorAll('.square.placed');
-  for (const placedShip of placedShips) {
-    placedShip.className = 'square';
-  }
-}
-
-// Indicate invalid ship placement attempt by changing ship preview squares to a different colour
-function showErrorSquares() {
-  const shipPreviewSquares = document.querySelectorAll('.square.preview');
-  for (const square of shipPreviewSquares) {
-    square.className = 'square error';
-  }
-}
-
-// Change ship preview squares back to normal squares
-function hideErrorSquares() {
-  const shipPreviewErrorSquares = document.querySelectorAll('.square.error');
-  for (const square of shipPreviewErrorSquares) {
-    square.className = 'square';
-  }
-}
-
 // Enable Start Game button
 function enableStartGame() {
   // Start the game and close the ship placement modal
@@ -358,6 +324,12 @@ function enableStartGame() {
     playGame();
   }
   const startGameButton = document.querySelector('.start-game-button');
+  const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
+  const board = document.querySelector('div[class="ship-placement-board"]');
+  // Enable Start Game button
   startGameButton.removeAttribute('disabled');
+  // Change rotate ship icon
+  rotateShipIcon.classList.add('icon-disabled', 'default-cursor');
+  changeCursorToDefault(board);
   startGameButton.addEventListener('click', startGame);
 }

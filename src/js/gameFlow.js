@@ -1,10 +1,6 @@
 import { Player, ComputerPlayer } from './player';
-import {
-  showShipPlacementModal,
-  placeShips,
-  showPlacedShip,
-} from './DOM.modals';
-import { getPlayerBoard } from './DOM';
+import { showShipPlacementModal, placeShips } from './DOM.modals';
+import { getPlayerBoard, showPlacedShip, changeCursorToDefault } from './DOM';
 import { COMPUTER_MOVE_DURATION } from './main';
 
 export let player1;
@@ -217,9 +213,11 @@ export function playGame() {
   // Place all computer ships randomly
   if (player1.isHuman && !player2.isHuman) {
     player2.board.placeShipsRandomly(ships);
+    changeCursorToDefault(player1Board);
   }
   if (player2.isHuman && !player1.isHuman) {
     player1.board.placeShipsRandomly(ships);
+    changeCursorToDefault(player2Board);
   }
   // In the computer vs computer scenario, show their ships on boards
   if (!player1.isHuman && !player2.isHuman) {
@@ -233,6 +231,7 @@ export function playGame() {
         player1Board,
       );
     });
+    changeCursorToDefault(player1Board);
     const player2Ships = player2.board.placeShipsRandomly(ships);
     player2Ships.forEach((ship, index) => {
       showPlacedShip(
@@ -243,6 +242,7 @@ export function playGame() {
         player2Board,
       );
     });
+    changeCursorToDefault(player2Board);
   }
   playTurn();
 }

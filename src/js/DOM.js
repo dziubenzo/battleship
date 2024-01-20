@@ -97,3 +97,55 @@ export function getPlayerBoard(player) {
   }
   return document.querySelector('div[class="player-2-board"');
 }
+
+// Indicate invalid ship placement attempt by changing ship preview squares to a different colour
+export function showErrorSquares() {
+  const shipPreviewSquares = document.querySelectorAll('.square.preview');
+  for (const square of shipPreviewSquares) {
+    square.className = 'square error';
+  }
+}
+
+// Change ship preview squares back to normal squares
+export function hideErrorSquares() {
+  const shipPreviewErrorSquares = document.querySelectorAll('.square.error');
+  for (const square of shipPreviewErrorSquares) {
+    square.className = 'square';
+  }
+}
+
+// Show placed ship on the board
+export function showPlacedShip(ship, row, column, direction, boardDOM) {
+  for (let shift = 0; shift < ship.length; shift++) {
+    if (direction === 'horizontal') {
+      const squareColumn = column + shift;
+      const square = boardDOM.querySelector(
+        `div[data-row="${row}"][data-column="${squareColumn}"]`,
+      );
+      square.className = 'square placed';
+    }
+    if (direction === 'vertical') {
+      const squareRow = row + shift;
+      const square = boardDOM.querySelector(
+        `div[data-row="${squareRow}"][data-column="${column}"]`,
+      );
+      square.className = 'square placed';
+    }
+  }
+}
+
+// Remove all placed ships from all boards
+export function hidePlacedShips() {
+  const placedShips = document.querySelectorAll('.square.placed');
+  for (const placedShip of placedShips) {
+    placedShip.className = 'square';
+  }
+}
+
+// Change cursor to default for human player board squares and for boards in the computer vs computer scenario
+export function changeCursorToDefault(boardDOM) {
+  const squares = boardDOM.querySelectorAll('.square');
+  for (const square of squares) {
+    square.classList.add('default-cursor');
+  }
+}
