@@ -223,6 +223,90 @@ describe('Gameboard: placeShip()', () => {
   });
 });
 
+describe('Gameboard: placeShipsRandomly()', () => {
+  let gameboard;
+  const carrier = new Ship(5, 'Carrier');
+  const battleship = new Ship(4, 'Battleship');
+  const patrolBoat = new Ship(2, 'Patrol Boat');
+  const ships = [carrier, battleship, patrolBoat];
+
+  beforeEach(() => {
+    gameboard = new Gameboard();
+  });
+
+  test('places all ships from ships array', () => {
+    gameboard.placeShipsRandomly(ships);
+    expect(gameboard.ships.length).toBe(ships.length);
+  });
+
+  test('returns an object containing row, column, and direction properties', () => {
+    const ship = [{ length: 6, name: 'Tester' }];
+    const result = gameboard.placeShipsRandomly(ship);
+    expect(result[0]).toHaveProperty('row');
+    expect(result[0]).toHaveProperty('column');
+    expect(result[0]).toHaveProperty('direction');
+  });
+
+  test.each([['row'], ['column']])(
+    'returns an object whose %s property is a number',
+    (property) => {
+      const ship = [{ length: 6, name: 'Tester' }];
+      const result = gameboard.placeShipsRandomly(ship);
+      expect(typeof result[0][property]).toBe('number');
+    },
+  );
+
+  test('returns an object whose direction property is "horizontal" or "vertical"', () => {
+    const ship = [{ length: 6, name: 'Tester' }];
+    const result = gameboard.placeShipsRandomly(ship);
+    expect(typeof result[0].direction).toBe('horizontal' || 'vertical');
+  });
+
+  test('returns as many objects as there are ships in the array', () => {
+    const result = gameboard.placeShipsRandomly(ships);
+    expect(result.length).toBe(ships.length);
+  });
+
+  test('throws error if called with no arguments', () => {
+    expect(() => {
+      gameboard.placeShipsRandomly();
+    }).toThrow('Invalid arguments');
+  });
+
+  test.each([
+    ['string', 'Misza'],
+    ['number', 1234],
+    ['Ship instance', new Ship(4, 'Gonna Fail')],
+    ['null', null],
+    ['NaN', NaN],
+    ['boolean', false],
+  ])('throws error if the argument is not an array (%s)', (name, argument) => {
+    expect(() => {
+      gameboard.placeShipsRandomly(argument);
+    }).toThrow('Argument must be an array');
+  });
+
+  test('throws error if the array is empty', () => {
+    expect(() => {
+      gameboard.placeShipsRandomly([]);
+    }).toThrow('Invalid array');
+  });
+
+  test('throws error if the ships array does not contain items with length property', () => {
+    const badArray = [{ name: 'This Is A Bad Ship', armor: 9000 }];
+    expect(() => {
+      gameboard.placeShipsRandomly(badArray);
+    }).toThrow('Invalid array');
+  });
+
+  test('throws error if the ships array does not contain items with name property', () => {
+    const badArray = [{ inscription: 'This Is A Bad Ship', length: 9000 }];
+    expect(() => {
+      gameboard.placeShipsRandomly(badArray);
+    }).toThrow('Invalid array');
+  });
+});
+
 describe('Gameboard: receiveAttack() and areAllShipsSunk()', () => {
   let gameboard = new Gameboard();
   let carrier = new Ship(5, 'Carrier');
