@@ -97,6 +97,7 @@ export function playGame() {
   function playComputerTurn(attacker, enemy, enemyBoard) {
     setTimeout(() => {
       increaseAttacks(attacker);
+      let attack;
       const coordinates = attacker.attack(enemy);
       const row = coordinates[0];
       const column = coordinates[1];
@@ -105,16 +106,23 @@ export function playGame() {
       );
       if (enemy.board.isAHit(row, column)) {
         boardSquare.classList.add('hit');
-        const shipName = enemy.board.getSquare(row, column);
-        const ship = enemy.board.findShip(shipName);
-        if (ship.isSunk()) {
-          console.log(ship.name);
-        }
+        attack = 'hit';
+        // const shipName = enemy.board.getSquare(row, column);
+        // const ship = enemy.board.findShip(shipName);
+        // if (ship.isSunk()) {
+        //   console.log(ship.name);
+        // }
       } else {
         boardSquare.classList.add('miss');
+        attack = 'miss';
       }
-      changeTurn(attacker);
-      playTurn();
+      // Do not change turns if the attack was a hit
+      if (attack === 'hit') {
+        playTurn();
+      } else {
+        changeTurn(attacker);
+        playTurn();
+      }
     }, COMPUTER_MOVE_DURATION);
   }
 
@@ -142,8 +150,10 @@ export function playGame() {
     attacker.attack(enemy, row, column);
     if (enemy.board.isAHit(row, column)) {
       boardSquare.classList.add('hit');
+      return 'hit';
     } else {
       boardSquare.classList.add('miss');
+      return 'miss';
     }
   }
 
@@ -153,11 +163,16 @@ export function playGame() {
       return;
     }
     player1.attacks++;
-    playHumanTurn(event, player1, player2, player2Board);
-    player1.turn = false;
-    player2.turn = true;
+    const attack = playHumanTurn(event, player1, player2, player2Board);
     player2Board.removeEventListener('mousedown', attackPlayer2);
-    playTurn();
+    // Do not change turns if the attack was a hit
+    if (attack === 'hit') {
+      playTurn();
+    } else {
+      player1.turn = false;
+      player2.turn = true;
+      playTurn();
+    }
   }
 
   // Event handler for playHumanTurn function attacking Player 1
@@ -166,11 +181,16 @@ export function playGame() {
       return;
     }
     player2.attacks++;
-    playHumanTurn(event, player2, player1, player1Board);
-    player1.turn = true;
-    player2.turn = false;
+    const attack = playHumanTurn(event, player2, player1, player1Board);
     player1Board.removeEventListener('mousedown', attackPlayer1);
-    playTurn();
+    // Do not change turns if the attack was a hit
+    if (attack === 'hit') {
+      playTurn();
+    } else {
+      player1.turn = true;
+      player2.turn = false;
+      playTurn();
+    }
   }
 
   // Play a turn
