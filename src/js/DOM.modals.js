@@ -179,6 +179,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     board.removeEventListener('mouseout', hideShip);
     rotateShipIcon.removeEventListener('click', rotateShip);
     removeEventListener('auxclick', rotateShip);
+    placeShipsRandomlyIcon.removeEventListener('click', placeShipsRandomly);
   }
   // Add ship to the player's board array if no errors thrown
   // Call itself again using the next ship stored in the ships array
@@ -227,6 +228,34 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
     }
   }
 
+  // Place all ships randomly
+  function placeShipsRandomly() {
+    // Hide previously placed ships
+    hidePlacedShips();
+    const randomShips = player.board.placeShipsRandomly(ships);
+    // Show ships on both boards
+    randomShips.forEach((ship, index) => {
+      showPlacedShip(
+        ships[index],
+        ship.row,
+        ship.column,
+        ship.direction,
+        board,
+      );
+      showPlacedShip(
+        ships[index],
+        ship.row,
+        ship.column,
+        ship.direction,
+        getPlayerBoard(player),
+      );
+    });
+    currentShipInfo.textContent = "You're ready to go!";
+    // Remove all event listeners except for the place ship randomly one to enable rerolls
+    removeEventListeners();
+    placeShipsRandomlyIcon.addEventListener('click', placeShipsRandomly);
+  }
+
   let direction = 'horizontal';
   const currentShipInfo = document.querySelector('p[class="current-ship"]');
   const shipName = ship.name;
@@ -237,13 +266,19 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   }/${shipsCount}: ${shipName}`;
   const board = document.querySelector('div[class="ship-placement-board"]');
   const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
+  const placeShipsRandomlyIcon = document.querySelector(
+    'img[alt="Place Ships Randomly Icon"]',
+  );
 
   board.addEventListener('mouseover', showShip);
   board.addEventListener('mouseout', hideShip);
   board.addEventListener('mousedown', addShip);
   rotateShipIcon.addEventListener('click', rotateShip);
   addEventListener('auxclick', rotateShip);
-  return;
+  placeShipsRandomlyIcon.addEventListener('click', placeShipsRandomly);
+  placeShipsRandomlyIcon.addEventListener('click', enableStartGame, {
+    once: true,
+  });
 }
 
 // Show placed ship on the board
@@ -266,6 +301,14 @@ export function showPlacedShip(ship, row, column, direction, boardDOM) {
   }
 }
 
+// Remove all placed ships from all boards
+function hidePlacedShips() {
+  const placedShips = document.querySelectorAll('.square.placed');
+  for (const placedShip of placedShips) {
+    placedShip.className = 'square';
+  }
+}
+
 // Indicate invalid ship placement attempt by changing ship preview squares to a different colour
 function showErrorSquares() {
   const shipPreviewSquares = document.querySelectorAll('.square.preview');
@@ -284,14 +327,14 @@ function hideErrorSquares() {
 
 // Enable Start Game button
 function enableStartGame() {
-  // Close ship placement modal and start the game
-  function hideShipPlacementModal() {
+  // Start the game and close the ship placement modal
+  function startGame() {
     const dialog = document.querySelector('#ship-placement-dialog');
     dialog.close();
-    startGameButton.removeEventListener('click', hideShipPlacementModal);
+    startGameButton.removeEventListener('click', startGame);
     playGame();
   }
   const startGameButton = document.querySelector('.start-game-button');
   startGameButton.removeAttribute('disabled');
-  startGameButton.addEventListener('click', hideShipPlacementModal);
+  startGameButton.addEventListener('click', startGame);
 }
