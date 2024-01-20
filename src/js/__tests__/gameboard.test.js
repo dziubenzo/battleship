@@ -560,7 +560,7 @@ describe('Gameboard: findShip()', () => {
   });
 
   test('throws error if ship not found', () => {
-    expect(() => gameboard.findShip('Submarine')).toThrow('No ship found');
+    expect(() => gameboard.findShip('Submarine')).toThrow('Ship not found');
   });
 
   test('throws error if called with no arguments', () => {

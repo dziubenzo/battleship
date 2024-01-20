@@ -109,8 +109,18 @@ export class Gameboard {
   }
 
   // Find ship that has been hit
-  #findShip(shipName) {
-    return this.ships.find((targetShip) => targetShip.name === shipName);
+  findShip(shipName) {
+    if (arguments.length !== 1) {
+      throw new Error('Invalid arguments');
+    }
+    if (typeof shipName !== "string") {
+      throw new Error('Argument must be a string');
+    }
+    const ship = this.ships.find((targetShip) => targetShip.name === shipName);
+    if (ship === undefined) {
+      throw new Error('Ship not found')
+    }
+    return ship;
   }
 
   // Check the board square if it exists
@@ -235,7 +245,7 @@ export class Gameboard {
       return;
     }
     // Handle hits
-    const targetShip = this.#findShip(square);
+    const targetShip = this.findShip(square);
     targetShip.hit();
     this.hits.push([row, column]);
     this.areAllShipsDown();
