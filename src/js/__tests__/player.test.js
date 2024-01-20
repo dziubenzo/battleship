@@ -29,6 +29,14 @@ describe('Player', () => {
   test('contains isHuman property, whose value is true', () => {
     expect(new Player()).toHaveProperty('isHuman', true);
   });
+
+  test('contains turn property, whose value is false', () => {
+    expect(new Player()).toHaveProperty('turn', false);
+  });
+
+  test('contains attacks property, whose value is 0', () => {
+    expect(new Player()).toHaveProperty('attacks', 0);
+  });
 });
 
 describe('Player: attack()', () => {
@@ -132,6 +140,14 @@ describe('ComputerPlayer', () => {
 
   test('contains isHuman property, whose value is false', () => {
     expect(new ComputerPlayer()).toHaveProperty('isHuman', false);
+  });
+
+  test('contains turn property, whose value is false', () => {
+    expect(new ComputerPlayer()).toHaveProperty('turn', false);
+  });
+
+  test('contains attacks property, whose value is 0', () => {
+    expect(new ComputerPlayer()).toHaveProperty('attacks', 0);
   });
 });
 
