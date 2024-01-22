@@ -15,7 +15,8 @@ export class EventLog {
   #missVerbs = [
     'misses',
     'is off',
-    'fails to hit a ship',
+    'is unsuccessful in their efforts',
+    'fails to score a hit',
     'hits the ocean instead',
   ];
   #missPhrases = [
@@ -25,6 +26,13 @@ export class EventLog {
     "Don't get upset",
     'Hold your horses',
     "That's just the way it is",
+  ];
+  #gameOverPhrases = [
+    'emerges victorious',
+    'is the winner',
+    'wins',
+    'is the last man standing',
+    'outplayed their opponent',
   ];
 
   constructor(player1, player2) {
@@ -107,8 +115,12 @@ export class EventLog {
     const descriptionDOM = this.#createEvent();
     const coordinates = this.getCoordinates(row, column);
     descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#shipSunkVerbs[randomIntShipSunk]}</span> ${enemy.name}'s <span class="bold">${shipName}</span>!`;
+    // Make sure that there will be a next turn
     if (!enemy.board.areAllShipsDown()) {
       descriptionDOM.innerHTML += `<br><br>Not only that, it's <span class="bold">${attacker.name}'s</span> turn again.`;
+    }
+    if (enemy.board.areAllShipsDown()) {
+      this.#addGameOverEvent(attacker, 'game-over');
     }
     descriptionDOM.classList.add(`${className}`);
   }
@@ -122,5 +134,18 @@ export class EventLog {
     const coordinates = this.getCoordinates(row, column);
     descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#missVerbs[randomIntShipMissed]}</span>. <br><br>${this.#missPhrases[randomIntPhrases]}, <span class="bold">${attacker.name}</span>!`;
     descriptionDOM.classList.add(`${className}`);
+  }
+
+  // Add game over event
+  #addGameOverEvent(attacker, className) {
+    const randomIntPhrases = this.#getRandomInt(
+      0,
+      this.#gameOverPhrases.length,
+    );
+    const descriptionDOM = this.#createEvent();
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#gameOverPhrases[randomIntPhrases]}!`;
+    descriptionDOM.classList.add(`${className}`);
+    const turnDOM = document.querySelector('.event > .turn');
+    turnDOM.textContent = 'GG';
   }
 }
