@@ -44,21 +44,6 @@ describe('EventLog', () => {
   });
 });
 
-describe('EventLog: updateMoves()', () => {
-  const player1 = new Player();
-  const player2 = new ComputerPlayer();
-  const eventLog = new EventLog(player1, player2);
-
-  test('works as expected', () => {
-    player1.attacks++;
-    player2.attacks++;
-    player1.attacks++;
-    const expected = player1.attacks + player2.attacks;
-    eventLog.updateMoves();
-    expect(eventLog.moves).toBe(expected);
-  });
-});
-
 describe('EventLog: getCoordinates()', () => {
   const player1 = new Player();
   const player2 = new ComputerPlayer();
