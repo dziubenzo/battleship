@@ -1,7 +1,7 @@
 import { Player } from './player';
 
 export class EventLog {
-  #verbs = [
+  #attackVerbs = [
     'attacks',
     'strikes',
     'fires at',
@@ -11,6 +11,7 @@ export class EventLog {
     'assails',
     'assaults',
   ];
+  #shipSunkPhrases = ['sinks', 'there goes', 'destroys', 'ends', 'obliterates'];
   #missPhrases = [
     'Unlucky',
     'Better luck next time',
@@ -83,11 +84,27 @@ export class EventLog {
   }
 
   // Add ship hit event
-  addHitEvent(attacker, row, column, className) {
-    const randomInt = this.#getRandomInt(0, this.#verbs.length);
+  addShipHitEvent(attacker, row, column, className) {
+    const randomInt = this.#getRandomInt(0, this.#attackVerbs.length);
     const descriptionDOM = this.#createEvent();
     const coordinates = this.getCoordinates(row, column);
-    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#verbs[randomInt]} <span class="bold">${coordinates}</span>, and <span class="bold">hits</span> a ship!<br><span class="bold">${attacker.name}</span> gets to play another turn.`;
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomInt]} <span class="bold">${coordinates}</span>, and <span class="bold">hits</span> a ship! <br><span class="bold">${attacker.name}</span> gets to play another turn.`;
+    descriptionDOM.classList.add(`${className}`);
+  }
+
+  // Add ship sunk event
+  addShipSunkEvent(attacker, enemy, shipName, row, column, className) {
+    const randomIntVerbs = this.#getRandomInt(0, this.#attackVerbs.length);
+    const randomIntPhrases = this.#getRandomInt(
+      0,
+      this.#shipSunkPhrases.length,
+    );
+    const descriptionDOM = this.#createEvent();
+    const coordinates = this.getCoordinates(row, column);
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#shipSunkPhrases[randomIntPhrases]}</span> ${enemy.name}'s <span class="bold">${shipName}</span>!`;
+    if (!enemy.board.areAllShipsDown()) {
+      descriptionDOM.innerHTML += `<br>Not only that, it's <span class="bold">${attacker.name}'s</span> turn again.`;
+    }
     descriptionDOM.classList.add(`${className}`);
   }
 }

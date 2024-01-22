@@ -102,14 +102,22 @@ export function playGame() {
         `div[data-row="${row}"][data-column="${column}"]`,
       );
       if (enemy.board.isAHit(row, column)) {
+        const shipName = enemy.board.getSquare(row, column);
+        const ship = enemy.board.findShip(shipName);
         boardSquare.classList.add('hit');
         attack = 'hit';
-        eventLog.addHitEvent(attacker, row, column, 'hit');
-        // const shipName = enemy.board.getSquare(row, column);
-        // const ship = enemy.board.findShip(shipName);
-        // if (ship.isSunk()) {
-        //   console.log(ship.name);
-        // }
+        if (ship.isSunk()) {
+          eventLog.addShipSunkEvent(
+            attacker,
+            enemy,
+            ship.name,
+            row,
+            column,
+            'ship-sunk',
+          );
+        } else {
+          eventLog.addShipHitEvent(attacker, row, column, 'hit');
+        }
       } else {
         boardSquare.classList.add('miss');
         attack = 'miss';
@@ -147,8 +155,21 @@ export function playGame() {
     );
     attacker.attack(enemy, row, column);
     if (enemy.board.isAHit(row, column)) {
+      const shipName = enemy.board.getSquare(row, column);
+      const ship = enemy.board.findShip(shipName);
       boardSquare.classList.add('hit');
-      eventLog.addHitEvent(attacker, row, column, 'hit');
+      if (ship.isSunk()) {
+        eventLog.addShipSunkEvent(
+          attacker,
+          enemy,
+          ship.name,
+          row,
+          column,
+          'ship-sunk',
+        );
+      } else {
+        eventLog.addShipHitEvent(attacker, row, column, 'hit');
+      }
       return 'hit';
     } else {
       boardSquare.classList.add('miss');
