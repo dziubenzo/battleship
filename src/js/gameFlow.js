@@ -1,4 +1,5 @@
 import { Player, ComputerPlayer } from './player';
+import { EventLog } from './eventLog';
 import { showShipPlacementModal, placeShips } from './DOM.modals';
 import { getPlayerBoard, showPlacedShip, changeCursorToDefault } from './DOM';
 import { COMPUTER_MOVE_DURATION } from './main';
@@ -103,6 +104,7 @@ export function playGame() {
       if (enemy.board.isAHit(row, column)) {
         boardSquare.classList.add('hit');
         attack = 'hit';
+        eventLog.addHitEvent(attacker, row, column, 'hit');
         // const shipName = enemy.board.getSquare(row, column);
         // const ship = enemy.board.findShip(shipName);
         // if (ship.isSunk()) {
@@ -146,6 +148,7 @@ export function playGame() {
     attacker.attack(enemy, row, column);
     if (enemy.board.isAHit(row, column)) {
       boardSquare.classList.add('hit');
+      eventLog.addHitEvent(attacker, row, column, 'hit');
       return 'hit';
     } else {
       boardSquare.classList.add('miss');
@@ -208,6 +211,7 @@ export function playGame() {
 
   const player1Board = getPlayerBoard(player1);
   const player2Board = getPlayerBoard(player2);
+  const eventLog = new EventLog(player1, player2);
   player1.turn = true;
 
   // Place all computer ships randomly
