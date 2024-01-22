@@ -149,3 +149,11 @@ export function changeCursorToDefault(boardDOM) {
     square.classList.add('default-cursor');
   }
 }
+
+// Show player names on main page
+export function showPlayerNames(player1, player2) {
+  const player1NameDOM = document.querySelector('p[class="player-1-name"]');
+  const player2NameDOM = document.querySelector('p[class="player-2-name"]');
+  player1NameDOM.textContent = player1.name;
+  player2NameDOM.textContent = player2.name;
+}

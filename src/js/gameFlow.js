@@ -1,7 +1,12 @@
 import { Player, ComputerPlayer } from './player';
 import { EventLog } from './eventLog';
 import { showShipPlacementModal, placeShips } from './DOM.modals';
-import { getPlayerBoard, showPlacedShip, changeCursorToDefault } from './DOM';
+import {
+  getPlayerBoard,
+  showPlacedShip,
+  changeCursorToDefault,
+  showPlayerNames,
+} from './DOM';
 import { COMPUTER_MOVE_DURATION } from './main';
 
 export let player1;
@@ -235,6 +240,7 @@ export function playGame() {
   const player1Board = getPlayerBoard(player1);
   const player2Board = getPlayerBoard(player2);
   const eventLog = new EventLog(player1, player2);
+  showPlayerNames(player1, player2);
   player1.turn = true;
 
   // Place all computer ships randomly
