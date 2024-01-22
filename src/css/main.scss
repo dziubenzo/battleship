@@ -278,8 +278,25 @@ main {
       }
     }
 
+    .player-1-health,
+    .player-2-health {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+
+      .health-percent {
+        font-size: 2rem;
+      }
+
+      img[alt="Health Icon"] {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
     .event-log-title {
-      margin-top: 32px;
+      margin-top: 16px;
       grid-column: 1 / 3;
       text-align: center;
       font-size: 2rem;
