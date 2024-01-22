@@ -3,7 +3,6 @@ import { Player } from './player';
 export class EventLog {
   #attackVerbs = [
     'attacks',
-    'strikes',
     'fires at',
     'invades',
     'raids',
@@ -11,13 +10,21 @@ export class EventLog {
     'assails',
     'assaults',
   ];
-  #shipSunkPhrases = ['sinks', 'there goes', 'destroys', 'ends', 'obliterates'];
+  #hitVerbs = ['hits', 'damages', 'strikes'];
+  #shipSunkVerbs = ['sinks', 'there goes', 'destroys', 'ends', 'obliterates'];
+  #missVerbs = [
+    'misses',
+    'is off',
+    'fails to hit a ship',
+    'hits the ocean instead',
+  ];
   #missPhrases = [
     'Unlucky',
     'Better luck next time',
     'The game goes on',
     "Don't get upset",
     'Hold your horses',
+    "That's just the way it is",
   ];
 
   constructor(player1, player2) {
@@ -85,26 +92,35 @@ export class EventLog {
 
   // Add ship hit event
   addShipHitEvent(attacker, row, column, className) {
-    const randomInt = this.#getRandomInt(0, this.#attackVerbs.length);
+    const randomIntVerbs = this.#getRandomInt(0, this.#attackVerbs.length);
+    const randomIntShipHit = this.#getRandomInt(0, this.#hitVerbs.length);
     const descriptionDOM = this.#createEvent();
     const coordinates = this.getCoordinates(row, column);
-    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomInt]} <span class="bold">${coordinates}</span>, and <span class="bold">hits</span> a ship! <br><span class="bold">${attacker.name}</span> gets to play another turn.`;
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#hitVerbs[randomIntShipHit]}</span> a ship! <br><br><span class="bold">${attacker.name}</span> gets to play another turn.`;
     descriptionDOM.classList.add(`${className}`);
   }
 
   // Add ship sunk event
   addShipSunkEvent(attacker, enemy, shipName, row, column, className) {
     const randomIntVerbs = this.#getRandomInt(0, this.#attackVerbs.length);
-    const randomIntPhrases = this.#getRandomInt(
-      0,
-      this.#shipSunkPhrases.length,
-    );
+    const randomIntShipSunk = this.#getRandomInt(0, this.#shipSunkVerbs.length);
     const descriptionDOM = this.#createEvent();
     const coordinates = this.getCoordinates(row, column);
-    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#shipSunkPhrases[randomIntPhrases]}</span> ${enemy.name}'s <span class="bold">${shipName}</span>!`;
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#shipSunkVerbs[randomIntShipSunk]}</span> ${enemy.name}'s <span class="bold">${shipName}</span>!`;
     if (!enemy.board.areAllShipsDown()) {
-      descriptionDOM.innerHTML += `<br>Not only that, it's <span class="bold">${attacker.name}'s</span> turn again.`;
+      descriptionDOM.innerHTML += `<br><br>Not only that, it's <span class="bold">${attacker.name}'s</span> turn again.`;
     }
+    descriptionDOM.classList.add(`${className}`);
+  }
+
+  // Add ship missed event
+  addShipMissedEvent(attacker, row, column, className) {
+    const randomIntVerbs = this.#getRandomInt(0, this.#attackVerbs.length);
+    const randomIntShipMissed = this.#getRandomInt(0, this.#missVerbs.length);
+    const randomIntPhrases = this.#getRandomInt(0, this.#missPhrases.length);
+    const descriptionDOM = this.#createEvent();
+    const coordinates = this.getCoordinates(row, column);
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#missVerbs[randomIntShipMissed]}</span>. <br><br>${this.#missPhrases[randomIntPhrases]}, <span class="bold">${attacker.name}</span>!`;
     descriptionDOM.classList.add(`${className}`);
   }
 }

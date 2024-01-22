@@ -120,6 +120,7 @@ export function playGame() {
         }
       } else {
         boardSquare.classList.add('miss');
+        eventLog.addShipMissedEvent(attacker, row, column, 'missed');
         attack = 'miss';
       }
       // Do not change turns if the attack was a hit
@@ -173,6 +174,7 @@ export function playGame() {
       return 'hit';
     } else {
       boardSquare.classList.add('miss');
+      eventLog.addShipMissedEvent(attacker, row, column, 'missed');
       return 'miss';
     }
   }
