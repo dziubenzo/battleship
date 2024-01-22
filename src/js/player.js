@@ -37,7 +37,11 @@ export class ComputerPlayer extends Player {
     if (isSmart !== false && isSmart !== true) {
       throw new Error('Invalid argument');
     }
-    this.name = 'Computer';
+    if (isSmart === true) {
+      this.name = 'Smarter Computer';
+    } else {
+      this.name = 'Computer';
+    }
     this.isSmart = isSmart;
     this.isHuman = false;
   }

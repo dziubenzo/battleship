@@ -132,6 +132,14 @@ describe('ComputerPlayer', () => {
     expect(new ComputerPlayer(true).isSmart).toBe(true);
   });
 
+  test('has name property whose value is "Computer"', () => {
+    expect(new ComputerPlayer().name).toBe('Computer');
+  });
+
+  test('has name property whose value is "Smarter Computer" if true passed as an argument', () => {
+    expect(new ComputerPlayer(true).name).toBe('Smarter Computer');
+  });
+
   test('throws error if something else is passed as an argument', () => {
     expect(() => {
       new ComputerPlayer('Even Smarter AI');
