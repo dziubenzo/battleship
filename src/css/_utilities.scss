@@ -15,7 +15,9 @@ $ship-placed-colour: rgb(255, 185, 55);
 $ship-placed-player-board-colour: rgb(95, 69, 21);
 $ship-hit-colour: rgb(73, 195, 40);
 $ship-missed-colour: rgb(0, 90, 128);
+$event-log-ship-hit-colour: rgb(73, 195, 40);
 $event-log-ship-sunk-colour: rgb(255, 0, 0);
+$event-log-ship-missed-colour: rgb(0, 90, 128);
 
 // Helper classes
 .default-cursor {
