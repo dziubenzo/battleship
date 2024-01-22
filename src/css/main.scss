@@ -306,19 +306,39 @@ main {
         border-radius: 10px;
         border: transparent;
       }
+
       .event {
         display: flex;
         border-bottom: 1px solid $main-colour;
-        padding: 8px;
+        padding: 8px 0;
 
         .turn {
           width: 30px;
-          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 24px;
         }
 
         .description {
           width: 100%;
           text-align: center;
+        }
+
+        .description.hit {
+          border-left: 5px solid $ship-hit-colour;
+        }
+
+        .description.sunk-ship {
+          border-left: 5px solid $event-log-ship-sunk-colour;
+        }
+
+        .description.miss {
+          border-left: 5px solid $ship-missed-colour;
+        }
+
+        .description.game-over {
+          border-left: 5px solid $main-colour;
         }
       }
     }
