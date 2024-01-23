@@ -113,12 +113,12 @@ export class Gameboard {
     if (arguments.length !== 1) {
       throw new Error('Invalid arguments');
     }
-    if (typeof shipName !== "string") {
+    if (typeof shipName !== 'string') {
       throw new Error('Argument must be a string');
     }
     const ship = this.ships.find((targetShip) => targetShip.name === shipName);
     if (ship === undefined) {
-      throw new Error('Ship not found')
+      throw new Error('Ship not found');
     }
     return ship;
   }
@@ -267,6 +267,20 @@ export class Gameboard {
       return true;
     }
     return false;
+  }
+
+  // Calculate current health
+  // Return a value in the range of 0-100
+  calculateHealth() {
+    const totalLength = this.ships.reduce(
+      (sum, currentShip) => (sum += currentShip.length),
+      0,
+    );
+    const totalHits = this.ships.reduce(
+      (sum, currentShip) => (sum += currentShip.hits),
+      0,
+    );
+    return ((totalLength - totalHits) / totalLength) * 100;
   }
 
   // Check if all ships have been sunk
