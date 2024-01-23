@@ -32,18 +32,28 @@ dialog[open] {
   }
 
   .starting-dialog,
-  .ship-placement-dialog {
+  .ship-placement-dialog,
+  .options-dialog {
     display: grid;
     align-content: space-evenly;
 
-    img[alt='Settings Icon'] {
+    img[alt='Options Icon'],
+    img[alt='Back Icon'] {
       height: 32px;
       width: 32px;
       position: absolute;
-      right: 3%;
       top: 3%;
       cursor: pointer;
     }
+
+    img[alt="Options Icon"] {
+      right: 3%;
+    }
+
+    img[alt='Back Icon'] {
+      left: 3%;
+    }
+
 
     img[alt='Rotate Ship Icon'],
     img[alt='Place Ships Randomly Icon'] {
@@ -62,7 +72,8 @@ dialog[open] {
       left: 6%;
     }
 
-    .dialog-title {
+    .dialog-title,
+    .ship-customisation-title {
       font-size: 2rem;
       font-weight: bold;
     }
@@ -203,6 +214,71 @@ dialog[open] {
       }
     }
   }
+
+  .options-dialog {
+    input {
+      text-align: center;
+      font-size: 1.05rem;
+      outline: 1px solid $main-colour;
+      border: none;
+      padding: 3px 0;
+      border-radius: 4px;
+
+      &:focus {
+        outline: 2px solid $main-colour;
+      }
+    }
+
+    .options-top {
+      display: grid;
+      justify-content: center;
+      grid-template-columns: max-content auto;
+      gap: 8px;
+
+      input {
+        width: 21ch;
+      }
+
+      input[type='tel'] {
+        width: 8ch;
+      }
+    }
+
+    .ship-customisation-title {
+      text-align: center;
+    }
+
+    .options-bottom {
+      display: grid;
+      justify-content: center;
+      grid-template-columns: max-content auto max-content auto;
+      gap: 8px;
+
+      input[type='text'] {
+        width: 21ch;
+      }
+
+      input[type='tel'] {
+        width: 3ch;
+      }
+
+      .options-icons {
+        grid-column: 1 / 5;
+        display: flex;
+        justify-content: center;
+        gap: 64px;
+        padding-top: 8px;
+
+        img[alt='Reset Icon'],
+        img[alt='Save Icon'] {
+          height: 50px;
+          width: 50px;
+          justify-self: center;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 
 body {
@@ -289,7 +365,7 @@ main {
         font-size: 2rem;
       }
 
-      img[alt="Health Icon"] {
+      img[alt='Health Icon'] {
         width: 32px;
         height: 32px;
       }

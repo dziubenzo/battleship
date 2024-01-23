@@ -340,8 +340,8 @@ Options modal
 
 */
 
-// Show starting modal
-export function showOptionsModal() {
+// Show options modal
+function showOptionsModal() {
   const dialog = document.querySelector('#options-dialog');
   dialog.showModal();
   // Prevent it from being closed on clicking Esc

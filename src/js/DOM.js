@@ -1,6 +1,6 @@
 import gitHubLogoWhiteSrc from '../assets/github-logo-white.svg';
 import gitHubLogoBlackSrc from '../assets/github-logo-black.svg';
-import settingsSrc from '../assets/settings.svg';
+import optionsSrc from '../assets/options.svg';
 import rotateShipSrc from '../assets/rotate.svg';
 import placeShipsRandomlySrc from '../assets/place-ships-randomly.svg';
 import healthSrc from '../assets/health.svg';
@@ -15,8 +15,8 @@ const NO_OF_SQUARES = 121;
 export function loadImages() {
   const gitHubLogo = document.querySelector('img[alt="GitHub Logo"]');
   gitHubLogo.src = gitHubLogoWhiteSrc;
-  const settingsIcon = document.querySelector('img[alt="Settings Icon"]');
-  settingsIcon.src = settingsSrc;
+  const optionsIcon = document.querySelector('img[alt="Options Icon"]');
+  optionsIcon.src = optionsSrc;
   const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
   rotateShipIcon.src = rotateShipSrc;
   const placeShipsRandomlyIcon = document.querySelector(
