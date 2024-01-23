@@ -37,6 +37,10 @@ describe('Player', () => {
   test('contains attacks property, whose value is 0', () => {
     expect(new Player()).toHaveProperty('attacks', 0);
   });
+
+  test('contains health property, whose value is 100', () => {
+    expect(new Player()).toHaveProperty('health', 100);
+  });
 });
 
 describe('Player: attack()', () => {
@@ -156,6 +160,10 @@ describe('ComputerPlayer', () => {
 
   test('contains attacks property, whose value is 0', () => {
     expect(new ComputerPlayer()).toHaveProperty('attacks', 0);
+  });
+
+  test('contains health property, whose value is 100', () => {
+    expect(new ComputerPlayer()).toHaveProperty('health', 100);
   });
 });
 
