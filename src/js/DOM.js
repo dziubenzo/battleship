@@ -162,3 +162,14 @@ export function showPlayerNames(player1, player2) {
   player1NameDOM.textContent = player1.name;
   player2NameDOM.textContent = player2.name;
 }
+
+// Update health in the DOM
+export function updateHealthDOM(enemy) {
+  let healthValue;
+  if (enemy === player1) {
+    healthValue = document.querySelector('.player-1-health > .health-percent');
+  } else {
+    healthValue = document.querySelector('.player-2-health > .health-percent');
+  }
+  healthValue.textContent = enemy.health;
+}

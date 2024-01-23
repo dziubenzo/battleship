@@ -6,6 +6,7 @@ import {
   showPlacedShip,
   changeCursorToDefault,
   showPlayerNames,
+  updateHealthDOM,
 } from './DOM';
 import { COMPUTER_MOVE_DURATION } from './main';
 
@@ -110,6 +111,7 @@ export function playGame() {
         const shipName = enemy.board.getSquare(row, column);
         const ship = enemy.board.findShip(shipName);
         boardSquare.classList.add('hit');
+        updateHealthDOM(enemy);
         attack = 'hit';
         if (ship.isSunk()) {
           eventLog.addShipSunkEvent(
@@ -164,6 +166,7 @@ export function playGame() {
       const shipName = enemy.board.getSquare(row, column);
       const ship = enemy.board.findShip(shipName);
       boardSquare.classList.add('hit');
+      updateHealthDOM(enemy);
       if (ship.isSunk()) {
         eventLog.addShipSunkEvent(
           attacker,

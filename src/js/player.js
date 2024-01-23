@@ -10,6 +10,7 @@ export class Player {
     this.isHuman = true;
     this.turn = false;
     this.attacks = 0;
+    this.health = 100;
   }
 
   // Attack the enemy's board
@@ -26,6 +27,8 @@ export class Player {
       throw new Error('You cannot attack yourself');
     }
     enemy.board.receiveAttack(row, column);
+    // Update enemy health
+    enemy.health = enemy.board.calculateHealth();
   }
 }
 
@@ -131,6 +134,8 @@ export class ComputerPlayer extends Player {
       }
     }
     enemy.board.receiveAttack(row, column);
+    // Update enemy health
+    enemy.health = enemy.board.calculateHealth();
     const newHitsCount = enemy.board.hits.length;
     // Remember a hit if computer is a smarter one
     if (newHitsCount > oldHitsCount && this.isSmart) {
