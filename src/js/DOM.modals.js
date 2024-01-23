@@ -16,6 +16,7 @@ import {
   ships,
   readLocalStorage,
   updateGameVariables,
+  resetValuesToDefault,
 } from './main';
 
 /* 
@@ -88,19 +89,19 @@ export function listenForLabelClick() {
       ) {
         button.textContent = 'Start Game';
       } else {
-        button.textContent = 'Next';
+        button.textContent = 'Place Ships';
       }
     }
   }
 
   const player1Labels = document.querySelectorAll('.player-1 label');
   const player2Labels = document.querySelectorAll('.player-2 label');
-  const allLabels = document.querySelectorAll('.starting-dialog label');
 
   player1Labels.forEach((label) => {
     label.addEventListener('click', (event) => {
       makeSelected(event);
       showOrHideNameFields(event);
+      enableButton(event);
     });
   });
 
@@ -108,11 +109,8 @@ export function listenForLabelClick() {
     label.addEventListener('click', (event) => {
       makeSelected(event);
       showOrHideNameFields(event);
+      enableButton(event);
     });
-  });
-
-  allLabels.forEach((label) => {
-    label.addEventListener('click', enableButton);
   });
 }
 
@@ -138,10 +136,6 @@ Ship placement modal
 export function showShipPlacementModal() {
   const dialog = document.querySelector('#ship-placement-dialog');
   dialog.showModal();
-  // Prevent it from being closed on clicking Esc
-  dialog.addEventListener('cancel', (event) => {
-    event.preventDefault();
-  });
 }
 
 // Show ship preview on board square hover and place it on board square click
@@ -344,7 +338,7 @@ Options modal
 
 // Open options modal on options icon click
 // Go back to starting modal on back icon click or pressing Esc
-// Listen for clicking Save icon
+// Listen for clicking Save and Reset icons
 export function listenForOptionsModalClick() {
   // Show options modal
   function showOptionsModal() {
@@ -358,6 +352,7 @@ export function listenForOptionsModalClick() {
   const optionsIcon = document.querySelector('img[alt="Options Icon"]');
   const backIcon = document.querySelector('img[alt="Back Icon"]');
   const optionsForm = document.querySelector('form[id="options"]');
+  const resetIcon = document.querySelector('img[alt="Reset Icon"]');
 
   optionsIcon.addEventListener('click', () => {
     hideStartingModal();
@@ -373,6 +368,7 @@ export function listenForOptionsModalClick() {
     showStartingModal();
   });
   optionsForm.addEventListener('submit', listenForOptionsUpdate);
+  resetIcon.addEventListener('click', resetValuesToDefault);
 }
 
 // Show localStorage values in options modal fields and in starting modal name fields

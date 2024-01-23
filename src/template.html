@@ -81,7 +81,7 @@
             />
           </div>
         </form>
-        <button form="player-selection" type="submit" disabled>Next</button>
+        <button form="player-selection" type="submit" disabled>Place Ships</button>
         <img src="" alt="Options Icon" />
       </div>
     </dialog>
@@ -122,11 +122,13 @@
               type="number"
               id="computer-speed"
               name="computer-speed"
-              min="100"
+              min="0"
               max="5000"
               list="suggested-speed-values"
+              required
             />
             <datalist id="suggested-speed-values">
+              <option value="0"></option>
               <option value="100"></option>
               <option value="250"></option>
               <option value="500"></option>

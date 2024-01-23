@@ -8,15 +8,15 @@ import {
   showCurrentOptionsValues,
 } from './DOM.modals';
 
-// Default unmodifiable game variables
+// In-game-unmodifiable variables
 export const ERROR_MESSAGE_DISPLAY_DURATION = 700;
 export const LOW_HEALTH_THRESHOLD = 20;
 
-// Default modifiable game variables
-export const defaultComputerMoveSpeed = 1000;
-export const defaultPlayer1Name = '';
-export const defaultPlayer2Name = '';
-export const defaultShips = [
+// Default game variables
+const COMPUTER_MOVE_SPEED = 1000;
+const PLAYER_1_NAME = '';
+const PLAYER_2_NAME = '';
+const SHIPS = [
   {
     length: 5,
     name: 'Carrier',
@@ -70,10 +70,10 @@ export let ships = [
 // Otherwise save default values to localStorage
 export function readLocalStorage() {
   if (!localStorage.getItem('computerMoveSpeed')) {
-    localStorage.setItem('player1Name', defaultPlayer1Name);
-    localStorage.setItem('player2Name', defaultPlayer2Name);
-    localStorage.setItem('computerMoveSpeed', defaultComputerMoveSpeed);
-    localStorage.setItem('ships', JSON.stringify(defaultShips));
+    localStorage.setItem('player1Name', PLAYER_1_NAME);
+    localStorage.setItem('player2Name', PLAYER_2_NAME);
+    localStorage.setItem('computerMoveSpeed', COMPUTER_MOVE_SPEED);
+    localStorage.setItem('ships', JSON.stringify(SHIPS));
   } else {
     player1Name = localStorage.getItem('player1Name');
     player2Name = localStorage.getItem('player2Name');
@@ -96,6 +96,17 @@ export function updateGameVariables(formData) {
   player2Name = formData.player2Name;
   computerMoveSpeed = formData.computerMoveSpeed;
   ships = formData.ships;
+  // Update localStorage and value fields in modals
+  updateLocalStorage();
+  showCurrentOptionsValues();
+}
+
+// Reset game variables to default after clicking Reset icon in options modal
+export function resetValuesToDefault() {
+  player1Name = PLAYER_1_NAME;
+  player2Name = PLAYER_2_NAME;
+  computerMoveSpeed = COMPUTER_MOVE_SPEED;
+  ships = SHIPS;
   // Update localStorage and value fields in modals
   updateLocalStorage();
   showCurrentOptionsValues();
