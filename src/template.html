@@ -117,15 +117,13 @@
               name="player-2-name"
               maxlength="20"
             />
-            <label for="computer-speed">Computer Move Speed:</label>
+            <label for="computer-speed">Computer Move Speed (ms):</label>
             <input
-              type="tel"
+              type="number"
               id="computer-speed"
               name="computer-speed"
               min="100"
               max="5000"
-              minlength="3"
-              maxlength="4"
               list="suggested-speed-values"
             />
             <datalist id="suggested-speed-values">
@@ -150,13 +148,11 @@
             />
             <label for="ship-1-length">Ship 1 Length:</label>
             <input
-              type="tel"
+              type="number"
               id="ship-1-length"
               name="ship-1-length"
               min="1"
               max="10"
-              minlength="1"
-              maxlength="2"
             />
             <label for="ship-2-name">Ship 2 Name:</label>
             <input
@@ -167,13 +163,11 @@
             />
             <label for="ship-2-length">Ship 2 Length:</label>
             <input
-              type="tel"
+              type="number"
               id="ship-2-length"
               name="ship-2-length"
               min="1"
               max="10"
-              minlength="1"
-              maxlength="2"
             />
             <label for="ship-3-name">Ship 3 Name:</label>
             <input
@@ -184,13 +178,11 @@
             />
             <label for="ship-3-length">Ship 3 Length:</label>
             <input
-              type="tel"
+              type="number"
               id="ship-3-length"
               name="ship-3-length"
               min="1"
               max="10"
-              minlength="1"
-              maxlength="2"
             />
             <label for="ship-4-name">Ship 4 Name:</label>
             <input
@@ -201,13 +193,11 @@
             />
             <label for="ship-4-length">Ship 4 Length:</label>
             <input
-              type="tel"
+              type="number"
               id="ship-4-length"
               name="ship-4-length"
               min="1"
               max="10"
-              minlength="1"
-              maxlength="2"
             />
             <label for="ship-5-name">Ship 5 Name:</label>
             <input
@@ -218,17 +208,17 @@
             />
             <label for="ship-5-length">Ship 5 Length:</label>
             <input
-              type="tel"
+              type="number"
               id="ship-5-length"
               name="ship-5-length"
               min="1"
               max="10"
-              minlength="1"
-              maxlength="2"
             />
             <div class="options-icons">
               <img src="" alt="Reset Icon" />
-              <img src="" alt="Save Icon" />
+              <button form="options" type="submit">
+                <img src="" alt="Save Icon" />
+              </button>
             </div>
           </div>
         </form>

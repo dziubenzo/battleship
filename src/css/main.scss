@@ -46,14 +46,13 @@ dialog[open] {
       cursor: pointer;
     }
 
-    img[alt="Options Icon"] {
+    img[alt='Options Icon'] {
       right: 3%;
     }
 
     img[alt='Back Icon'] {
       left: 3%;
     }
-
 
     img[alt='Rotate Ship Icon'],
     img[alt='Place Ships Randomly Icon'] {
@@ -227,6 +226,16 @@ dialog[open] {
       &:focus {
         outline: 2px solid $main-colour;
       }
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+
+    input[type='number'] {
+      -moz-appearance: textfield;
     }
 
     .options-top {
@@ -239,7 +248,7 @@ dialog[open] {
         width: 21ch;
       }
 
-      input[type='tel'] {
+      input[type='number'] {
         width: 8ch;
       }
     }
@@ -258,7 +267,7 @@ dialog[open] {
         width: 21ch;
       }
 
-      input[type='tel'] {
+      input[type='number'] {
         width: 3ch;
       }
 
@@ -268,6 +277,17 @@ dialog[open] {
         justify-content: center;
         gap: 64px;
         padding-top: 8px;
+
+        button {
+          outline: none;
+          border: none;
+          height: 50px;
+          width: 50px;
+
+          &:hover {
+            background-color: transparent;
+          }
+        }
 
         img[alt='Reset Icon'],
         img[alt='Save Icon'] {
