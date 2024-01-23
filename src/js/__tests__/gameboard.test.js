@@ -578,3 +578,32 @@ describe('Gameboard: findShip()', () => {
     },
   );
 });
+
+describe('Gameboard: calculateHealth()', () => {
+  let gameboard = new Gameboard();
+  let carrier = new Ship(5, 'Carrier');
+  let submarine = new Ship(3, 'Submarine');
+  let patrolBoat = new Ship(2, 'Patrol Boat');
+  gameboard.placeShip(carrier, 0, 0, 'horizontal');
+  gameboard.placeShip(submarine, 5, 5, 'horizontal');
+  gameboard.placeShip(patrolBoat, 8, 9, 'vertical');
+
+  test('returns 100 when the game starts', () => {
+    expect(gameboard.calculateHealth()).toBe(100);
+  });
+
+  test('subtracts health after hits', () => {
+    carrier.hit();
+    carrier.hit();
+    submarine.hit();
+    patrolBoat.hit();
+    expect(gameboard.calculateHealth()).toBe(60);
+  });
+
+  test('returns 0 when all ships have been sunk', () => {
+    carrier.hits = 5;
+    submarine.hits = 3;
+    patrolBoat.hits = 2;
+    expect(gameboard.calculateHealth()).toBe(0);
+  });
+});
