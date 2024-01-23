@@ -11,8 +11,8 @@ import { player1, player2 } from './gameFlow';
 
 const NO_OF_SQUARES = 121;
 
-// Load images
-export function loadImages() {
+// Load icons
+export function loadIcons() {
   const gitHubLogo = document.querySelector('img[alt="GitHub Logo"]');
   gitHubLogo.src = gitHubLogoWhiteSrc;
   const optionsIcon = document.querySelector('img[alt="Options Icon"]');
@@ -102,6 +102,19 @@ export function generateSquares() {
     }
   }
   addHeaders();
+}
+
+// Do not close starting and ship placement modals on pressing Esc
+export function doNotCloseModalsOnEsc() {
+  const startingModal = document.querySelector('dialog[id="starting-dialog"]');
+  const shipPlacementModal = document.querySelector(
+    'dialog[id="ship-placement-dialog"]',
+  );
+  [startingModal, shipPlacementModal].forEach((modal) => {
+    modal.addEventListener('cancel', (event) => {
+      event.preventDefault();
+    });
+  });
 }
 
 // Return the right DOM board based on player passed as argument

@@ -20,10 +20,12 @@ Starting modal
 export function showStartingModal() {
   const dialog = document.querySelector('#starting-dialog');
   dialog.showModal();
-  // Prevent it from being closed on clicking Esc
-  dialog.addEventListener('cancel', (event) => {
-    event.preventDefault();
-  });
+}
+
+// Close starting modal
+function hideStartingModal() {
+  const dialog = document.querySelector('#starting-dialog');
+  dialog.close();
 }
 
 // Add event listeners to starting modal player labels
@@ -110,12 +112,6 @@ export function listenForLabelClick() {
 
 // Get player selections once the starting modal form is submitted
 export function getPlayerSelections() {
-  // Close starting modal
-  function hideStartingModal() {
-    const dialog = document.querySelector('#starting-dialog');
-    dialog.close();
-  }
-
   const form = document.querySelector('form[id="player-selection"]');
 
   form.addEventListener('submit', (event) => {
@@ -340,12 +336,31 @@ Options modal
 
 */
 
-// Show options modal
-function showOptionsModal() {
+// Open options modal on options icon click
+// Go back to starting modal on back icon click or pressing Esc
+export function listenForOptionsModalClick() {
+  // Show options modal
+  function showOptionsModal() {
+    dialog.showModal();
+  }
+  // Hide options modal
+  function hideOptionsModal() {
+    dialog.close();
+  }
   const dialog = document.querySelector('#options-dialog');
-  dialog.showModal();
-  // Prevent it from being closed on clicking Esc
-  dialog.addEventListener('cancel', (event) => {
-    event.preventDefault();
+  const optionsIcon = document.querySelector('img[alt="Options Icon"]');
+  const backIcon = document.querySelector('img[alt="Back Icon"]');
+
+  optionsIcon.addEventListener('click', () => {
+    hideStartingModal();
+    showOptionsModal();
+  });
+  backIcon.addEventListener('click', () => {
+    hideOptionsModal();
+    showStartingModal();
+  });
+  dialog.addEventListener('cancel', () => {
+    hideOptionsModal();
+    showStartingModal();
   });
 }
