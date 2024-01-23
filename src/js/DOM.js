@@ -4,6 +4,9 @@ import settingsSrc from '../assets/settings.svg';
 import rotateShipSrc from '../assets/rotate.svg';
 import placeShipsRandomlySrc from '../assets/place-ships-randomly.svg';
 import healthSrc from '../assets/health.svg';
+import resetSrc from '../assets/reset.svg';
+import saveSrc from '../assets/save.svg';
+import backSrc from '../assets/back.svg';
 import { player1, player2 } from './gameFlow';
 
 const NO_OF_SQUARES = 121;
@@ -24,6 +27,12 @@ export function loadImages() {
   const player2HealthIcon = document.querySelector('.player-2-health > img');
   player1HealthIcon.src = healthSrc;
   player2HealthIcon.src = healthSrc;
+  const resetIcon = document.querySelector('img[alt="Reset Icon"]');
+  const saveIcon = document.querySelector('img[alt="Save Icon"]');
+  resetIcon.src = resetSrc;
+  saveIcon.src = saveSrc;
+  const backIcon = document.querySelector('img[alt="Back Icon"]');
+  backIcon.src = backSrc;
 }
 
 // Generate board squares

@@ -97,6 +97,143 @@
         </button>
       </div>
     </dialog>
+    <dialog id="options-dialog">
+      <div class="options-dialog">
+        <img src="" alt="Back Icon" />
+        <p class="dialog-title">Options</p>
+        <form id="options">
+          <div class="options-top">
+            <label for="player-1-name">Default Player 1 Name:</label>
+            <input
+              id="player-1-name"
+              type="text"
+              name="player-1-name"
+              maxlength="20"
+            />
+            <label for="player-2-name">Default Player 2 Name:</label>
+            <input
+              id="player-2-name"
+              type="text"
+              name="player-2-name"
+              maxlength="20"
+            />
+            <label for="computer-speed">Computer Move Speed:</label>
+            <input
+              type="tel"
+              id="computer-speed"
+              name="computer-speed"
+              min="100"
+              max="5000"
+              minlength="3"
+              maxlength="4"
+              list="suggested-speed-values"
+            />
+            <datalist id="suggested-speed-values">
+              <option value="100"></option>
+              <option value="250"></option>
+              <option value="500"></option>
+              <option value="1000"></option>
+              <option value="2000"></option>
+              <option value="3000"></option>
+              <option value="4000"></option>
+              <option value="5000"></option>
+            </datalist>
+          </div>
+          <p class="ship-customisation-title">Customise Ships</p>
+          <div class="options-bottom">
+            <label for="ship-1-name">Ship 1 Name:</label>
+            <input
+              type="text"
+              id="ship-1-name"
+              name="ship-1-name"
+              maxlength="20"
+            />
+            <label for="ship-1-length">Ship 1 Length:</label>
+            <input
+              type="tel"
+              id="ship-1-length"
+              name="ship-1-length"
+              min="1"
+              max="10"
+              minlength="1"
+              maxlength="2"
+            />
+            <label for="ship-2-name">Ship 2 Name:</label>
+            <input
+              type="text"
+              id="ship-2-name"
+              name="ship-2-name"
+              maxlength="20"
+            />
+            <label for="ship-2-length">Ship 2 Length:</label>
+            <input
+              type="tel"
+              id="ship-2-length"
+              name="ship-2-length"
+              min="1"
+              max="10"
+              minlength="1"
+              maxlength="2"
+            />
+            <label for="ship-3-name">Ship 3 Name:</label>
+            <input
+              type="text"
+              id="ship-3-name"
+              name="ship-3-name"
+              maxlength="20"
+            />
+            <label for="ship-3-length">Ship 3 Length:</label>
+            <input
+              type="tel"
+              id="ship-3-length"
+              name="ship-3-length"
+              min="1"
+              max="10"
+              minlength="1"
+              maxlength="2"
+            />
+            <label for="ship-4-name">Ship 4 Name:</label>
+            <input
+              type="text"
+              id="ship-4-name"
+              name="ship-4-name"
+              maxlength="20"
+            />
+            <label for="ship-4-length">Ship 4 Length:</label>
+            <input
+              type="tel"
+              id="ship-4-length"
+              name="ship-4-length"
+              min="1"
+              max="10"
+              minlength="1"
+              maxlength="2"
+            />
+            <label for="ship-5-name">Ship 5 Name:</label>
+            <input
+              type="text"
+              id="ship-5-name"
+              name="ship-5-name"
+              maxlength="20"
+            />
+            <label for="ship-5-length">Ship 5 Length:</label>
+            <input
+              type="tel"
+              id="ship-5-length"
+              name="ship-5-length"
+              min="1"
+              max="10"
+              minlength="1"
+              maxlength="2"
+            />
+            <div class="options-icons">
+              <img src="" alt="Reset Icon" />
+              <img src="" alt="Save Icon" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </dialog>
     <header>
       <div class="title">Battleship</div>
     </header>

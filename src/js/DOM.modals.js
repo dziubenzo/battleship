@@ -333,3 +333,19 @@ function enableStartGame() {
   changeCursorToDefault(board);
   startGameButton.addEventListener('click', startGame);
 }
+
+/* 
+
+Options modal
+
+*/
+
+// Show starting modal
+export function showOptionsModal() {
+  const dialog = document.querySelector('#options-dialog');
+  dialog.showModal();
+  // Prevent it from being closed on clicking Esc
+  dialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+  });
+}
