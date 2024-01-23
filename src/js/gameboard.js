@@ -280,7 +280,7 @@ export class Gameboard {
       (sum, currentShip) => (sum += currentShip.hits),
       0,
     );
-    return ((totalLength - totalHits) / totalLength) * 100;
+    return Math.floor(((totalLength - totalHits) / totalLength) * 100);
   }
 
   // Check if all ships have been sunk

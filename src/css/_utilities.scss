@@ -18,6 +18,9 @@ $ship-missed-colour: rgb(0, 90, 128);
 $event-log-ship-hit-colour: rgb(73, 195, 40);
 $event-log-ship-sunk-colour: rgb(255, 0, 0);
 $event-log-ship-missed-colour: rgb(0, 90, 128);
+$low-health-colour: rgb(255, 0, 0);
+$low-health-icon-colour: invert(15%) sepia(94%) saturate(7432%) hue-rotate(2deg)
+  brightness(95%) contrast(116%);
 
 // Helper classes
 .default-cursor {
@@ -30,4 +33,12 @@ $event-log-ship-missed-colour: rgb(0, 90, 128);
 
 .bold {
   font-weight: bold;
+}
+
+.low-health {
+  color: $low-health-colour;
+}
+
+.icon-low-health {
+  filter: $low-health-icon-colour;
 }

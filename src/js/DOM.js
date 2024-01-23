@@ -166,10 +166,18 @@ export function showPlayerNames(player1, player2) {
 // Update health in the DOM
 export function updateHealthDOM(enemy) {
   let healthValue;
+  let healthIcon;
   if (enemy === player1) {
     healthValue = document.querySelector('.player-1-health > .health-percent');
+    healthIcon = document.querySelector('.player-1-health > img');
   } else {
     healthValue = document.querySelector('.player-2-health > .health-percent');
+    healthIcon = document.querySelector('.player-2-health > img');
   }
   healthValue.textContent = enemy.health;
+  // Change text and icon colour when health is low
+  if (enemy.health <= 20) {
+    healthValue.classList.add('low-health');
+    healthIcon.classList.add('icon-low-health');
+  }
 }
