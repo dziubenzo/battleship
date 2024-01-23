@@ -7,7 +7,8 @@ import healthSrc from '../assets/health.svg';
 import resetSrc from '../assets/reset.svg';
 import saveSrc from '../assets/save.svg';
 import backSrc from '../assets/back.svg';
-import { player1, player2 } from './gameFlow';
+import { player1 } from './gameFlow';
+import { LOW_HEALTH_THRESHOLD } from './main';
 
 const NO_OF_SQUARES = 121;
 
@@ -198,7 +199,7 @@ export function updateHealthDOM(enemy) {
   }
   healthValue.textContent = enemy.health;
   // Change text and icon colour when health is low
-  if (enemy.health <= 20) {
+  if (enemy.health <= LOW_HEALTH_THRESHOLD) {
     healthValue.classList.add('low-health');
     healthIcon.classList.add('icon-low-health');
   }

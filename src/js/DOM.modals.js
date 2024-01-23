@@ -15,7 +15,7 @@ import {
   player2Name,
   ships,
   readLocalStorage,
-  updateLocalStorage,
+  updateGameVariables,
 } from './main';
 
 /* 
@@ -66,10 +66,8 @@ export function listenForLabelClick() {
       player2NameInput.focus();
     } else if (event.target.parentNode.classList.value === 'player-1') {
       player1NameDiv.style.visibility = 'hidden';
-      player1NameInput.value = '';
     } else {
       player2NameDiv.style.visibility = 'hidden';
-      player2NameInput.value = '';
     }
   }
 
@@ -346,6 +344,7 @@ Options modal
 
 // Open options modal on options icon click
 // Go back to starting modal on back icon click or pressing Esc
+// Listen for clicking Save icon
 export function listenForOptionsModalClick() {
   // Show options modal
   function showOptionsModal() {
@@ -358,6 +357,7 @@ export function listenForOptionsModalClick() {
   const dialog = document.querySelector('#options-dialog');
   const optionsIcon = document.querySelector('img[alt="Options Icon"]');
   const backIcon = document.querySelector('img[alt="Back Icon"]');
+  const optionsForm = document.querySelector('form[id="options"]');
 
   optionsIcon.addEventListener('click', () => {
     hideStartingModal();
@@ -372,6 +372,7 @@ export function listenForOptionsModalClick() {
     hideOptionsModal();
     showStartingModal();
   });
+  optionsForm.addEventListener('submit', listenForOptionsUpdate);
 }
 
 // Show localStorage values in options modal fields and in starting modal name fields
@@ -409,4 +410,43 @@ export function showCurrentOptionsValues() {
     shipNameFields[index].value = ship.name;
     shipLengthFields[index].value = ship.length;
   });
+}
+
+// Get values from the form and pass them to updateGameVariables
+function listenForOptionsUpdate() {
+  const form = document.querySelector('form[id="options"]');
+  event.preventDefault();
+  const data = Object.fromEntries(new FormData(form));
+  const computerMoveSpeed = Number(data['computer-speed']);
+  const player1Name = data['player-1-name'].trim();
+  const player2Name = data['player-2-name'].trim();
+  const ships = [
+    {
+      length: Number(data['ship-1-length']),
+      name: data['ship-1-name'].trim(),
+    },
+    {
+      length: Number(data['ship-2-length']),
+      name: data['ship-2-name'].trim(),
+    },
+    {
+      length: Number(data['ship-3-length']),
+      name: data['ship-3-name'].trim(),
+    },
+    {
+      length: Number(data['ship-4-length']),
+      name: data['ship-4-name'].trim(),
+    },
+    {
+      length: Number(data['ship-5-length']),
+      name: data['ship-5-name'].trim(),
+    },
+  ];
+  const organisedData = {
+    computerMoveSpeed,
+    player1Name,
+    player2Name,
+    ships,
+  };
+  updateGameVariables(organisedData);
 }
