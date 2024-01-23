@@ -64,6 +64,30 @@ export let ships = [
   },
 ];
 
+// Read values from localStorage if they exist
+// Otherwise save default values to localStorage
+export function readLocalStorage() {
+  if (!localStorage.getItem('computerMoveSpeed')) {
+    localStorage.setItem('computerMoveSpeed', defaultComputerMoveSpeed);
+    localStorage.setItem('player1Name', defaultPlayer1Name);
+    localStorage.setItem('player2Name', defaultPlayer2Name);
+    localStorage.setItem('ships', JSON.stringify(defaultShips));
+  } else {
+    computerMoveSpeed = localStorage.getItem('computerMoveSpeed');
+    player1Name = localStorage.getItem('player1Name');
+    player2Name = localStorage.getItem('player2Name');
+    ships = JSON.parse(localStorage.getItem('ships'));
+  }
+}
+
+// Update localStorage
+export function updateLocalStorage() {
+  localStorage.setItem('computerMoveSpeed', computerMoveSpeed);
+  localStorage.setItem('player1Name', player1Name);
+  localStorage.setItem('player2Name', player2Name);
+  localStorage.setItem('ships', JSON.stringify(ships));
+}
+
 // Starter pack
 loadIcons();
 generateSquares();

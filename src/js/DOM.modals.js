@@ -8,7 +8,15 @@ import {
   hidePlacedShips,
   changeCursorToDefault,
 } from './DOM';
-import { ERROR_MESSAGE_DISPLAY_DURATION } from './main';
+import {
+  ERROR_MESSAGE_DISPLAY_DURATION,
+  computerMoveSpeed,
+  player1Name,
+  player2Name,
+  ships,
+  readLocalStorage,
+  updateLocalStorage,
+} from './main';
 
 /* 
 
@@ -354,6 +362,7 @@ export function listenForOptionsModalClick() {
   optionsIcon.addEventListener('click', () => {
     hideStartingModal();
     showOptionsModal();
+    showCurrentOptionsValues();
   });
   backIcon.addEventListener('click', () => {
     hideOptionsModal();
@@ -362,5 +371,42 @@ export function listenForOptionsModalClick() {
   dialog.addEventListener('cancel', () => {
     hideOptionsModal();
     showStartingModal();
+  });
+}
+
+// Show localStorage values in options modal fields and in starting modal name fields
+export function showCurrentOptionsValues() {
+  readLocalStorage();
+
+  const player1NameField = document.querySelector(
+    '.starting-dialog input[name="player-1-name"]',
+  );
+  const player2NameField = document.querySelector(
+    '.starting-dialog input[name="player-2-name"]',
+  );
+  const defaultPlayer1NameField = document.querySelector(
+    '.options-dialog input[name="player-1-name"]',
+  );
+  const defaultPlayer2NameField = document.querySelector(
+    '.options-dialog input[name="player-2-name"]',
+  );
+  const computerMoveSpeedField = document.querySelector(
+    '.options-dialog input[name="computer-speed"]',
+  );
+  const shipNameFields = document.querySelectorAll(
+    '.options-bottom input[name*="name"]',
+  );
+  const shipLengthFields = document.querySelectorAll(
+    '.options-bottom input[name*="length"]',
+  );
+
+  player1NameField.value = player1Name;
+  player2NameField.value = player2Name;
+  defaultPlayer1NameField.value = player1Name;
+  defaultPlayer2NameField.value = player2Name;
+  computerMoveSpeedField.value = computerMoveSpeed;
+  ships.forEach((ship, index) => {
+    shipNameFields[index].value = ship.name;
+    shipLengthFields[index].value = ship.length;
   });
 }
