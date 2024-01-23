@@ -8,29 +8,10 @@ import {
   showPlayerNames,
   updateHealthDOM,
 } from './DOM';
-import { COMPUTER_MOVE_DURATION } from './main';
+import { computerMoveSpeed, ships } from './main';
 
 export let player1;
 export let player2;
-
-const ships = [
-  {
-    length: 4,
-    name: 'Test1',
-  },
-  {
-    length: 3,
-    name: 'Test2',
-  },
-  {
-    length: 2,
-    name: 'Test3',
-  },
-  {
-    length: 1,
-    name: 'Test4',
-  },
-];
 
 // Create appropriate players based on player selections
 export function createPlayers(formData) {
@@ -137,7 +118,7 @@ export function playGame() {
         changeTurn(attacker);
         playTurn();
       }
-    }, COMPUTER_MOVE_DURATION);
+    }, computerMoveSpeed);
   }
 
   // Check if the clicked square is a valid one for attack

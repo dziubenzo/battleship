@@ -132,7 +132,7 @@ export class EventLog {
     const randomIntPhrases = this.#getRandomInt(0, this.#missPhrases.length);
     const descriptionDOM = this.#createEvent();
     const coordinates = this.getCoordinates(row, column);
-    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#missVerbs[randomIntShipMissed]}</span>. <br><br>${this.#missPhrases[randomIntPhrases]}, <span class="bold">${attacker.name}</span>!`;
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, but <span class="bold">${this.#missVerbs[randomIntShipMissed]}</span>. <br><br>${this.#missPhrases[randomIntPhrases]}, <span class="bold">${attacker.name}</span>!`;
     descriptionDOM.classList.add(`${className}`);
   }
 
