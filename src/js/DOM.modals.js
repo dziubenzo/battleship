@@ -1,12 +1,14 @@
-import { createPlayers, playGame } from './gameFlow';
+import { player1, player2, createPlayers, playGame } from './gameFlow';
 import { Ship } from './ship';
 import {
   getPlayerBoard,
   showErrorSquares,
   hideErrorSquares,
   showPlacedShip,
-  hidePlacedShips,
+  removePlacedShips,
+  clearPlacedShips,
   changeCursorToDefault,
+  removeDefaultCursor,
 } from './DOM';
 import {
   MESSAGE_DISPLAY_DURATION,
@@ -225,15 +227,26 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
       const newShip = new Ship(ship.length, ship.name);
       player.board.placeShip(newShip, row, column, direction);
       removeEventListeners();
-      // Show placed ship on the ship placement board and the player board
-      showPlacedShip(ship, row, column, direction, board);
-      showPlacedShip(ship, row, column, direction, getPlayerBoard(player));
+      // Show placed ship on the ship placement board and the player board (in all cases except for human vs human)
+      if (player1.isHuman && player2.isHuman) {
+        showPlacedShip(ship, row, column, direction, board);
+      } else {
+        showPlacedShip(ship, row, column, direction, board);
+        showPlacedShip(ship, row, column, direction, getPlayerBoard(player));
+      }
       if (player.board.ships.length === ships.length) {
         currentShipInfo.textContent = "All ships placed, you're ready to go!";
-        // Change place ship randomly icon
+        // Disable place ship randomly and rotate icons
         placeShipsRandomlyIcon.classList.add('icon-disabled', 'default-cursor');
-        enableStartGame();
-        return;
+        rotateShipIcon.classList.add('icon-disabled', 'default-cursor');
+        changeCursorToDefault(board);
+        if (player === player1 && player2.isHuman) {
+          enableNextPlayerButton();
+          return;
+        } else {
+          enableStartGame();
+          return;
+        }
       }
       placeTheNextShip(
         player,
@@ -242,7 +255,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
         placeShips,
       );
     } catch (error) {
-      // Show error message for ERROR_MESSAGE_DISPLAY_DURATION seconds
+      // Show error message for ERROR_MESSAGE_DISPLAY_DURATION milliseconds
       // Prevent board clicks to avoid current ship info being overwritten
       // Change ship preview squares to a different colour
       board.removeEventListener('mousedown', addShip);
@@ -259,10 +272,14 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
 
   // Place all ships randomly
   function placeShipsRandomly() {
-    // Hide previously placed ships
-    hidePlacedShips();
+    if (player1.isHuman && player2.isHuman) {
+      clearPlacedShips(board);
+    } else {
+      // Hide all previously placed ships in all scenarios except for human vs human
+      removePlacedShips();
+    }
     const randomShips = player.board.placeShipsRandomly(ships);
-    // Show ships on both boards
+    // Show ships on both boards or on ship placement board only
     randomShips.forEach((ship, index) => {
       showPlacedShip(
         ships[index],
@@ -271,13 +288,15 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
         ship.direction,
         board,
       );
-      showPlacedShip(
-        ships[index],
-        ship.row,
-        ship.column,
-        ship.direction,
-        getPlayerBoard(player),
-      );
+      if (!player1.isHuman || !player2.isHuman) {
+        showPlacedShip(
+          ships[index],
+          ship.row,
+          ship.column,
+          ship.direction,
+          getPlayerBoard(player),
+        );
+      }
     });
     currentShipInfo.textContent = "You're ready to go!";
     changeCursorToDefault(board);
@@ -287,6 +306,16 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   }
 
   let direction = 'horizontal';
+  const button = document.querySelector('button[class="start-game-button"]');
+  const title = document.querySelector(
+    '.ship-placement-dialog p[class="dialog-title"]',
+  );
+  title.textContent = `Place Your Ships, ${player.name}`;
+  if (player === player1 && player2.isHuman) {
+    button.textContent = 'Next Player';
+  } else {
+    button.textContent = 'Start Game';
+  }
   const currentShipInfo = document.querySelector('p[class="current-ship"]');
   const shipName = ship.name;
   const shipLength = ship.length;
@@ -306,9 +335,15 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
   rotateShipIcon.addEventListener('click', rotateShip);
   addEventListener('auxclick', rotateShip);
   placeShipsRandomlyIcon.addEventListener('click', placeShipsRandomly);
-  placeShipsRandomlyIcon.addEventListener('click', enableStartGame, {
-    once: true,
-  });
+  if (player === player1 && player1.isHuman && player2.isHuman) {
+    placeShipsRandomlyIcon.addEventListener('click', enableNextPlayerButton, {
+      once: true,
+    });
+  } else {
+    placeShipsRandomlyIcon.addEventListener('click', enableStartGame, {
+      once: true,
+    });
+  }
 }
 
 // Enable Start Game button
@@ -316,19 +351,52 @@ function enableStartGame() {
   // Start the game and close the ship placement modal
   function startGame() {
     const dialog = document.querySelector('#ship-placement-dialog');
+    const shipPlacementBoard = document.querySelector(
+      'div[class="ship-placement-board"]',
+    );
     dialog.close();
+    clearPlacedShips(shipPlacementBoard);
     startGameButton.removeEventListener('click', startGame);
     playGame();
   }
   const startGameButton = document.querySelector('.start-game-button');
   const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
-  const board = document.querySelector('div[class="ship-placement-board"]');
   // Enable Start Game button
   startGameButton.removeAttribute('disabled');
-  // Change rotate ship icon
+  // Disable rotate ship icon
   rotateShipIcon.classList.add('icon-disabled', 'default-cursor');
-  changeCursorToDefault(board);
   startGameButton.addEventListener('click', startGame);
+}
+
+// Enable button to allow human Player 2 to place their ships
+function enableNextPlayerButton() {
+  const nextPlayerButton = document.querySelector('.start-game-button');
+  const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
+  // Enable Next Player button
+  nextPlayerButton.removeAttribute('disabled');
+  // Disable rotate ship icon
+  rotateShipIcon.classList.add('icon-disabled', 'default-cursor');
+  nextPlayerButton.addEventListener('click', placeShipsNextPlayer);
+}
+
+// Move to ship placing for next player
+function placeShipsNextPlayer() {
+  const nextPlayerButton = document.querySelector('.start-game-button');
+  const placeShipsRandomlyIcon = document.querySelector(
+    'img[alt="Place Ships Randomly Icon"]',
+  );
+  const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
+  const shipPlacementBoard = document.querySelector(
+    'div[class="ship-placement-board"]',
+  );
+  // Reenable place ship randomly and rotate icons
+  placeShipsRandomlyIcon.classList.remove('icon-disabled', 'default-cursor');
+  rotateShipIcon.classList.remove('icon-disabled', 'default-cursor');
+  clearPlacedShips(shipPlacementBoard);
+  removeDefaultCursor();
+  nextPlayerButton.setAttribute('disabled', 'disabled');
+  nextPlayerButton.removeEventListener('click', placeShipsNextPlayer);
+  placeShips(player2, ships, ships[0], placeShips);
 }
 
 /* 
@@ -497,6 +565,10 @@ function showStats(winner, loser) {
   loserMovesDOM.textContent = loser.attacks;
   winnerAccuracyDOM.textContent = `${winner.calculateAccuracy(loser)}%`;
   loserAccuracyDOM.textContent = `${loser.calculateAccuracy(winner)}%`;
+  // Cover a corner case of the winner having 100% accuracy and the loser failing to play a single turn
+  if (isNaN(loser.calculateAccuracy(winner))) {
+    loserAccuracyDOM.textContent = `🤯`;
+  }
 
   // Refresh page on clicking New Game button
   newGameButton.addEventListener('click', () => {

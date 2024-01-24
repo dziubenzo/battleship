@@ -37,7 +37,8 @@ export function createPlayers(formData) {
   }
 
   if (player1.isHuman && player2.isHuman) {
-    // TO BE IMPLEMENTED
+    showShipPlacementModal();
+    placeShips(player1, ships, ships[0], placeShips);
     return;
   }
   if (!player1.isHuman && !player2.isHuman) {

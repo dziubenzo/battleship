@@ -163,8 +163,16 @@ export function showPlacedShip(ship, row, column, direction, boardDOM) {
 }
 
 // Remove all placed ships from all boards
-export function hidePlacedShips() {
+export function removePlacedShips() {
   const placedShips = document.querySelectorAll('.square.placed');
+  for (const placedShip of placedShips) {
+    placedShip.className = 'square';
+  }
+}
+
+// Clear placed ships from a board
+export function clearPlacedShips(boardDOM) {
+  const placedShips = boardDOM.querySelectorAll('.square.placed');
   for (const placedShip of placedShips) {
     placedShip.className = 'square';
   }
@@ -189,6 +197,15 @@ export function changeCursorToDefault(boardDOM) {
   const squares = boardDOM.querySelectorAll('.square');
   for (const square of squares) {
     square.classList.add('default-cursor');
+  }
+}
+
+// Remove default cursor from the ship placement board
+export function removeDefaultCursor() {
+  const shipPlacementBoard = document.querySelector('.ship-placement-board');
+  const squares = shipPlacementBoard.querySelectorAll('.default-cursor');
+  for (const square of squares) {
+    square.classList.remove('default-cursor');
   }
 }
 
