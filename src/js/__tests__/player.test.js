@@ -4,12 +4,23 @@ import { Player, ComputerPlayer } from '../player';
 import { Ship } from '../ship';
 
 describe('Player', () => {
+  beforeEach(() => {
+    Player.count = 0;
+  });
+  
   test('creates default human player if no name given', () => {
-    expect(new Player().name).toBe('Player');
+    expect(new Player().name).toBe('Player 1');
   });
 
   test('creates default human player if empty string given', () => {
-    expect(new Player('').name).toBe('Player');
+    expect(new Player('').name).toBe('Player 1');
+  });
+
+  test('creates default human players with incrementing player number', () => {
+    const player1 = new Player();
+    const player2 = new Player('');
+    expect(player1.name).toBe('Player 1');
+    expect(player2.name).toBe('Player 2');
   });
 
   test.each([['Ron'], ['Harry'], ['Hermione']])(
