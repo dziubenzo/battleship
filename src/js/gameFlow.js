@@ -4,6 +4,7 @@ import { showShipPlacementModal, placeShips } from './DOM.modals';
 import {
   getPlayerBoard,
   showPlacedShip,
+  showSunkShip,
   changeCursorToDefault,
   showPlayerNames,
   updateHealthDOM,
@@ -95,6 +96,7 @@ export function playGame() {
         updateHealthDOM(enemy);
         attack = 'hit';
         if (ship.isSunk()) {
+          showSunkShip(enemy, enemyBoard, shipName);
           eventLog.addShipSunkEvent(
             attacker,
             enemy,
@@ -127,6 +129,7 @@ export function playGame() {
       event.target.classList.contains('header') ||
       event.target.classList.contains('hit') ||
       event.target.classList.contains('miss') ||
+      event.target.classList.contains('sunk') ||
       event.button === 1 ||
       event.button === 2
     ) {
@@ -149,6 +152,7 @@ export function playGame() {
       boardSquare.classList.add('hit');
       updateHealthDOM(enemy);
       if (ship.isSunk()) {
+        showSunkShip(enemy, enemyBoard, shipName);
         eventLog.addShipSunkEvent(
           attacker,
           enemy,

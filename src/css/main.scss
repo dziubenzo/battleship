@@ -372,6 +372,11 @@ main {
         background-color: $ship-missed-colour;
         cursor: default;
       }
+
+      .square.sunk {
+        background-color: $ship-sunk-colour;
+        cursor: default;
+      }
     }
 
     .player-1-health,

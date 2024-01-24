@@ -170,6 +170,20 @@ export function hidePlacedShips() {
   }
 }
 
+// Show sunk ship differently on the board
+export function showSunkShip(enemy, enemyBoard, shipName) {
+  const hitSquares = enemyBoard.querySelectorAll('.hit');
+  for (const square of hitSquares) {
+    const row = square.dataset.row;
+    const column = square.dataset.column;
+    const squareValue = enemy.board.getSquare(row, column);
+    if (squareValue === shipName) {
+      square.classList.remove('hit');
+      square.classList.add('sunk');
+    }
+  }
+}
+
 // Change cursor to default for human player board squares and for boards in the computer vs computer scenario
 export function changeCursorToDefault(boardDOM) {
   const squares = boardDOM.querySelectorAll('.square');
