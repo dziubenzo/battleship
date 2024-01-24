@@ -275,6 +275,7 @@ dialog[open] {
         grid-column: 1 / 5;
         display: flex;
         justify-content: center;
+        position: relative;
         gap: 64px;
         padding-top: 8px;
 
@@ -297,6 +298,37 @@ dialog[open] {
           cursor: pointer;
         }
       }
+    }
+
+    .save-message,
+    .reset-message {
+      position: absolute;
+      top: 44%;
+      text-align: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.5s allow-discrete;
+
+      @starting-style {
+        &.showing {
+          opacity: 0 !important;
+        }
+      }
+
+      &.showing {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    .save-message {
+      right: 0%;
+    }
+
+    .reset-message {
+      top: 33%;
+      left: -8%;
+      width: 180px;
     }
   }
 }

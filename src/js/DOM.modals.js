@@ -9,7 +9,7 @@ import {
   changeCursorToDefault,
 } from './DOM';
 import {
-  ERROR_MESSAGE_DISPLAY_DURATION,
+  MESSAGE_DISPLAY_DURATION,
   computerMoveSpeed,
   player1Name,
   player2Name,
@@ -252,7 +252,7 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
         hideErrorSquares();
         currentShipInfo.textContent = infoCopy;
         board.addEventListener('mousedown', addShip);
-      }, ERROR_MESSAGE_DISPLAY_DURATION);
+      }, MESSAGE_DISPLAY_DURATION);
     }
   }
 
@@ -367,8 +367,16 @@ export function listenForOptionsModalClick() {
     hideOptionsModal();
     showStartingModal();
   });
-  optionsForm.addEventListener('submit', listenForOptionsUpdate);
-  resetIcon.addEventListener('click', resetValuesToDefault);
+  optionsForm.addEventListener('submit', (event) => {
+    const saveMessage = document.querySelector('p[class*="save-message"]');
+    showMessage(saveMessage);
+    getFormValues(event);
+  });
+  resetIcon.addEventListener('click', () => {
+    const resetMessage = document.querySelector('p[class*="reset-message"]');
+    showMessage(resetMessage);
+    resetValuesToDefault();
+  });
 }
 
 // Show localStorage values in options modal fields and in starting modal name fields
@@ -409,7 +417,7 @@ export function showCurrentOptionsValues() {
 }
 
 // Get values from the form and pass them to updateGameVariables
-function listenForOptionsUpdate() {
+function getFormValues(event) {
   const form = document.querySelector('form[id="options"]');
   event.preventDefault();
   const data = Object.fromEntries(new FormData(form));
@@ -445,4 +453,12 @@ function listenForOptionsUpdate() {
     ships,
   };
   updateGameVariables(organisedData);
+}
+
+// Show options saved/reset to default message
+function showMessage(messageDOM) {
+  messageDOM.classList.add('showing');
+  setTimeout(() => {
+    messageDOM.classList.remove('showing');
+  }, MESSAGE_DISPLAY_DURATION);
 }

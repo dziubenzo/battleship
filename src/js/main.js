@@ -9,7 +9,7 @@ import {
 } from './DOM.modals';
 
 // In-game-unmodifiable variables
-export const ERROR_MESSAGE_DISPLAY_DURATION = 700;
+export const MESSAGE_DISPLAY_DURATION = 700;
 export const LOW_HEALTH_THRESHOLD = 20;
 
 // Default game variables
