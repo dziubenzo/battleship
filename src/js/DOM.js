@@ -174,7 +174,22 @@ export function removePlacedShips() {
 export function clearPlacedShips(boardDOM) {
   const placedShips = boardDOM.querySelectorAll('.square.placed');
   for (const placedShip of placedShips) {
-    placedShip.className = 'square';
+    placedShip.classList.remove('placed');
+  }
+}
+
+// Show all player's ships on their board (for 2-player mode)
+export function showAllPlacedShips(player, playerBoardDOM) {
+  for (let row = 0; row < 10; row++) {
+    for (let column = 0; column < 10; column++) {
+      const square = player.board.getSquare(row, column);
+      if (typeof square === 'string' && square !== 'unavailable') {
+        const squareDOM = playerBoardDOM.querySelector(
+          `div[data-row="${row}"][data-column="${column}"]`,
+        );
+        squareDOM.classList.add('placed');
+      }
+    }
   }
 }
 
