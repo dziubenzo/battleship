@@ -30,6 +30,15 @@ export class Player {
     // Update enemy health
     enemy.health = enemy.board.calculateHealth();
   }
+
+  // Calculate accuracy
+  calculateAccuracy(enemy) {
+    const totalHits = enemy.board.ships.reduce(
+      (sum, currentShip) => (sum += currentShip.hits),
+      0,
+    );
+    return Math.floor((totalHits / this.attacks) * 100);
+  }
 }
 
 export class ComputerPlayer extends Player {
