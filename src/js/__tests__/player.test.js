@@ -290,3 +290,70 @@ describe('ComputerPlayer: smarter attack()', () => {
     expect(columnCheckPassed).toBe(true);
   });
 });
+
+describe('Player/ComputerPlayer: calculateAccuracy()', () => {
+  let player;
+  let computerPlayer;
+  const battleship = new Ship(4, 'Battleship');
+  const destroyer = new Ship(3, 'Destroyer');
+  const submarine = new Ship(3, 'Submarine');
+
+  beforeEach(() => {
+    player = new Player('Player 1');
+    computerPlayer = new ComputerPlayer(true);
+    player.board.placeShip(battleship, 2, 5, 'horizontal');
+    player.board.placeShip(destroyer, 4, 0, 'horizontal');
+    player.board.placeShip(submarine, 6, 7, 'horizontal');
+    computerPlayer.board.placeShip(battleship, 2, 0, 'horizontal');
+    computerPlayer.board.placeShip(destroyer, 4, 0, 'horizontal');
+    computerPlayer.board.placeShip(submarine, 5, 7, 'horizontal');
+    battleship.hits = 0;
+    destroyer.hits = 0;
+    submarine.hits = 0;
+  });
+
+  test('works as expected (100% accuracy)', () => {
+    player.attack(computerPlayer, 2, 0);
+    player.attack(computerPlayer, 2, 1);
+    player.attack(computerPlayer, 2, 2);
+    player.attack(computerPlayer, 2, 3);
+    player.attack(computerPlayer, 4, 0);
+    player.attack(computerPlayer, 4, 1);
+    player.attack(computerPlayer, 4, 2);
+    player.attack(computerPlayer, 5, 7);
+    player.attack(computerPlayer, 5, 8);
+    player.attack(computerPlayer, 5, 9);
+    player.attacks = 10;
+    expect(player.calculateAccuracy(computerPlayer)).toBe(100);
+  });
+
+  test('works as expected (50% accuracy)', () => {
+    player.attack(computerPlayer, 2, 0);
+    player.attack(computerPlayer, 2, 1);
+    player.attack(computerPlayer, 2, 2);
+    player.attack(computerPlayer, 2, 3);
+    player.attack(computerPlayer, 4, 0);
+    player.attack(computerPlayer, 5, 0);
+    player.attack(computerPlayer, 5, 1);
+    player.attack(computerPlayer, 5, 2);
+    player.attack(computerPlayer, 5, 3);
+    player.attack(computerPlayer, 5, 4);
+    player.attacks = 10;
+    expect(player.calculateAccuracy(computerPlayer)).toBe(50);
+  });
+
+  test('works as expected (0% accuracy)', () => {
+    player.attack(computerPlayer, 3, 0);
+    player.attack(computerPlayer, 3, 1);
+    player.attack(computerPlayer, 3, 2);
+    player.attack(computerPlayer, 3, 3);
+    player.attack(computerPlayer, 3, 4);
+    player.attack(computerPlayer, 5, 0);
+    player.attack(computerPlayer, 5, 1);
+    player.attack(computerPlayer, 5, 2);
+    player.attack(computerPlayer, 5, 3);
+    player.attack(computerPlayer, 5, 4);
+    player.attacks = 10;
+    expect(player.calculateAccuracy(computerPlayer)).toBe(0);
+  });
+});
