@@ -462,3 +462,15 @@ function showMessage(messageDOM) {
     messageDOM.classList.remove('showing');
   }, MESSAGE_DISPLAY_DURATION);
 }
+
+/* 
+
+Game over modal
+
+*/
+
+// Show game over modal
+export function showGameOverModal() {
+  const dialog = document.querySelector('#game-over-dialog');
+  dialog.showModal();
+}
