@@ -1,6 +1,10 @@
 import { Player, ComputerPlayer } from './player';
 import { EventLog } from './eventLog';
-import { showShipPlacementModal, placeShips } from './DOM.modals';
+import {
+  showShipPlacementModal,
+  placeShips,
+  showGameOverModal,
+} from './DOM.modals';
 import {
   getPlayerBoard,
   showPlacedShip,
@@ -211,8 +215,11 @@ export function playGame() {
   // Play a turn
   function playTurn() {
     if (isGameOver()) {
-      console.log('GG');
-      return;
+      if (player1.health === 0) {
+        return showGameOverModal(player2, player1);
+      } else {
+        return showGameOverModal(player1, player2);
+      }
     }
     if (player1.turn && !player1.isHuman) {
       playComputerTurn(player1, player2, player2Board);

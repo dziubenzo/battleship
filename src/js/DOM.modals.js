@@ -10,6 +10,7 @@ import {
 } from './DOM';
 import {
   MESSAGE_DISPLAY_DURATION,
+  GAME_OVER_MODAL_DISPLAY_DELAY,
   computerMoveSpeed,
   player1Name,
   player2Name,
@@ -469,8 +470,36 @@ Game over modal
 
 */
 
-// Show game over modal
-export function showGameOverModal() {
+// Show game over modal after a delay
+export function showGameOverModal(winner, loser) {
   const dialog = document.querySelector('#game-over-dialog');
-  dialog.showModal();
+  showStats(winner, loser);
+  setTimeout(() => {
+    dialog.showModal();
+  }, GAME_OVER_MODAL_DISPLAY_DELAY);
+}
+
+// Show stats
+function showStats(winner, loser) {
+  const winnerDOM = document.querySelector('p[class="winner"]');
+  const winnerMovesDOM = document.querySelector('p[class="winner-moves"]');
+  const loserMovesDOM = document.querySelector('p[class="loser-moves"]');
+  const winnerAccuracyDOM = document.querySelector(
+    'p[class="winner-accuracy"]',
+  );
+  const loserAccuracyDOM = document.querySelector('p[class="loser-accuracy"]');
+  const newGameButton = document.querySelector(
+    'button[class="new-game-button"]',
+  );
+
+  winnerDOM.textContent = winner.name;
+  winnerMovesDOM.textContent = winner.attacks;
+  loserMovesDOM.textContent = loser.attacks;
+  winnerAccuracyDOM.textContent = `${winner.calculateAccuracy(loser)}%`;
+  loserAccuracyDOM.textContent = `${loser.calculateAccuracy(winner)}%`;
+
+  // Refresh page on clicking New Game button
+  newGameButton.addEventListener('click', () => {
+    location.reload();
+  });
 }

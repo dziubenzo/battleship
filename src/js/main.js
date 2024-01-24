@@ -11,6 +11,7 @@ import {
 // In-game-unmodifiable variables
 export const MESSAGE_DISPLAY_DURATION = 700;
 export const LOW_HEALTH_THRESHOLD = 20;
+export const GAME_OVER_MODAL_DISPLAY_DELAY = 500;
 
 // Default game variables
 const COMPUTER_MOVE_SPEED = 1000;
