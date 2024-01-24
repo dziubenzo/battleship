@@ -1,9 +1,12 @@
 import { Gameboard } from './gameboard';
 
 export class Player {
+  static counter = 0;
+
   constructor(name) {
+    Player.counter++;
     if (!name) {
-      name = 'Player';
+      name = `Player ${Player.counter}`;
     }
     this.name = String(name);
     this.board = new Gameboard();
