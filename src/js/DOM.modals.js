@@ -575,3 +575,21 @@ function showStats(winner, loser) {
     location.reload();
   });
 }
+
+/* 
+
+Pass device modal
+
+*/
+
+// Show game over modal after a delay
+export function showPassDeviceModal(player) {
+  const dialog = document.querySelector('#pass-device-dialog');
+  const playerNameDOM = document.querySelector(
+    '.pass-device-dialog .player-name',
+  );
+  playerNameDOM.textContent = player.name;
+  setTimeout(() => {
+    dialog.showModal();
+  }, 0);
+}
