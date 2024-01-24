@@ -34,7 +34,8 @@ dialog[open] {
   .starting-dialog,
   .ship-placement-dialog,
   .options-dialog,
-  .game-over-dialog {
+  .game-over-dialog,
+  .pass-device-dialog {
     display: grid;
     align-content: space-evenly;
 
@@ -79,7 +80,8 @@ dialog[open] {
     .winner-moves,
     .loser-moves,
     .winner-accuracy,
-    .loser-accuracy {
+    .loser-accuracy,
+    .pass-device-message {
       font-size: 2rem;
       font-weight: bold;
       text-align: center;
@@ -349,6 +351,25 @@ dialog[open] {
     button {
       margin-top: 12px;
     }
+  }
+
+  .pass-device-dialog {
+    text-align: center;
+
+    .to-message {
+      font-size: 1.5rem;
+    }
+
+    .player-name {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+  }
+}
+
+dialog[open]#pass-device-dialog {
+  &::backdrop {
+    backdrop-filter: blur(20px);
   }
 }
 
