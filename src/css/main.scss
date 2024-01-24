@@ -369,7 +369,7 @@ dialog[open] {
 
 dialog[open]#pass-device-dialog {
   &::backdrop {
-    backdrop-filter: blur(20px);
+    background-color: $bg-colour;
   }
 }
 

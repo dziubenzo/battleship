@@ -4,6 +4,8 @@ import {
   showShipPlacementModal,
   placeShips,
   showGameOverModal,
+  listenForContinueClick,
+  showPassDeviceModal,
 } from './DOM.modals';
 import {
   getPlayerBoard,
@@ -15,7 +17,11 @@ import {
   showAllPlacedShips,
   clearPlacedShips,
 } from './DOM';
-import { computerMoveSpeed, ships } from './main';
+import {
+  computerMoveSpeed,
+  ships,
+  GAME_OVER_MODAL_DISPLAY_DELAY,
+} from './main';
 
 export let player1;
 export let player2;
@@ -39,6 +45,7 @@ export function createPlayers(formData) {
   }
 
   if (player1.isHuman && player2.isHuman) {
+    listenForContinueClick();
     showShipPlacementModal();
     placeShips(player1, ships, ships[0], placeShips);
     return;
@@ -193,7 +200,14 @@ export function playGame() {
     } else {
       player1.turn = false;
       player2.turn = true;
-      playTurn();
+      if (player2.isHuman) {
+        setTimeout(() => {
+          showPassDeviceModal(player2);
+          playTurn();
+        }, GAME_OVER_MODAL_DISPLAY_DELAY);
+      } else {
+        playTurn();
+      }
     }
   }
 
@@ -211,7 +225,14 @@ export function playGame() {
     } else {
       player1.turn = true;
       player2.turn = false;
-      playTurn();
+      if (player1.isHuman) {
+        setTimeout(() => {
+          showPassDeviceModal(player1);
+          playTurn();
+        }, GAME_OVER_MODAL_DISPLAY_DELAY);
+      } else {
+        playTurn();
+      }
     }
   }
 
