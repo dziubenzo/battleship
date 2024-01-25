@@ -143,6 +143,7 @@ dialog[open] {
         width: calc(100% / 11);
         outline: 1px solid $main-colour;
         cursor: pointer;
+        transition: background-color 0.2s ease-out;
       }
 
       .square.header {
@@ -420,6 +421,7 @@ main {
         width: calc(100% / 11);
         outline: 1px solid $main-colour;
         cursor: pointer;
+        transition: background-color 0.3s ease-in;
       }
 
       .square.header {
