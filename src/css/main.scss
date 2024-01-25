@@ -374,6 +374,15 @@ dialog[open]#pass-device-dialog {
   }
 }
 
+img.theme-toggle {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  cursor: pointer;
+}
+
 body {
   height: 100svh;
   display: grid;
@@ -543,7 +552,7 @@ footer {
   align-items: center;
   gap: 8px;
 
-  img {
+  img[alt='GitHub Logo'] {
     height: 24px;
     width: 24px;
     filter: none;

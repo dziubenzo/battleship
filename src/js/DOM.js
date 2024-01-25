@@ -15,7 +15,12 @@ const NO_OF_SQUARES = 121;
 // Load icons
 export function loadIcons() {
   const gitHubLogo = document.querySelector('img[alt="GitHub Logo"]');
-  gitHubLogo.src = gitHubLogoWhiteSrc;
+  const html = document.querySelector('html');
+  if (html.dataset.theme === 'dark') {
+    gitHubLogo.src = gitHubLogoWhiteSrc;
+  } else {
+    gitHubLogo.src = gitHubLogoBlackSrc;
+  }
   const optionsIcon = document.querySelector('img[alt="Options Icon"]');
   optionsIcon.src = optionsSrc;
   const rotateShipIcon = document.querySelector('img[alt="Rotate Ship Icon"]');
