@@ -1,4 +1,19 @@
 @use 'utilities' as *;
 
 @mixin queries {
+  @media only screen and (width > 1366px) {
+    main {
+      .container {
+        width: 60%;
+
+        .player-1-board,
+        .player-2-board {
+          width: 74%;
+        }
+      }
+    }
+  }
+
+  @media only screen and (width <= 768px) {
+  }
 }
