@@ -6,14 +6,14 @@
   padding: 0;
   box-sizing: border-box;
   font-family: $main-font;
-  background-color: $bg-colour;
-  color: $main-colour;
+  background-color: var(--bg-colour);
+  color: var(--main-colour);
 }
 
 // Setting background-color this way ensures that changing icon colour works
 img {
   background-color: transparent;
-  filter: $icon-main-colour;
+  filter: var(--icon-main-colour);
 }
 
 dialog[open] {
@@ -106,7 +106,7 @@ dialog[open] {
 
         &:hover,
         &.selected {
-          outline: 2px solid $main-colour;
+          outline: 2px solid var(--main-colour);
           border-radius: 8px;
         }
       }
@@ -126,7 +126,7 @@ dialog[open] {
         border-radius: 8px;
 
         &::placeholder {
-          color: $main-colour;
+          color: var(--main-colour);
         }
       }
     }
@@ -141,7 +141,7 @@ dialog[open] {
         aspect-ratio: 1 / 1;
         height: calc(100% / 11);
         width: calc(100% / 11);
-        outline: 1px solid $main-colour;
+        outline: 1px solid var(--main-colour);
         cursor: pointer;
         transition: background-color 0.2s ease-out;
       }
@@ -156,15 +156,15 @@ dialog[open] {
       }
 
       .square.preview {
-        background-color: $ship-preview-colour;
+        background-color: var(--ship-preview-colour);
       }
 
       .square.placed {
-        background-color: $ship-placed-colour;
+        background-color: var(--ship-placed-colour);
       }
 
       .square.error {
-        background-color: $ship-preview-error-colour;
+        background-color: var(--ship-preview-error-colour);
       }
     }
 
@@ -175,7 +175,7 @@ dialog[open] {
 
     button[type='submit'],
     button[type='button'] {
-      outline: 2px solid $main-colour;
+      outline: 2px solid var(--main-colour);
       border: none;
       height: 50px;
       width: 200px;
@@ -187,20 +187,20 @@ dialog[open] {
 
       &:hover {
         outline: none;
-        background-color: $main-colour;
-        color: $bg-colour;
+        background-color: var(--main-colour);
+        color: var(--bg-colour);
       }
     }
 
     button[disabled] {
-      outline: 2px solid $button-disabled-colour;
+      outline: 2px solid var(--button-disabled-colour);
       color: grey;
       cursor: not-allowed;
 
       &:hover {
-        outline: 2px solid $button-disabled-colour;
-        background-color: $bg-colour;
-        color: $button-disabled-colour;
+        outline: 2px solid var(--button-disabled-colour);
+        background-color: var(--bg-colour);
+        color: var(--button-disabled-colour);
       }
     }
   }
@@ -213,14 +213,14 @@ dialog[open] {
     }
 
     button[disabled] {
-      outline: 2px solid $button-disabled-colour;
+      outline: 2px solid var(--button-disabled-colour);
       color: grey;
       cursor: not-allowed;
 
       &:hover {
-        outline: 2px solid $button-disabled-colour;
-        background-color: $bg-colour;
-        color: $button-disabled-colour;
+        outline: 2px solid var(--button-disabled-colour);
+        background-color: var(--bg-colour);
+        color: var(--button-disabled-colour);
       }
     }
   }
@@ -229,13 +229,13 @@ dialog[open] {
     input {
       text-align: center;
       font-size: 1.05rem;
-      outline: 1px solid $main-colour;
+      outline: 1px solid var(--main-colour);
       border: none;
       padding: 3px 0;
       border-radius: 4px;
 
       &:focus {
-        outline: 2px solid $main-colour;
+        outline: 2px solid var(--main-colour);
       }
 
       &::-webkit-outer-spin-button,
@@ -370,7 +370,7 @@ dialog[open] {
 
 dialog[open]#pass-device-dialog {
   &::backdrop {
-    background-color: $bg-colour;
+    background-color: var(--bg-colour);
   }
 }
 
@@ -419,7 +419,7 @@ main {
         aspect-ratio: 1 / 1;
         height: calc(100% / 11);
         width: calc(100% / 11);
-        outline: 1px solid $main-colour;
+        outline: 1px solid var(--main-colour);
         cursor: pointer;
         transition: background-color 0.3s ease-in;
       }
@@ -434,21 +434,21 @@ main {
       }
 
       .square.placed {
-        background-color: $ship-placed-player-board-colour;
+        background-color: var(--ship-placed-player-board-colour);
       }
 
       .square.hit {
-        background-color: $ship-hit-colour;
+        background-color: var(--ship-hit-colour);
         cursor: default;
       }
 
       .square.miss {
-        background-color: $ship-missed-colour;
+        background-color: var(--ship-missed-colour);
         cursor: default;
       }
 
       .square.sunk {
-        background-color: $ship-sunk-colour;
+        background-color: var(--ship-sunk-colour);
         cursor: default;
       }
     }
@@ -480,7 +480,7 @@ main {
     .event-log {
       width: 700px;
       height: 150px;
-      border: 2px solid $main-colour;
+      border: 2px solid var(--main-colour);
       border-radius: 8px;
       grid-column: 1 / 3;
       overflow: auto;
@@ -494,14 +494,14 @@ main {
       }
 
       &::-webkit-scrollbar-thumb {
-        background-color: $main-colour;
+        background-color: var(--main-colour);
         border-radius: 10px;
         border: transparent;
       }
 
       .event {
         display: flex;
-        border-bottom: 1px solid $main-colour;
+        border-bottom: 1px solid var(--main-colour);
         padding: 8px 0;
 
         .turn {
@@ -518,19 +518,19 @@ main {
         }
 
         .description.hit {
-          border-left: 5px solid $event-log-ship-hit-colour;
+          border-left: 5px solid var(--event-log-ship-hit-colour);
         }
 
         .description.ship-sunk {
-          border-left: 5px solid $event-log-ship-sunk-colour;
+          border-left: 5px solid var(--event-log-ship-sunk-colour);
         }
 
         .description.missed {
-          border-left: 5px solid $event-log-ship-missed-colour;
+          border-left: 5px solid var(--event-log-ship-missed-colour);
         }
 
         .description.game-over {
-          border-left: 5px solid $main-colour;
+          border-left: 5px solid var(--main-colour);
         }
       }
     }

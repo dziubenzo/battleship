@@ -2,26 +2,37 @@
 
 $font-header: 'Silkscreen', sans-serif;
 $main-font: 'Inconsolata', sans-serif;
-$bg-colour: rgb(40, 40, 40);
-$main-colour: rgb(255, 185, 55);
-$icon-main-colour: invert(71%) sepia(44%) saturate(772%) hue-rotate(343deg)
-  brightness(105%) contrast(101%);
-$icon-disabled-colour: invert(59%) sepia(0%) saturate(425%) hue-rotate(145deg)
-  brightness(85%) contrast(94%);
-$button-disabled-colour: grey;
-$ship-preview-colour: grey;
-$ship-preview-error-colour: rgb(255, 0, 0);
-$ship-placed-colour: rgb(255, 185, 55);
-$ship-placed-player-board-colour: rgb(95, 69, 21);
-$ship-hit-colour: rgb(73, 195, 40);
-$ship-missed-colour: rgb(0, 90, 128);
-$ship-sunk-colour: rgb(143, 0, 0);
-$event-log-ship-hit-colour: rgb(73, 195, 40);
-$event-log-ship-sunk-colour: rgb(255, 0, 0);
-$event-log-ship-missed-colour: rgb(0, 90, 128);
-$low-health-colour: rgb(255, 0, 0);
-$low-health-icon-colour: invert(15%) sepia(94%) saturate(7432%) hue-rotate(2deg)
-  brightness(95%) contrast(116%);
+
+html[data-theme='dark'] {
+  img.theme-toggle {
+    content: url('../assets/light-mode.svg');
+  }
+
+  img[alt='GitHub Logo'] {
+    content: url('../assets/github-logo-white.svg');
+  }
+  
+  --bg-colour: rgb(40, 40, 40);
+  --main-colour: rgb(255, 185, 55);
+  --icon-main-colour: invert(71%) sepia(44%) saturate(772%) hue-rotate(343deg)
+    brightness(105%) contrast(101%);
+  --icon-disabled-colour: invert(59%) sepia(0%) saturate(425%) hue-rotate(145deg)
+    brightness(85%) contrast(94%);
+  --button-disabled-colour: grey;
+  --ship-preview-colour: grey;
+  --ship-preview-error-colour: rgb(255, 0, 0);
+  --ship-placed-colour: rgb(255, 185, 55);
+  --ship-placed-player-board-colour: rgb(95, 69, 21);
+  --ship-hit-colour: rgb(73, 195, 40);
+  --ship-missed-colour: rgb(0, 90, 128);
+  --ship-sunk-colour: rgb(143, 0, 0);
+  --event-log-ship-hit-colour: rgb(73, 195, 40);
+  --event-log-ship-sunk-colour: rgb(255, 0, 0);
+  --event-log-ship-missed-colour: rgb(0, 90, 128);
+  --low-health-colour: rgb(255, 0, 0);
+  --low-health-icon-colour: invert(15%) sepia(94%) saturate(7432%)
+    hue-rotate(2deg) brightness(95%) contrast(116%);
+}
 
 // Helper classes
 .default-cursor {
@@ -29,7 +40,7 @@ $low-health-icon-colour: invert(15%) sepia(94%) saturate(7432%) hue-rotate(2deg)
 }
 
 .icon-disabled {
-  filter: $icon-disabled-colour !important;
+  filter: var(--icon-disabled-colour) !important;
 }
 
 .bold {
@@ -37,9 +48,9 @@ $low-health-icon-colour: invert(15%) sepia(94%) saturate(7432%) hue-rotate(2deg)
 }
 
 .low-health {
-  color: $low-health-colour;
+  color: var(--low-health-colour);
 }
 
 .icon-low-health {
-  filter: $low-health-icon-colour;
+  filter: var(--low-health-icon-colour);
 }
