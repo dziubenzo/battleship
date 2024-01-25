@@ -400,11 +400,11 @@ main {
   place-items: center;
 
   .container {
-    width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     place-items: center;
-    gap: 16px;
+    column-gap: 64px;
+    row-gap: 16px;
 
     .player-1-wrapper,
     .player-2-wrapper {
@@ -423,7 +423,7 @@ main {
       .player-1-board,
       .player-2-board {
         aspect-ratio: 1 / 1;
-        width: 80%;
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
 
@@ -500,7 +500,7 @@ main {
       }
 
       .event-log {
-        width: 800px;
+        width: min(800px, 100svw);
         // Height of two events
         height: calc((67.2px * 2));
         border: 2px solid var(--main-colour);
