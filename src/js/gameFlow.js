@@ -16,6 +16,7 @@ import {
   updateHealthDOM,
   showAllPlacedShips,
   clearPlacedShips,
+  removeDefaultCursor,
 } from './DOM';
 import {
   computerMoveSpeed,
@@ -249,6 +250,8 @@ export function playGame() {
       playComputerTurn(player1, player2, player2Board);
     } else if (player1.turn && player1.isHuman) {
       if (player2.isHuman) {
+        changeCursorToDefault(player1Board);
+        removeDefaultCursor(player2Board);
         clearPlacedShips(player2Board);
         showAllPlacedShips(player1, player1Board);
       }
@@ -257,6 +260,8 @@ export function playGame() {
       playComputerTurn(player2, player1, player1Board);
     } else if (player2.turn && player2.isHuman) {
       if (player1.isHuman) {
+        changeCursorToDefault(player2Board);
+        removeDefaultCursor(player1Board);
         clearPlacedShips(player1Board);
         showAllPlacedShips(player2, player2Board);
       }

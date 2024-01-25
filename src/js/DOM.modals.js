@@ -393,7 +393,7 @@ function placeShipsNextPlayer() {
   placeShipsRandomlyIcon.classList.remove('icon-disabled', 'default-cursor');
   rotateShipIcon.classList.remove('icon-disabled', 'default-cursor');
   clearPlacedShips(shipPlacementBoard);
-  removeDefaultCursor();
+  removeDefaultCursor(shipPlacementBoard);
   nextPlayerButton.setAttribute('disabled', 'disabled');
   nextPlayerButton.removeEventListener('click', placeShipsNextPlayer);
   placeShips(player2, ships, ships[0], placeShips);

@@ -215,10 +215,9 @@ export function changeCursorToDefault(boardDOM) {
   }
 }
 
-// Remove default cursor from the ship placement board
-export function removeDefaultCursor() {
-  const shipPlacementBoard = document.querySelector('.ship-placement-board');
-  const squares = shipPlacementBoard.querySelectorAll('.default-cursor');
+// Remove default cursor from board squares
+export function removeDefaultCursor(boardDOM) {
+  const squares = boardDOM.querySelectorAll('.default-cursor');
   for (const square of squares) {
     square.classList.remove('default-cursor');
   }
