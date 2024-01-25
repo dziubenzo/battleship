@@ -120,6 +120,7 @@ export function resetValuesToDefault() {
 }
 
 // Starter pack
+listenForChangingTheme();
 loadIcons();
 generateSquares();
 showStartingModal();
@@ -128,4 +129,3 @@ listenForLabelClick();
 getPlayerSelections();
 listenForOptionsModalClick();
 showCurrentOptionsValues();
-listenForChangingTheme();

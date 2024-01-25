@@ -143,7 +143,7 @@ dialog[open] {
         width: calc(100% / 11);
         outline: 1px solid var(--main-colour);
         cursor: pointer;
-        transition: background-color 0.2s ease-out;
+        transition: $square-colour-transition;
       }
 
       .square.header {
@@ -194,7 +194,7 @@ dialog[open] {
 
     button[disabled] {
       outline: 2px solid var(--button-disabled-colour);
-      color: grey;
+      color: var(--button-disabled-colour);
       cursor: not-allowed;
 
       &:hover {
@@ -368,12 +368,6 @@ dialog[open] {
   }
 }
 
-dialog[open]#pass-device-dialog {
-  &::backdrop {
-    background-color: var(--bg-colour);
-  }
-}
-
 img.theme-toggle {
   width: 40px;
   height: 40px;
@@ -415,6 +409,7 @@ main {
 
     p[class*='name'] {
       font-size: 2rem;
+      font-weight: bold;
     }
 
     .player-1-board,
@@ -430,7 +425,6 @@ main {
         width: calc(100% / 11);
         outline: 1px solid var(--main-colour);
         cursor: pointer;
-        transition: background-color 0.3s ease-in;
       }
 
       .square.header {
@@ -443,20 +437,24 @@ main {
       }
 
       .square.placed {
+        transition: $square-colour-transition;
         background-color: var(--ship-placed-player-board-colour);
       }
 
       .square.hit {
+        transition: $square-colour-transition;
         background-color: var(--ship-hit-colour);
         cursor: default;
       }
 
       .square.miss {
+        transition: $square-colour-transition;
         background-color: var(--ship-missed-colour);
         cursor: default;
       }
 
       .square.sunk {
+        transition: $square-colour-transition;
         background-color: var(--ship-sunk-colour);
         cursor: default;
       }
@@ -471,6 +469,7 @@ main {
 
       .health-percent {
         font-size: 2rem;
+        font-weight: bold;
       }
 
       img[alt='Health Icon'] {
@@ -484,6 +483,7 @@ main {
       grid-column: 1 / 3;
       text-align: center;
       font-size: 2rem;
+      font-weight: bold;
     }
 
     .event-log {

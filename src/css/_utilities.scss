@@ -2,10 +2,18 @@
 
 $font-header: 'Silkscreen', sans-serif;
 $main-font: 'Inconsolata', sans-serif;
+$square-colour-transition: background-color 0.2s ease-out;
 
 html[data-theme='dark'] {
   img.theme-toggle {
     content: url('../assets/light-mode.svg');
+  }
+
+  // For some reason, the variable does not work
+  dialog[open]#pass-device-dialog {
+    &::backdrop {
+      background-color: rgb(40, 40, 40);
+    }
   }
 
   --bg-colour: rgb(40, 40, 40);
@@ -34,27 +42,34 @@ html[data-theme='light'] {
   img.theme-toggle {
     content: url('../assets/dark-mode.svg');
   }
-  
-  --bg-colour: rgb(40, 40, 40);
-  --main-colour: rgb(255, 185, 55);
-  --icon-main-colour: invert(71%) sepia(44%) saturate(772%) hue-rotate(343deg)
-    brightness(105%) contrast(101%);
+
+  // For some reason, the variable does not work
+  dialog[open]#pass-device-dialog {
+    &::backdrop {
+      background-color: rgb(151, 191, 255);
+    }
+  }
+
+  --bg-colour: rgb(151, 191, 255);
+  --main-colour: rgb(61, 61, 61);
+  --icon-main-colour: invert(23%) sepia(1%) saturate(0%) hue-rotate(62deg)
+    brightness(95%) contrast(94%);
   --icon-disabled-colour: invert(59%) sepia(0%) saturate(425%)
     hue-rotate(145deg) brightness(85%) contrast(94%);
-  --button-disabled-colour: grey;
+  --button-disabled-colour: rgb(112, 112, 112);
   --ship-preview-colour: grey;
   --ship-preview-error-colour: rgb(255, 0, 0);
-  --ship-placed-colour: rgb(255, 185, 55);
-  --ship-placed-player-board-colour: rgb(95, 69, 21);
+  --ship-placed-colour: rgb(233, 154, 97);
+  --ship-placed-player-board-colour: rgb(202, 92, 13);
   --ship-hit-colour: rgb(73, 195, 40);
-  --ship-missed-colour: rgb(0, 90, 128);
-  --ship-sunk-colour: rgb(143, 0, 0);
+  --ship-missed-colour: rgb(0, 148, 210);
+  --ship-sunk-colour: rgb(185, 0, 0);
   --event-log-ship-hit-colour: rgb(73, 195, 40);
-  --event-log-ship-sunk-colour: rgb(255, 0, 0);
-  --event-log-ship-missed-colour: rgb(0, 90, 128);
-  --low-health-colour: rgb(255, 0, 0);
-  --low-health-icon-colour: invert(15%) sepia(94%) saturate(7432%)
-    hue-rotate(2deg) brightness(95%) contrast(116%);
+  --event-log-ship-sunk-colour: rgb(185, 0, 0);
+  --event-log-ship-missed-colour: rgb(0, 148, 210);
+  --low-health-colour: rgb(185, 0, 0);
+  --low-health-icon-colour: invert(7%) sepia(91%) saturate(7261%)
+    hue-rotate(9deg) brightness(107%) contrast(111%);
 }
 
 // Helper classes
@@ -63,7 +78,7 @@ html[data-theme='light'] {
 }
 
 .icon-disabled {
-  filter: var(--icon-disabled-colour) !important;
+  filter: var(--icon-disabled-colour);
 }
 
 .bold {
