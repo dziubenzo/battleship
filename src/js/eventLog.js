@@ -76,6 +76,28 @@ export class EventLog {
     return descriptionDOM;
   }
 
+  // Add game over event
+  #addGameOverEvent(attacker, className) {
+    const randomIntPhrases = this.#getRandomInt(
+      0,
+      this.#gameOverPhrases.length,
+    );
+    const descriptionDOM = this.#createEvent();
+    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#gameOverPhrases[randomIntPhrases]}!`;
+    descriptionDOM.classList.add(`${className}`);
+    const turnDOM = document.querySelector('.event > .turn');
+    turnDOM.textContent = 'GG';
+  }
+
+  // Scroll event log to top
+  #scrollToTop() {
+    const eventLogDOM = document.querySelector('.event-log');
+    eventLogDOM.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+
   // Get coordinates of board square
   getCoordinates(row, column) {
     if (arguments.length !== 2) {
@@ -106,6 +128,7 @@ export class EventLog {
     const coordinates = this.getCoordinates(row, column);
     descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, and <span class="bold">${this.#hitVerbs[randomIntShipHit]}</span> a ship! <br><br><span class="bold">${attacker.name}</span> gets to play another turn.`;
     descriptionDOM.classList.add(`${className}`);
+    this.#scrollToTop();
   }
 
   // Add ship sunk event
@@ -123,6 +146,7 @@ export class EventLog {
       this.#addGameOverEvent(attacker, 'game-over');
     }
     descriptionDOM.classList.add(`${className}`);
+    this.#scrollToTop();
   }
 
   // Add ship missed event
@@ -134,18 +158,6 @@ export class EventLog {
     const coordinates = this.getCoordinates(row, column);
     descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#attackVerbs[randomIntVerbs]} <span class="bold">${coordinates}</span>, but <span class="bold">${this.#missVerbs[randomIntShipMissed]}</span>. <br><br>${this.#missPhrases[randomIntPhrases]}, <span class="bold">${attacker.name}</span>!`;
     descriptionDOM.classList.add(`${className}`);
-  }
-
-  // Add game over event
-  #addGameOverEvent(attacker, className) {
-    const randomIntPhrases = this.#getRandomInt(
-      0,
-      this.#gameOverPhrases.length,
-    );
-    const descriptionDOM = this.#createEvent();
-    descriptionDOM.innerHTML = `<span class="bold">${attacker.name}</span> ${this.#gameOverPhrases[randomIntPhrases]}!`;
-    descriptionDOM.classList.add(`${className}`);
-    const turnDOM = document.querySelector('.event > .turn');
-    turnDOM.textContent = 'GG';
+    this.#scrollToTop();
   }
 }
