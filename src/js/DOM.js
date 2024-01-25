@@ -254,3 +254,35 @@ export function updateHealthDOM(enemy) {
     healthIcon.classList.add('icon-low-health');
   }
 }
+
+// Listen for changing colour theme
+export function listenForChangingTheme() {
+  // Set colour theme based on localStorage
+  // Otherwise set dark theme
+  function setTheme() {
+    let theme = 'dark';
+    if (!localStorage.getItem('theme')) {
+      localStorage.setItem('theme', theme);
+      return;
+    }
+    theme = localStorage.getItem('theme');
+    html.dataset.theme = theme;
+  }
+
+  const html = document.querySelector('html');
+  const themeToggle = document.querySelector('img[class="theme-toggle"]');
+  const gitHubLogo = document.querySelector('img[alt="GitHub Logo"]');
+  setTheme();
+
+  themeToggle.addEventListener('click', () => {
+    if (html.dataset.theme === 'dark') {
+      html.dataset.theme = 'light';
+      gitHubLogo.src = gitHubLogoBlackSrc;
+      localStorage.setItem('theme', 'light');
+      return;
+    }
+    html.dataset.theme = 'dark';
+    gitHubLogo.src = gitHubLogoWhiteSrc;
+    localStorage.setItem('theme', 'dark');
+  });
+}

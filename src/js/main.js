@@ -1,5 +1,10 @@
 import '../css/main.scss';
-import { loadIcons, generateSquares, doNotCloseModalsOnEsc } from './DOM';
+import {
+  loadIcons,
+  generateSquares,
+  doNotCloseModalsOnEsc,
+  listenForChangingTheme,
+} from './DOM';
 import {
   showStartingModal,
   listenForLabelClick,
@@ -123,3 +128,4 @@ listenForLabelClick();
 getPlayerSelections();
 listenForOptionsModalClick();
 showCurrentOptionsValues();
+listenForChangingTheme();
