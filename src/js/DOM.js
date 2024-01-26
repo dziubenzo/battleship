@@ -286,3 +286,11 @@ export function listenForChangingTheme() {
     localStorage.setItem('theme', 'dark');
   });
 }
+
+// Focus on and select player name
+// Also force checked for the human radio button value because it does not work on label click when the select() method is used
+export function focusAndSelectName(radioButton, nameField) {
+  nameField.focus();
+  nameField.select();
+  radioButton.checked = true;
+}

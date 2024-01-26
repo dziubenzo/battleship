@@ -9,6 +9,7 @@ import {
   clearPlacedShips,
   changeCursorToDefault,
   removeDefaultCursor,
+  focusAndSelectName,
 } from './DOM';
 import {
   MESSAGE_DISPLAY_DURATION,
@@ -61,13 +62,19 @@ export function listenForLabelClick() {
     const player2NameDiv = document.querySelector('.player-2-name');
     const player1NameInput = document.querySelector('.player-1-name input');
     const player2NameInput = document.querySelector('.player-2-name input');
+    const humanPlayer1RadioButton = document.querySelector(
+      'input[name="player-1"][value="human"]',
+    );
+    const humanPlayer2RadioButton = document.querySelector(
+      'input[name="player-2"][value="human"]',
+    );
 
     if (event.target === player1) {
       player1NameDiv.style.visibility = 'visible';
-      player1NameInput.focus();
+      focusAndSelectName(humanPlayer1RadioButton, player1NameInput);
     } else if (event.target === player2) {
       player2NameDiv.style.visibility = 'visible';
-      player2NameInput.focus();
+      focusAndSelectName(humanPlayer2RadioButton, player2NameInput);
     } else if (event.target.parentNode.classList.value === 'player-1') {
       player1NameDiv.style.visibility = 'hidden';
     } else {
