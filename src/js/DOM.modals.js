@@ -261,7 +261,9 @@ export function placeShips(player, ships, ship, placeTheNextShip) {
       board.removeEventListener('mousedown', addShip);
       showErrorSquares();
       const infoCopy = currentShipInfo.textContent;
-      currentShipInfo.textContent = `${error.message}`;
+      // Get rid of Invalid Ship Placement from error message
+      const shortenedMessage = error.message.slice(24);
+      currentShipInfo.textContent = `${shortenedMessage}`;
       setTimeout(() => {
         hideErrorSquares();
         currentShipInfo.textContent = infoCopy;
