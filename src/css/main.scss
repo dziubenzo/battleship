@@ -131,6 +131,10 @@ dialog[open] {
       }
     }
 
+    .current-ship {
+      text-align: center;
+    }
+
     .ship-placement-board {
       aspect-ratio: 1 / 1;
       width: 60%;
@@ -214,7 +218,7 @@ dialog[open] {
 
     button[disabled] {
       outline: 2px solid var(--button-disabled-colour);
-      color: grey;
+      color: var(--button-disabled-colour);
       cursor: not-allowed;
 
       &:hover {

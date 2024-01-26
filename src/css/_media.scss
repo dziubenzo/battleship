@@ -1,19 +1,274 @@
 @use 'utilities' as *;
 
 @mixin queries {
-  @media only screen and (width > 1366px) {
-    main {
-      .container {
-        width: 60%;
+  @media only screen and (width <= 768px) {
+    dialog[open] {
+      aspect-ratio: initial;
+      height: 60%;
+      max-width: 100svw;
+      width: 95svw;
 
-        .player-1-board,
-        .player-2-board {
-          width: 74%;
+      &::-webkit-scrollbar {
+        width: 9px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--main-colour);
+        border-radius: 10px;
+        border: transparent;
+      }
+
+      .starting-dialog,
+      .ship-placement-dialog,
+      .options-dialog,
+      .game-over-dialog,
+      .pass-device-dialog {
+        display: grid;
+        align-content: space-evenly;
+
+        img[alt='Options Icon'],
+        img[alt='Back Icon'] {
+          height: 32px;
+          width: 32px;
+          top: 3%;
+        }
+
+        img[alt='Options Icon'] {
+          right: 3%;
+        }
+
+        img[alt='Back Icon'] {
+          position: sticky;
+        }
+
+        img[alt='Rotate Ship Icon'],
+        img[alt='Place Ships Randomly Icon'] {
+          height: 32px;
+          width: 32px;
+          top: initial;
+          bottom: 3%;
+        }
+
+        .dialog-title,
+        .ship-customisation-title,
+        .winner,
+        .stats-title,
+        .winner-moves,
+        .loser-moves,
+        .winner-accuracy,
+        .loser-accuracy,
+        .pass-device-message {
+          font-size: 1.5rem;
+        }
+
+        .dialog-title,
+        .player-1,
+        .player-2 {
+          gap: 8px;
+        }
+
+        .player-1,
+        .player-2 {
+          text-align: center;
+          font-size: 1.05rem;
+
+          label {
+            padding: 2px;
+
+            &.selected {
+              outline: 1px solid var(--main-colour);
+              border-radius: 4px;
+            }
+          }
+        }
+
+        .ship-placement-board {
+          width: 82%;
+
+          .square.header {
+            font-size: 0.9rem;
+          }
+        }
+
+        form {
+          gap: 12px;
+        }
+
+        button[type='submit'],
+        button[type='button'] {
+          height: 40px;
+          width: 160px;
+          font-size: 1.5rem;
+        }
+      }
+
+      .ship-placement-dialog {
+        button[type='button'] {
+          width: 160px;
+        }
+      }
+
+      .options-dialog {
+        .dialog-title {
+          margin-bottom: 16px;
+        }
+
+        .options-top,
+        .options-bottom {
+          justify-items: center;
+        }
+
+        .options-top {
+          grid-template-columns: auto;
+
+          input,
+          input[type='number'] {
+            width: 21ch;
+          }
+        }
+
+        .options-bottom {
+          grid-template-columns: auto;
+
+          input[type='text'],
+          input[type='number'] {
+            width: 21ch;
+          }
+
+          .options-icons {
+            grid-column: auto;
+            padding-top: 8px;
+            padding-bottom: 24px;
+          }
+        }
+
+        .save-message,
+        .reset-message {
+          top: 70%;
+        }
+
+        .save-message {
+          right: -30%;
+        }
+
+        .reset-message {
+          left: -15%;
+          width: 125%;
+        }
+      }
+
+      .game-over-dialog {
+        align-content: space-evenly;
+        gap: 0;
+
+        button {
+          margin-top: 0;
         }
       }
     }
-  }
 
-  @media only screen and (width <= 768px) {
+    img.theme-toggle {
+      width: 26px;
+      height: 26px;
+      top: 0.1%;
+      right: 0.1%;
+    }
+
+    body {
+      padding: 0;
+      gap: 24px;
+    }
+
+    header {
+      padding-top: 16px;
+
+      .title {
+        font-size: 12svw;
+      }
+    }
+
+    main {
+      place-items: default;
+
+      .container {
+        grid-template-columns: none;
+        grid-template-rows: 2fr 2fr 1fr;
+        gap: 32px;
+
+        .player-1-wrapper,
+        .player-2-wrapper {
+          gap: 16px;
+
+          .player-1-name,
+          .player-2-name {
+            font-size: 1.5rem;
+          }
+
+          .player-1-board,
+          .player-2-board {
+            width: 95%;
+
+            .square.header {
+              font-size: 1.2rem;
+            }
+          }
+
+          .player-1-health,
+          .player-2-health {
+            gap: 8px;
+
+            .health-percent {
+              font-size: 1.5rem;
+            }
+
+            img[alt='Health Icon'] {
+              width: 24px;
+              height: 24px;
+            }
+          }
+        }
+
+        .event-log-wrapper {
+          grid-column: auto;
+          gap: 16px;
+
+          .event-log-title {
+            font-size: 1.5rem;
+          }
+
+          .event-log {
+            width: 95svw;
+            // Height of two rather long events on mobile
+            height: calc((69px * 2));
+
+            .event {
+              .turn {
+                padding: 0 16px;
+                font-size: 0.9rem;
+              }
+
+              .description {
+                padding: 0 8px;
+                font-size: 0.9rem;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    footer {
+      gap: 8px;
+      padding-bottom: 8px;
+
+      img[alt='GitHub Logo'] {
+        height: 24px;
+        width: 24px;
+      }
+    }
   }
 }

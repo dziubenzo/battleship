@@ -20,9 +20,9 @@ html[data-theme='dark'] {
   --main-colour: rgb(255, 185, 55);
   --icon-main-colour: invert(71%) sepia(44%) saturate(772%) hue-rotate(343deg)
     brightness(105%) contrast(101%);
+  --button-disabled-colour: grey;
   --icon-disabled-colour: invert(59%) sepia(0%) saturate(425%)
     hue-rotate(145deg) brightness(85%) contrast(94%);
-  --button-disabled-colour: grey;
   --ship-preview-colour: grey;
   --ship-preview-error-colour: rgb(255, 0, 0);
   --ship-placed-colour: rgb(255, 185, 55);
@@ -54,13 +54,13 @@ html[data-theme='light'] {
   --main-colour: rgb(61, 61, 61);
   --icon-main-colour: invert(23%) sepia(1%) saturate(0%) hue-rotate(62deg)
     brightness(95%) contrast(94%);
-  --icon-disabled-colour: invert(59%) sepia(0%) saturate(425%)
-    hue-rotate(145deg) brightness(85%) contrast(94%);
   --button-disabled-colour: rgb(112, 112, 112);
+  --icon-disabled-colour: invert(45%) sepia(13%) saturate(0%) hue-rotate(156deg)
+    brightness(95%) contrast(103%);
   --ship-preview-colour: grey;
   --ship-preview-error-colour: rgb(255, 0, 0);
-  --ship-placed-colour: rgb(233, 154, 97);
-  --ship-placed-player-board-colour: rgb(202, 92, 13);
+  --ship-placed-colour: rgb(61, 61, 61);
+  --ship-placed-player-board-colour: rgb(159, 156, 156);
   --ship-hit-colour: rgb(73, 195, 40);
   --ship-missed-colour: rgb(0, 148, 210);
   --ship-sunk-colour: rgb(185, 0, 0);
