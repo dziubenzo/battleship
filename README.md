@@ -21,9 +21,9 @@ The implementation prevents placing ships next to each other and lets the player
 ## Tips
 
 - Press the **scroll wheel** to rotate a ship or use the icon on the right
+- When placing ships on mobile, **tap and hold the square** for a second or so to see ship preview (the ship will be **grey**)
+- Save options also by pressing **Enter**
 - Close the game over modal by pressing **Esc**
 - Close the options modal and pass device modal also by pressing **Esc**
-- Minimum computer move speed: **0**
-- Maximum computer move speed: **5000**
-- Minimum ship length: **1**
-- Maximum ship length: **10**
+- Computer move speed range: **0-5000**
+- Ship length range: **1-10** (makes sense, right?)
