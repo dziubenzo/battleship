@@ -421,6 +421,9 @@ export function listenForOptionsModalClick() {
   // Show options modal
   function showOptionsModal() {
     dialog.showModal();
+    // Remove focus from the first (any) field
+    const firstInput = dialog.querySelector('input');
+    firstInput.blur();
   }
   // Hide options modal
   function hideOptionsModal() {
