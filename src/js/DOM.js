@@ -294,3 +294,8 @@ export function focusAndSelectName(radioButton, nameField) {
   nameField.select();
   radioButton.checked = true;
 }
+
+// Scroll to the right player board when playing on mobile
+export function scrollToBoard(boardDOM) {
+  boardDOM.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}

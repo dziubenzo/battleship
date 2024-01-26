@@ -17,6 +17,7 @@ import {
   showAllPlacedShips,
   clearPlacedShips,
   removeDefaultCursor,
+  scrollToBoard,
 } from './DOM';
 import {
   computerMoveSpeed,
@@ -252,6 +253,7 @@ export function playGame() {
       if (player2.isHuman) {
         changeCursorToDefault(player1Board);
         removeDefaultCursor(player2Board);
+        scrollToBoard(player2Board);
         clearPlacedShips(player2Board);
         showAllPlacedShips(player1, player1Board);
       }
@@ -262,6 +264,7 @@ export function playGame() {
       if (player1.isHuman) {
         changeCursorToDefault(player2Board);
         removeDefaultCursor(player1Board);
+        scrollToBoard(player1Board);
         clearPlacedShips(player1Board);
         showAllPlacedShips(player2, player2Board);
       }
