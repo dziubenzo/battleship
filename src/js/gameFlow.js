@@ -45,7 +45,11 @@ export function createPlayers(formData) {
   } else {
     player2 = new ComputerPlayer(true);
   }
+  moveToShipPlacing();
+}
 
+// Move to ship placing or start the game
+function moveToShipPlacing() {
   if (player1.isHuman && player2.isHuman) {
     listenForContinueClick();
     showShipPlacementModal();

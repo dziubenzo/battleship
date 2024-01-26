@@ -120,12 +120,16 @@ export function resetValuesToDefault() {
 }
 
 // Starter pack
-listenForChangingTheme();
-loadIcons();
-generateSquares();
-showStartingModal();
-doNotCloseModalsOnEsc();
-listenForLabelClick();
-getPlayerSelections();
-listenForOptionsModalClick();
-showCurrentOptionsValues();
+function init() {
+  listenForChangingTheme();
+  loadIcons();
+  generateSquares();
+  showStartingModal();
+  doNotCloseModalsOnEsc();
+  listenForLabelClick();
+  getPlayerSelections();
+  listenForOptionsModalClick();
+  showCurrentOptionsValues();
+}
+
+init();
